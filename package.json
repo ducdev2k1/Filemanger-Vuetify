@@ -1,11 +1,16 @@
 {
-  "name": "filemanager_vuetify",
-  "version": "0.0.0",
+  "name": "@ducdev2k1/filemanager-vuetify",
+  "description": "A powerful file manager application built with Vue 3 and Vuetify. It includes features such as file and folder management, drag-and-drop file uploads, previews for images and documents, batch operations, and seamless integration with APIs or cloud storage.",
+  "version": "0.1.0",
   "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
     "ducnd": "cross-env NODE_ENV=ducnd vite",
     "build": "vite build",
+    "prepublishOnly": "npm run build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -33,5 +38,29 @@
     "vue-eslint-parser": "^9.4.3",
     "vue-router": "^4.5.0",
     "vue-tsc": "^2.1.10"
+  },
+
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "vue",
+    "filemanager",
+    "vue3 filemanager",
+    "filemanager vuetify",
+    "vue3"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ducdev2k1/avatar-initials.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ducdev2k1/avatar-initials/issues"
+  },
+  "homepage": "https://github.com/ducdev2k1/avatar-initials#readme",
+  "author": "ducdev2k1",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
   }
 }
