@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { useTableFilemanager } from '@/components/v1/FileManager/partial/TableFilemanager/useTableFilemanager';
+  import { useTableFilemanager } from '@/components/FileManager/TableFilemanager/useTableFilemanager';
   import { IFileManager } from '@/interfaces/IFileManager';
-  import { FileManagerActionStore } from '@/stores/user/file-manager-action-store';
-  import { EnumEmpty, EnumLocalStorageKey, EnumViewModeFm } from '@/utils/my-enum';
-  import { addEventKeyDown } from '@/utils/my-function';
+  import { FileManagerActionStore } from '@/stores/FilemanagerActionStore';
+  import { EnumEmpty, EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
+  import { addEventKeyDown } from '@/utils/MyFunction';
   import { useStorage } from '@vueuse/core';
 
   defineOptions({

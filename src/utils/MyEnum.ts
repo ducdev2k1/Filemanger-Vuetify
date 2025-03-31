@@ -12,3 +12,21 @@ export enum EnumEmpty {
   search = 'search',
   success = 'success',
 }
+
+export enum EnumStatusModel {
+  active = 'active',
+  locked = 'locked',
+  deleting = 'deleting', // trang thai cho xoa o onemail
+  closed = 'closed', // trang thai cho xoa o zimbra
+}
+
+export enum EnumViewModeFm {
+  details = 'details',
+  thumbnails = 'thumbnails',
+}
+
+export enum EnumLocalStorageKey {
+  viewFM = 'view-fm',
+  multiLang = 'multi-lang',
+  driverViewMode = 'driver-view-mode',
+}

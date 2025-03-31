@@ -5,24 +5,20 @@
  */
 
 // Plugins
-import router from '../router';
+// import router from '../router';
 import pinia from '../stores';
 import vuetify from './vuetify';
 
 // Types
 import { i18n } from '@/plugins/i18n';
-import 'devextreme/dist/css/dx.material.blue.dark.css';
 import type { App } from 'vue';
 import Vue3Toastify from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-// library demo
-import 'vue-easy-lightbox/dist/external-css/vue-easy-lightbox.css';
-
 export function registerPlugins(app: App) {
   app
     .use(vuetify)
-    .use(router)
+    // .use(router)
     .use(pinia)
     .use(i18n)
     .use(Vue3Toastify, {

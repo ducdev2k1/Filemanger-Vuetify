@@ -7,7 +7,7 @@ import App from './App.vue';
 import { createApp } from 'vue';
 
 // style
-import './assets/css/filemanager.scss';
+import './assets/scss/filemanager.scss';
 
 const app = createApp(App);
 

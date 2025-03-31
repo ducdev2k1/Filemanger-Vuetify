@@ -1,3 +1,4 @@
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import Vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
@@ -56,6 +57,9 @@ export default defineConfig({
     }),
     vuetify({
       autoImport: true,
+    }),
+    VueI18nPlugin({
+      include: [path.resolve(__dirname, './src/langs/**')],
     }),
     VueRouter({
       dts: 'src/typed-router.d.ts',

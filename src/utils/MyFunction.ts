@@ -25,13 +25,34 @@ export function initialsByFullName(fullName: string) {
   return name.toUpperCase();
 }
 
-// // path public or private file image
-// export const publicPathImage = (pathPublic: any, file: IFileManager) => {
-//   if (mimeType.IMAGE.includes(file.mime_type)) {
-//     const urlPublic = `${window.location.origin}/api/v1/user-fm-open-share-file-public`;
-//     const urlPrivate = `${window.location.origin}/api/v1/user-fm-open-file`;
-//     return handleQueryAccessFile(pathPublic ? urlPublic : urlPrivate, file);
-//   } else {
-//     return getThumbnailIcon(file);
-//   }
-// };
+// convert bytes to KB, MB, GB
+export function convertBytes(num: number): string | number {
+  if (num === -1 || num === undefined) {
+    return -1;
+  } else if (num < 1024) {
+    return `${num.toFixed(2)} bytes`;
+  } else if (num === 0) {
+    return 0;
+  }
+
+  const kilobyte = 1024;
+  const megabyte = kilobyte * 1024;
+  const gigabyte = megabyte * 1024;
+  const terabyte = gigabyte * 1024;
+
+  if (num >= terabyte) {
+    const result = num / terabyte;
+    return Number.isInteger(result) ? `${result} TB` : `${result.toFixed(2)} TB`;
+  } else if (num >= gigabyte) {
+    const result = num / gigabyte;
+    return Number.isInteger(result) ? `${result} GB` : `${result.toFixed(2)} GB`;
+  } else if (num >= megabyte) {
+    const result = num / megabyte;
+    return Number.isInteger(result) ? `${result} MB` : `${result.toFixed(2)} MB`;
+  } else if (num >= kilobyte) {
+    const result = num / kilobyte;
+    return Number.isInteger(result) ? `${result} KB` : `${result.toFixed(2)} KB`;
+  }
+
+  return `${num} bytes`;
+}
