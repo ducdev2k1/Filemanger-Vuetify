@@ -1,7 +1,7 @@
 // import { fmActionRestoreTrash } from '@/components/v1/FileManager/partial/ConfigActionFileManager';
 import { IFileManager } from '@/interfaces/IFileManager';
 import { FilemanagerActionStore } from '@/stores/FilemanagerActionStore';
-import { FileManagerStore } from '@/stores/FileManagerStore';
+import { FilemanagerStore } from '@/stores/FilemanagerStore';
 // import { myRoute } from '@/utils/my-route';
 import { debounce } from '@/utils/MyFunction';
 import { breakPoint } from '@/utils/MyVariables';
@@ -14,7 +14,7 @@ interface IEmitFunctions {
 }
 export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emits: IEmitFunctions) => {
   const route = useRoute();
-  const fileManagerStore = FileManagerStore();
+  const filemanagerStore = FilemanagerStore();
   const fileManagerActionStore = FilemanagerActionStore();
   const { width } = useWindowSize();
 
@@ -40,18 +40,17 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   // const singleModeSelect = computed(() => route.path === myRoute.sharePublic);
   const isMobile = computed(() => width.value <= breakPoint.brSpLandscape);
   // const isHomePage = computed(() => myRoute.home === route.path);
-  const listItemDelete = computed(() => fileManagerStore.listItemDelete);
+  const listItemDelete = computed(() => filemanagerStore.listItemDelete);
   const selectedItems = computed({
-    get: () => fileManagerStore.selectedItems,
-    set: (value: IFileManager[]) => fileManagerStore.actionSetSelectedItems(value),
+    get: () => filemanagerStore.selectedItems,
+    set: (value: IFileManager[]) => filemanagerStore.actionSetSelectedItems(value),
   });
 
-  // const objectSelectedOne = computed({
-  //   get: () => fileManagerStore.objectSelectedOne,
-  //   set: (value: IFileManager) => fileManagerStore.actionSetObjectSelectedOne(value),
-  // });
+  const objectSelectedOne = computed({
+    get: () => filemanagerStore.objectSelectedOne,
+    set: (value: IFileManager) => filemanagerStore.actionSetObjectSelectedOne(value),
+  });
 
-  const objectSelectedOne = ref<IFileManager>();
   const heightTable = computed(() => {
     if (wrapperRef.value) {
       return wrapperRef.value.offsetHeight || '100vh';
@@ -70,7 +69,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   };
 
   const isItemSelected = (file: IFileManager): boolean => {
-    return selectedItems.value.some((selectedItem) => selectedItem.key === file.key);
+    return selectedItems.value.some((item: IFileManager) => item.key === file.key);
   };
 
   const isItemSelectedOne = (file: IFileManager): boolean => {
@@ -100,8 +99,8 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   const rowClickHandler = (event: MouseEvent | TouchEvent, file: IFileManager) => {
     // Skip if clicking checkbox in mobile view
     if (isMobile.value && (event.target as HTMLElement).closest('.v-checkbox')) {
-      if (selectedItems.value.includes(file)) {
-        selectedItems.value = selectedItems.value.filter((item) => item !== file);
+      if (selectedItems.value.includes(file.key)) {
+        selectedItems.value = selectedItems.value.filter((item: IFileManager) => item.key !== file.key);
       } else {
         selectedItems.value = [...selectedItems.value, file];
       }
@@ -150,11 +149,11 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     });
 
     // Update selected item state
-    fileManagerStore.actionSetObjectSelectedOne(file);
+    filemanagerStore.actionSetObjectSelectedOne(file);
 
     // Ensure item is in selection
     if (!isItemSelected(file)) {
-      fileManagerStore.actionSetSelectedItems([file]);
+      filemanagerStore.actionSetSelectedItems([file]);
     }
   };
 

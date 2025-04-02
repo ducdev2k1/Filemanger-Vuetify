@@ -26,8 +26,11 @@
     itemHeight?: number | string;
     height?: number | string;
     customThumbnailIcon?: (item: IFileManager) => string;
-    updateSelectedItems?: (data: IFileManager[]) => void();
+    updateSelectedItems?: (data: IFileManager[]) => void;
+    singleModeSelect?: boolean;
+    hideDefaultHeader?: boolean;
   }
+
   interface IFetchParams {
     refresh?: boolean;
     isLoadMore?: boolean;
@@ -61,6 +64,8 @@
   const itemHeight = computed(() => props.itemHeight || 56);
   const height = computed(() => props.height || '100%');
   const theme = computed(() => props.theme || 'light');
+  const hideDefaultHeader = computed(() => props.hideDefaultHeader || false);
+  const singleModeSelect = computed(() => props.singleModeSelect || false);
 
   const contextMenuOptions = [
     {
@@ -79,7 +84,9 @@
 </script>
 
 <template>
-  <div class="fm_base h-full" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
+  <div class="c-file-manager fm_base h-full" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
+    <ToolbarFilemanager />
+
     <!--- B: Custom default toolbar --->
     <!-- <div class="relative">
     <div class="c-file-manager_toolbar">
@@ -110,7 +117,7 @@
   </template> -->
 
     <!--  B: Slot này dùng để chèn UI/UX mở rộng cần thiết -->
-    <!-- <slot v-if="$slots['toolbar-bottom']" name="toolbar-bottom" v-bind="{ data: dataFileManager }"></slot> -->
+    <slot v-if="$slots['toolbar-bottom']" name="toolbar-bottom" v-bind="{ data: dataFilemanger }"></slot>
     <!--  E: Slot này dùng để chèn UI/UX mở rộng cần thiết -->
     <!---B: FILE MANAGER ---->
     <TableFilemanager
@@ -122,12 +129,18 @@
       :loading="loading"
       :item-height="itemHeight"
       :height="height"
+      :select-strategy="singleModeSelect ? 'single' : 'page'"
+      :hide-default-header="hideDefaultHeader"
       :showCheckbox="showCheckbox"
       @double-click-row="emits('doubleClickRow')"
       @loadMoreItem="emits('scroll')"
       @click-row="emits('clickRow')">
       <template v-if="customColumns.length > 0">
-        <slot v-for="item in customColumns" :key="item.key" :name="`item.${item.key}`" v-bind="{ item, value }" />
+        <slot
+          v-for="item in customColumns"
+          :key="item.key"
+          :name="`item.${item.key}`"
+          v-bind="{ item, value: item.key }" />
       </template>
       <template #item.name="{ item }" v-if="!$slots['item.name']">
         <ColumnName :data-row="item" />
@@ -144,8 +157,6 @@
       <GridItem
         :loading="loading"
         :list-data="dataFilemanger"
-        @download="emits('download')"
-        @detail="emits('detail')"
         @load="emits('scroll')"
         @double-click="emits('doubleClickRow')" />
     </template>

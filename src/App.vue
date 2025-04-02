@@ -2,6 +2,7 @@
   import { dataFilemanager } from '@/data/DataFilemanager';
 
   const selectedItems = ref<any[]>([]);
+  const selectedOne = ref<any>();
   const getThumbnailIcon = (item: any) => {
     console.log('item :>> ', item);
   };
@@ -21,6 +22,7 @@
       :theme="'dark'"
       currentPath=""
       v-model="selectedItems"
+      v-model:selectedOne="selectedOne"
       return-object
       fixed-header
       height="100vh"
