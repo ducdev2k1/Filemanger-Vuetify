@@ -15,7 +15,6 @@
   const dataFile = computed(() => props.dataRow);
   const { width } = useWindowSize();
   const isDesktopView = computed(() => width.value > breakPoint.brSpLandscape);
-  const route = useRoute();
   // const isTrash = computed(() => route.path === myRoute.trash);
   // const isHome = computed(() => route.path === myRoute.home);
 
@@ -40,7 +39,9 @@
         max-height="32"
         loading="lazy" />
       <!-- <IconTag :color="formatGradient(dataRow.tags)" v-if="dataFile.tags.length > 0 && isDesktopView" /> -->
-      <span class="line-clamp-1">{{ dataFile.name }}</span>
+      <div class="content line-clamp-2">
+        <span class="line-clamp-1">{{ dataFile.name }}</span>
+      </div>
       <!-- <div class="content line-clamp-2">
         <p v-if="!isDesktopView && dataFile.lastModified && !isTrash && !isHome">
           <span>{{ formatDate(dataFile.lastModified) }}</span>

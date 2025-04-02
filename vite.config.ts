@@ -89,7 +89,6 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       'tailwind-config': path.resolve(__dirname, './tailwind.config.js'),
-      inferno: process.env.NODE_ENV === 'production' ? 'inferno/dist/index.esm.js' : 'inferno/dist/index.dev.esm.js',
     },
     extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
   },
@@ -112,7 +111,13 @@ export default defineConfig({
   esbuild: {
     pure: VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : [],
   },
-
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: ['legacy-js-api'], // Tắt warning cho legacy JS API
+      },
+    },
+  },
   build: {
     lib: {
       entry: 'src/index.ts',

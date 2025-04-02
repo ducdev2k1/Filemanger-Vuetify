@@ -1,8 +1,5 @@
-@use '../mixin/index' as mixin;
-
 // vuetify
 .v-table {
-  border-radius: 6px !important;
   background: var(--color-app-content) !important;
 
   * {
@@ -242,7 +239,7 @@ textarea {
   background: transparent;
 }
 
-@include mixin.brTablet {
+@media (max-width: 1199px) {
   .v-dialog > .v-overlay__content {
     max-height: calc(100% - 16px);
     width: calc(100% - 16px);
@@ -258,7 +255,7 @@ textarea {
   }
 }
 
-@include mixin.brSpLandscape {
+@media (max-width: 767px) {
   .v-navigation-drawer {
     background-color: var(--color-app-content) !important;
   }

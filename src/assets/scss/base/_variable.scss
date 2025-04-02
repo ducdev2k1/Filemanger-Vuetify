@@ -1,4 +1,4 @@
-:root {
+.fm_base {
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
@@ -33,7 +33,7 @@
   --color-black-65: #000000a6;
 }
 
-.light {
+.fm_light {
   --color-border-primary: #d3d9df;
   --color-primary-10: #eeeeee;
   --color-primary: #0a6ccb;
@@ -112,7 +112,7 @@
   --color-thead-table: #eeeeee;
 }
 
-.dark {
+.fm_dark {
   --color-border-primary: #435972;
   --color-primary: #0a6ccb;
   --color-primary-10: #223c59;

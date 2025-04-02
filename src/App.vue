@@ -2,26 +2,23 @@
   import { dataFilemanager } from '@/data/DataFilemanager';
 
   const selectedItems = ref<any[]>([]);
-
   const getThumbnailIcon = (item: any) => {
-    console.log('getThumbnailIcon :>> ', item);
+    console.log('item :>> ', item);
   };
-
-  watch(selectedItems, () => {
-    console.log('watch selectedItems :>> ', selectedItems.value);
-  });
 </script>
 
 <template>
-  <div>
+  <div class="h-screen">
     <FileManager
+      :theme="'dark'"
       currentPath=""
       v-model="selectedItems"
       return-object
       fixed-header
+      height="100vh"
       item-height="56"
       :custom-thumbnail-icon="getThumbnailIcon"
       :dataFilemanger="dataFilemanager"
-      :showCheckbox="true" />
+      :showCheckbox="false" />
   </div>
 </template>
