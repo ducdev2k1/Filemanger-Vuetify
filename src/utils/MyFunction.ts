@@ -1,3 +1,9 @@
+import { t } from '@/plugins/i18n';
+import { dateTimeFormat, typeUnknown } from '@/utils/MyVariables';
+import mime from 'mime';
+import moment from 'moment';
+import { toast, ToastActions } from 'vue3-toastify';
+
 export function addEventKeyDown(keydownHandler: (event: KeyboardEvent) => void) {
   window.addEventListener('keydown', (event) => {
     const editableElements = ['INPUT', 'TEXTAREA'];
@@ -10,10 +16,10 @@ export function addEventKeyDown(keydownHandler: (event: KeyboardEvent) => void) 
   });
 }
 
-// Lấy chữ cái đầu từ fullName
-export function initialsByFullName(fullName: string) {
+// Lấy chữ cái đầu từ làm text avatar
+export function initialsByFullName(data: string) {
   let name: string;
-  const nameParts = fullName.trim().split(' ');
+  const nameParts = data.trim().split(' ');
   if (nameParts.length > 2) {
     name = nameParts[1][0] + nameParts[2][0];
   } else if (nameParts.length > 1) {
@@ -55,4 +61,80 @@ export function convertBytes(num: number): string | number {
   }
 
   return `${num} bytes`;
+}
+
+export const formatDate = (date: string | Date, format?: string): string => {
+  return moment(date).format(format || dateTimeFormat);
+};
+
+export function debounce<T extends any[]>(func: (...args: T) => void, delay?: number): (...args: T) => void {
+  let timeoutId: any;
+
+  return (...args: T) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    timeoutId = setTimeout(() => func(...args), delay || 500);
+  };
+}
+
+let toastId: any = '';
+export function showToastMessage(content?: any, error?: boolean) {
+  if (toastId) ToastActions.remove(toastId);
+  // Set giá trị thông báo
+  if (error) {
+    toastId = toast.error(content || t('locale.data_has_been_loaded'));
+  } else {
+    toastId = toast.success(content || t('locale.data_has_been_loaded'));
+  }
+}
+
+export function getNestedPropValue(obj: any, propPath: string): any {
+  if (typeof obj !== 'object' || obj === null) {
+    return undefined;
+  }
+
+  const props = propPath.split('.');
+
+  const getValue = (source: any, props: string[]): any => {
+    if (!source || !props.length) {
+      return source;
+    }
+
+    const [prop, ...rest] = props;
+    if (Array.isArray(source)) {
+      return getValue(source[0], rest);
+    }
+
+    return getValue(source[prop], rest);
+  };
+
+  return getValue(obj, props);
+}
+
+export function handleErrorResponse(e: any) {
+  // message co dang string va { msg: string, path: string field }
+  let message = t('locale.backend_error_unknown');
+  if (typeof getNestedPropValue(e, 'response.data.values') === 'string') {
+    message = getNestedPropValue(e, 'response.data.values')?.startsWith('backend_')
+      ? t(`locale.${getNestedPropValue(e, 'response.data.values')}`)
+      : getNestedPropValue(e, 'response.data.values');
+  } else if (typeof getNestedPropValue(e, 'response.data.values') === 'object') {
+    message = `${t(`locale.${getNestedPropValue(e, 'response.data.values.path')}`)}: ${t(
+      `locale.${getNestedPropValue(e, 'response.data.values.msg')}`,
+    )}`;
+  }
+  return message;
+}
+
+export function actionGetMimeType(path: string) {
+  const result = mime.getType(path);
+  if (!result) {
+    return typeUnknown;
+  } else if (Array.isArray(result) && result.length > 0) {
+    return result[0];
+  } else {
+    return result as string;
+  }
 }

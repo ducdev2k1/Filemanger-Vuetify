@@ -1,13 +1,14 @@
 <script setup lang="ts">
-  import { fmActionDownloadFile } from '@/components/ConfigActionFileManager';
-  import { useGridItem } from '@/components/FileManager/GridItem/useGridItem';
-  import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
-  import { helperActionRecommendDetailFile } from '@/components/v1/RecommendFileAndFolder/partial/HelperActionRecommendFile';
-  import { IFileManager } from '@/interfaces/IFileManager';
-  import { t } from '@/plugins/i18n';
-  import { EnumEmpty } from '@/utils/MyEnum';
-  import { addEventKeyDown, formatDate } from '@/utils/MyFunction';
-  import { myRoute } from '@/utils/my-route';
+  // import { fmActionDownloadFile } from '@/components/ConfigActionFileManager';
+  // import { useGridItem } from '@/components/FileManager/GridItem/useGridItem';
+  // import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
+  // import { helperActionRecommendDetailFile } from '@/components/v1/RecommendFileAndFolder/partial/HelperActionRecommendFile';
+  // import { IFileManager } from '@/interfaces/IFileManager';
+  // import { t } from '@/plugins/i18n';
+  // import { EnumEmpty } from '@/utils/MyEnum';
+  // import { addEventKeyDown, formatDate } from '@/utils/MyFunction';
+  // import { myRoute } from '@/utils/my-route';
+  import { AvatarInitials } from '@ducdev2k1/avatar-initials';
 
   interface IProps {
     listData: IFileManager[];
@@ -23,7 +24,7 @@
   });
 
   const route = useRoute();
-  const emits = defineEmits(['load', 'doubleClick']);
+  const emits = defineEmits(['load', 'doubleClick', 'download']);
   const listData = computed(() => props.listData);
   const loading = computed(() => props.loading);
   const isLoadingMore = computed(() => props.isLoadingMore);
@@ -121,12 +122,12 @@
                         <v-list class="c-menu-down_list">
                           <v-list-item
                             class="c-menu-down_item"
-                            @click="fmActionDownloadFile([file])"
+                            @click="emits('download', file)"
                             :title="t('locale.download_custom')"
                             :prepend-icon="MdiWebfont['cloud-download-outline']" />
                           <v-list-item
                             class="c-menu-down_item"
-                            @click="helperActionRecommendDetailFile(file)"
+                            @click="emits('detail', file)"
                             :title="t('locale.detail')"
                             :prepend-icon="MdiWebfont['information-slab-circle-outline']" />
                         </v-list>
@@ -145,7 +146,7 @@
                 :alt="file.name" />
 
               <div class="c-grid_box_footer">
-                <Avatar :full-name="file.owner.account" :only-color="isByMe(file.owner.account)" size="32" />
+                <AvatarInitials :full-name="file.owner.account" size="32" :only-color="isByMe(file.owner.account)" />
                 <template v-if="route.path === myRoute.home">
                   <p class="line-clamp-1">
                     {{ `${t('locale.you')} ${t('locale.have')} ${t('locale.' + file.action).toLowerCase()}` }} •

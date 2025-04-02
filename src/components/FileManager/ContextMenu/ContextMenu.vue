@@ -1,21 +1,26 @@
 <script setup lang="ts">
-  import { getThumbnailIcon } from '@/components/v1/FileManager/partial/HelperFunctionFileManager';
-  import { MdiWebfont } from '@/components/v1/Icons/mdi-font-icons';
-  import { IToolbarActions } from '@/interfaces';
+  import { getThumbnailIcon } from '@/components/FileManager/partial/HelperFunctionFileManager';
+  import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
+  // import { IToolbarActions } from '@/interfaces';
   import { ITag } from '@/interfaces/ITag';
   import { t } from '@/plugins/i18n';
-  import { FileManagerActionStore } from '@/stores/user/file-manager-action-store';
-  import { FileManagerStore } from '@/stores/user/file-manager-store';
-  import { EnumActionFileManager } from '@/utils/my-enum';
-  import { breakPoint } from '@/utils/my-variables';
+  import { FileManagerActionStore } from '@/stores/FilemanagerActionStore';
+  import { FileManagerStore } from '@/stores/FilemanagerStore';
+  // import { EnumActionFileManager } from '@/utils/MyEnum';
+  import { breakPoint } from '@/utils/MyVariables';
   import { useWindowSize } from '@vueuse/core';
+
+  interface IContextMenu {
+    [key: string]: string;
+  }
 
   const props = defineProps({
     actionContextMenuItems: {
-      type: Object as PropType<{ items: IToolbarActions[] }>,
-      default: {} as { items: IToolbarActions[] },
+      type: Object as PropType<IContextMenu>,
+      default: [],
     },
   });
+
   const { width } = useWindowSize();
   const fileManagerStore = FileManagerStore();
   const fileManagerActionStore = FileManagerActionStore();
@@ -61,7 +66,7 @@
       top: Math.min(positionContextMenu?.y, innerHeight - heightContextMenuDesktop) + 'px',
       left: Math.min(positionContextMenu?.x, innerWidth - widthContextMenuDesktop) + 'px',
     }">
-    <ContextMenuItem :list-action="actionContextMenuItems.items" :onClickAction="handleClickItem" />
+    <ContextMenuItem :list-action="actionContextMenuItems" :onClickAction="handleClickItem" />
   </div>
 
   <section v-if="showContextMenu && isMobile" class="c-context-menu" :class="{ show: showContextMenu }">
@@ -79,7 +84,7 @@
 
         <v-list class="c-context-menu_list">
           <template
-            v-for="item in actionContextMenuItems.items.filter(
+            v-for="item in actionContextMenuItems.filter(
               (action: IToolbarActions) => action.name !== EnumActionFileManager.detail,
             )">
             <!-- B: RENDER SUB MENU -->
@@ -99,15 +104,15 @@
                   :title="subItem.text"
                   @click="handleClickItem(subItem as IToolbarActions)">
                   <template #prepend>
-                    <IconTag
+                    <!-- <IconTag
                       v-if="
                         item.name === EnumActionFileManager.remove_tag_custom ||
                         item.name === EnumActionFileManager.assign_tag_custom
                       "
                       class="c-context-menu_item-icon"
                       :icon="item.name === EnumActionFileManager.remove_tag_custom ? 'tag-off' : 'tag'"
-                      :color="(subItem as ITag).rgb" />
-                    <v-icon v-else class="c-context-menu_item-icon">{{ subItem.icon }}</v-icon>
+                      :color="(subItem as ITag).rgb" /> -->
+                    <v-icon  class="c-context-menu_item-icon">{{ subItem.icon }}</v-icon>
                   </template>
                 </v-list-item>
               </v-list-group>
@@ -133,9 +138,7 @@
         <v-list class="c-context-menu_list">
           <v-list-item
             class="c-context-menu_item"
-            v-for="item in actionContextMenuItems.items.filter(
-              (action) => action.name === EnumActionFileManager.detail,
-            )"
+            v-for="item in actionContextMenuItems.filter((action) => action.name === EnumActionFileManager.detail)"
             :key="item.name"
             :title="item.text"
             @click="handleClickItem(item as IToolbarActions)">

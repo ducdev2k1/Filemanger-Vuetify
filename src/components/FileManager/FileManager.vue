@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import { columnsDefault } from '@/components/FileManager/partial/ConfigFileManager';
-import { IColumnFileMangerV2 } from '@/interfaces';
-import { IFileManager } from '@/interfaces/IFileManager';
-import { FilemanagerActionStore } from '@/stores/FilemanagerActionStore';
-import { EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
-import { convertBytes } from '@/utils/MyFunction';
-import { useStorage } from '@vueuse/core';
+  import { IColumnFileMangerV2 } from '@/interfaces';
+  import { IFileManager } from '@/interfaces/IFileManager';
+  import { FilemanagerActionStore } from '@/stores/FilemanagerActionStore';
+  import { EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
+  import { convertBytes } from '@/utils/MyFunction';
+  import { useStorage } from '@vueuse/core';
 
   defineOptions({
     inheritAttrs: false,
@@ -18,6 +18,8 @@ import { useStorage } from '@vueuse/core';
     dataFilemanger: IFileManager[];
     currentPath: string;
     loading?: boolean;
+    dateFormat?: string;
+    showCheckbox?: boolean;
   }
   interface IFetchParams {
     refresh?: boolean;
@@ -25,6 +27,8 @@ import { useStorage } from '@vueuse/core';
   }
 
   const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow']);
+
+  const selectedItems = defineModel('selectedItems', { default: [] });
 
   const props = withDefaults(defineProps<IProps>(), {
     toolbarShowActionRight: true,
@@ -44,23 +48,21 @@ import { useStorage } from '@vueuse/core';
   const dataFilemanger = computed(() => props.dataFilemanger);
   const customColumns = computed(() => props.customColumns || columnsDefault);
   const showContextMenu = computed(() => fileManagerActionStore.showContextMenu || false);
+  const dateFormat = computed(() => props.dateFormat || 'DD/MM/YYYY');
+  const showCheckbox = computed(() => props.showCheckbox || false);
 
   const contextMenuOptions = [
     {
-      items: [
-        {
-          type: 'action',
-          label: 'Xem chi tiết',
-          icon: 'icon-eye',
-          action: 'detail',
-        },
-        {
-          type: 'action',
-          label: 'Tải xuống',
-          icon: 'icon-download',
-          action: 'download',
-        },
-      ],
+      type: 'action',
+      label: 'Xem chi tiết',
+      icon: 'icon-eye',
+      action: 'detail',
+    },
+    {
+      type: 'action',
+      label: 'Tải xuống',
+      icon: 'icon-download',
+      action: 'download',
     },
   ];
 </script>
@@ -101,14 +103,19 @@ import { useStorage } from '@vueuse/core';
   <!---B: FILE MANAGER ---->
   <TableFilemanager
     v-bind="$attrs"
+    v-model="selectedItems"
     v-if="viewFM === EnumViewModeFm.details"
     :header-table="customColumns"
     :data-table="dataFilemanger"
     :loading="loading"
+    :showCheckbox="showCheckbox"
     @double-click-row="emits('doubleClickRow')"
     @loadMoreItem="emits('scroll')"
     @click-row="emits('clickRow')">
-    <template #item.name="{ item }">
+    <template v-if="customColumns.length > 0">
+      <slot v-for="item in customColumns" :key="item.key" :name="`item.${item.key}`" v-bind="{ item, value }" />
+    </template>
+    <!-- <template #item.name="{ item }">
       <ColumnName :data-row="item" />
     </template>
     <template #item.owner="{ value }">
@@ -131,21 +138,23 @@ import { useStorage } from '@vueuse/core';
     </template>
     <template #item.groupActions="{ item }">
       <ColumnGroupActions :data-file="item" />
-    </template>
+    </template> -->
   </TableFilemanager>
 
   <template v-else-if="viewFM === EnumViewModeFm.thumbnails">
     <GridItem
       :loading="loading"
       :list-data="dataFilemanger"
-      :is-loading-more="isLoadingMore"
+      @download="emits('download')"
+      @detail="emits('detail')"
       @load="emits('scroll')"
       @double-click="emits('doubleClickRow')" />
   </template>
+  <!-- :is-loading-more="isLoadingMore" -->
 
   <!---E: FILE MANAGER ---->
 
   <!---B: ContextMenu MOBILE--->
-  <ContextMenu v-if="showContextMenu" :action-context-menu-items="contextMenuOptions" />
+  <!-- <ContextMenu v-if="showContextMenu" :action-context-menu-items="contextMenuOptions" /> -->
   <!---E: ContextMenu MOBILE--->
 </template>

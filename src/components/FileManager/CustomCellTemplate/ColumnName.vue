@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { getThumbnailIcon } from '@/components/v1/FileManager/partial/HelperFunctionFileManager';
+  import { getThumbnailIcon } from '@/components/FileManager/partial/HelperFunctionFileManager';
   import { IFileManager } from '@/interfaces/IFileManager';
   import { t } from '@/plugins/i18n';
-  import { calculateRemainingTime, convertBytes, formatDate, formatGradient } from '@/utils/my-function';
-  import { myRoute } from '@/utils/my-route';
-  import { breakPoint, dateFormat, env } from '@/utils/my-variables';
+  import { calculateRemainingTime, convertBytes, formatDate, formatGradient } from '@/utils/MyFunction';
+  // import { myRoute } from '@/utils/my-route';
+  import { breakPoint, dateFormat, env } from '@/utils/MyVariables';
   import { useWindowSize } from '@vueuse/core';
 
   interface IProps {
@@ -17,8 +17,8 @@
   const isDesktopView = computed(() => width.value > breakPoint.brSpLandscape);
   const publicPath = env.publicPath;
   const route = useRoute();
-  const isTrash = computed(() => route.path === myRoute.trash);
-  const isHome = computed(() => route.path === myRoute.home);
+  // const isTrash = computed(() => route.path === myRoute.trash);
+  // const isHome = computed(() => route.path === myRoute.home);
 
   const iconThumnail = computed(() => {
     if (dataFile.value.isDirectory) {
@@ -53,7 +53,9 @@
         <p v-else-if="!isDesktopView && dataFile.time_deleted && isTrash">
           <span>
             {{
-              `${formatDate(dataFile.time_deleted, dateFormat)}  (${t('locale.still')} ${calculateRemainingTime(dataRow.time_deleted as unknown as string)})`
+              `${formatDate(dataFile.time_deleted, dateFormat)}  (${t('locale.still')} ${calculateRemainingTime(
+                dataRow.time_deleted as unknown as string,
+              )})`
             }}
           </span>
         </p>

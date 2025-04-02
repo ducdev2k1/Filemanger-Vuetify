@@ -1,8 +1,7 @@
 <script setup lang="ts">
-  import { MdiWebfont } from '@/components/v1/Icons/mdi-font-icons';
+  import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
   import { IToolbarActions } from '@/interfaces';
   import { ITag } from '@/interfaces/ITag';
-  import { EnumActionFileManager } from '@/utils/my-enum';
 
   defineOptions({
     inheritAttrs: false,
@@ -49,15 +48,15 @@
                 :title="subItem.text"
                 @click="handleClickItem(subItem as IToolbarActions, subItem as ITag)">
                 <template #prepend>
-                  <IconTag
+                  <!-- <IconTag
                     v-if="
                       item.name === EnumActionFileManager.remove_tag_custom ||
                       item.name === EnumActionFileManager.assign_tag_custom
                     "
                     class="c-context-menu_item-icon"
                     :icon="item.name === EnumActionFileManager.remove_tag_custom ? 'tag-off' : 'tag'"
-                    :color="(subItem as ITag).rgb" />
-                  <v-icon v-else class="c-context-menu_item-icon">{{ subItem.icon }}</v-icon>
+                    :color="(subItem as ITag).rgb" /> -->
+                  <v-icon class="c-context-menu_item-icon">{{ subItem.icon }}</v-icon>
                 </template>
               </v-list-item>
             </template>

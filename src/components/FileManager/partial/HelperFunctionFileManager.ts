@@ -1,58 +1,7 @@
 // Utility Functions
-import { IRequestDataDto } from '@/interfaces/dto/IRequestDataDto';
 import { IFileManager } from '@/interfaces/IFileManager';
-import { FileManagerShareStore } from '@/stores/user/file-manager-share-store';
-import { FileManagerStore } from '@/stores/user/file-manager-store';
-import { EnumActionFileManager, EnumFMType, EnumOpenTool, EnumShareFilePermission } from '@/utils/my-enum';
-import { actionGetMimeType, handleErrorResponse, showToastMessage } from '@/utils/my-function';
-import { myRoute } from '@/utils/my-route';
-import { baseUrl, env, FileExtensions, mimeType } from '@/utils/my-variables';
-
-// API Data Fetching
-export async function fileManagerGetItems(request: Ref<IRequestDataDto>, fmType: Ref<EnumFMType>) {
-  const fileManagerStore = FileManagerStore();
-  const fileManagerShareStore = FileManagerShareStore();
-
-  // init request
-  const defaultRequest = {
-    data: request.value.data,
-  } as IRequestDataDto;
-  // Computed property để cache lại function mapping
-  const actionMap = computed(() => ({
-    [EnumFMType.trash]: () => fileManagerStore.actionGetFileTrashList(defaultRequest),
-    [EnumFMType.tag]: () => fileManagerStore.actionGetFileTagList(defaultRequest),
-    [EnumFMType.search]: () => fileManagerStore.actionSearchFile(defaultRequest),
-    [EnumFMType.my_files]: () => fileManagerStore.actionGetFileList(defaultRequest),
-    [EnumFMType.share_by_me]: () => fileManagerShareStore.actionListShareFileByMe(defaultRequest),
-    [EnumFMType.share_with_me]: () => fileManagerShareStore.actionListShareFileWithMe(defaultRequest),
-    [EnumFMType.share_public]: () => fileManagerShareStore.actionListShareFilePublic(defaultRequest),
-  }));
-
-  let response: any | null = null;
-
-  try {
-    // Get appropriate action based on fmType
-    const action = actionMap.value[fmType.value];
-    if (!action) {
-      showToastMessage(`Invalid file manager type: ${fmType.value}`, true);
-    }
-
-    // Execute action
-    response = await action();
-
-    // Update pagination if available
-    if (response?.nextObject || response?.nextNumber) {
-      (request.value.data as IFileManager).start_after_path = response.nextObject;
-      (request.value.data as IFileManager).start_number_mongo = response.nextNumber;
-    }
-
-    return response ?? [];
-  } catch (error) {
-    console.error('File manager error:', error);
-    showToastMessage(handleErrorResponse(error), true);
-    return [];
-  }
-}
+import { actionGetMimeType } from '@/utils/MyFunction';
+import { FileExtensions, mimeType } from '@/utils/MyVariables';
 
 export function fileManagerGenerateNewPath(
   isDirectory: boolean,
@@ -79,8 +28,8 @@ export function fileManagerGenerateNewPath(
 export function getThumbnailIcon(item: IFileManager) {
   const type = item.type;
   const mimeTypeValue = actionGetMimeType(item.type);
-  const publicPath = env.publicPath;
-  const iconBasePath = `${publicPath}/assets/icons/office`;
+  // const publicPath = env.publicPath;
+  const iconBasePath = `/assets/icons/office`;
 
   // Hàm phụ trợ để trả về đường dẫn icon
   const getIconPath = (iconName: string) => `${iconBasePath}/${iconName}`;
@@ -187,71 +136,6 @@ export function getThumbnailIcon(item: IFileManager) {
   // Mặc định cho file không xác định
   return getIconPath('genericfile.svg');
 }
-
-export async function openFileWithTool(tool: string, objectSelectedOne: IFileManager) {
-  console.log(objectSelectedOne);
-  objectSelectedOne.tool_open = tool;
-  if (tool === EnumOpenTool.office) {
-    const newUrl = `${handleQueryAccessFile(`${baseUrl}${myRoute.office}`, objectSelectedOne)}`;
-    window.open(newUrl, '_blank');
-  } else {
-    const newUrl = `${handleQueryAccessFile(`${baseUrl}${myRoute.open}`, objectSelectedOne)}`;
-    window.open(newUrl, '_blank');
-  }
-}
-
-export const hasPermissionByAction = (action: EnumActionFileManager, permission: EnumShareFilePermission) => {
-  const permissionView = [
-    EnumActionFileManager.detail,
-    EnumActionFileManager.download_custom,
-    EnumActionFileManager.open_custom,
-    EnumActionFileManager.open_with,
-    EnumActionFileManager.open_with_image,
-    EnumActionFileManager.open_with_new_tab,
-    EnumActionFileManager.open_with_office,
-    EnumActionFileManager.open_with_pdf,
-    EnumActionFileManager.open_with_video,
-    EnumActionFileManager.open_with_word,
-    EnumActionFileManager.preview,
-  ];
-
-  const permissionEdit = [EnumActionFileManager.rename_custom, EnumActionFileManager.put_content_custom];
-
-  const permissionFullControl = [
-    EnumActionFileManager.assign_tag_custom,
-    EnumActionFileManager.delete_custom,
-    EnumActionFileManager.delete_share_custom,
-    EnumActionFileManager.remove_tag_custom,
-    EnumActionFileManager.restore_trash_custom,
-    EnumActionFileManager.share_with_custom,
-    EnumActionFileManager.share_user,
-    EnumActionFileManager.share_group,
-    EnumActionFileManager.move_trash_custom,
-    EnumActionFileManager.copy_to_custom,
-    EnumActionFileManager.move_to_custom,
-    EnumActionFileManager.copy_link,
-    EnumActionFileManager.upload_custom,
-  ];
-
-  if (permission === EnumShareFilePermission.view) {
-    return permissionView.includes(action);
-  } else if (permission === EnumShareFilePermission.edit) {
-    return [...permissionView, ...permissionEdit].includes(action);
-  } else if (permission === EnumShareFilePermission.full_control) {
-    return [...permissionView, ...permissionEdit, ...permissionFullControl].includes(action);
-  } else {
-    return false;
-  }
-};
-
-export const handleQueryAccessFile = (path: string, item: IFileManager) => {
-  let query = '';
-  if (item.share_id) query += `share_id=${item.share_id}`;
-  if (item.path) query += `&path=${item.path.split('/').map(encodeURIComponent).join('/')}`;
-  if (item.tool_open) query += `&tool_open=${item.tool_open}`;
-  // if (item.type) query += `&type=${item.type}`;
-  return `${path}?${query}`;
-};
 
 export const getNearestFolder = (path: string): string => {
   // Tách chuỗi theo dấu '/' và loại bỏ các phần rỗng

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useTableFilemanager } from '@/components/FileManager/TableFilemanager/useTableFilemanager';
   import { IFileManager } from '@/interfaces/IFileManager';
-  import { FileManagerActionStore } from '@/stores/FilemanagerActionStore';
+  import { FilemanagerActionStore } from '@/stores/FilemanagerActionStore';
   import { EnumEmpty, EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
   import { addEventKeyDown } from '@/utils/MyFunction';
   import { useStorage } from '@vueuse/core';
@@ -13,13 +13,14 @@
   interface ITableFilemanagerProps {
     headerTable: any[];
     dataTable: any[];
+    showCheckbox?: boolean;
   }
 
   // Composables and stores
   const viewFM = useStorage(EnumLocalStorageKey.viewFM, EnumViewModeFm.details, localStorage, {
     listenToStorageChanges: true,
   });
-  const fileManagerActionStore = FileManagerActionStore();
+  const fileManagerActionStore = FilemanagerActionStore();
 
   // Props and emits
   const props = defineProps<ITableFilemanagerProps>();
@@ -38,39 +39,38 @@
   // Computed properties
   const headerTable = computed(() => props.headerTable);
   const dataTable = computed(() => props.dataTable);
+  const showCheckbox = computed(() => props.showCheckbox || false);
 
   const {
-    selectedItems,
-    isMobile,
-    isHomePage,
-    wrapperRef,
-    heightTable,
-    singleModeSelect,
-    hoveredRowIndex,
-    isItemSelected,
+    // selectedItems,
+    // isMobile,
+    // isHomePage,
+    // wrapperRef,
+    // heightTable,
+    // singleModeSelect,
+    // hoveredRowIndex,
+    // isItemSelected,
     handleCheckboxClick,
-    mouseLeaveHandler,
-    isItemSelectedOne,
-    rightClickHandler,
-    rowClickHandler,
-    rowDoubleClickHandler,
-    touchEndHandler,
-    keydownHandler,
-    touchStartHandler,
-    mouseEnterHandler,
-    startSelection,
-    updateSelection,
-    stopSelection,
-    handleScroll,
+    // mouseLeaveHandler,
+    // isItemSelectedOne,
+    // rightClickHandler,
+    // rowClickHandler,
+    // rowDoubleClickHandler,
+    // touchEndHandler,
+    // keydownHandler,
+    // touchStartHandler,
+    // mouseEnterHandler,
+    // startSelection,
+    // updateSelection,
+    // stopSelection,
+    // handleScroll,
   } = useTableFilemanager(dataTable, emitFunctions);
 
   // Lifecycle hooks
   onMounted(() => {
     if (tableRef.value && viewFM.value === EnumViewModeFm.details) {
       // Add event listeners
-      if (!isHomePage.value) {
-        addEventKeyDown(keydownHandler);
-      }
+      addEventKeyDown(keydownHandler);
 
       // Add scroll handler after DOM is ready
       setTimeout(() => {
@@ -85,17 +85,18 @@
   });
 
   // Clean up event listeners if needed
-  onUnmounted(() => {
-    const tableContainer = document.querySelector('.v-table__wrapper');
-    if (tableContainer) {
-      tableContainer.removeEventListener('scroll', handleScroll);
-    }
-  });
+  // onUnmounted(() => {
+  //   const tableContainer = document.querySelector('.v-table__wrapper');
+  //   if (tableContainer) {
+  //     tableContainer.removeEventListener('scroll', handleScroll);
+  //   }
+  // });
 </script>
 
 <template>
   <div ref="wrapperRef" class="c-data-table-virtual_wrapper" @click="fileManagerActionStore.closeContextMenu()">
     <v-data-table-virtual
+      v-bind="$attrs"
       ref="tableRef"
       id="data-table-virtual"
       class="c-data-table-virtual noselect relative"
@@ -103,14 +104,11 @@
       :select-strategy="singleModeSelect ? 'single' : 'page'"
       :headers="headerTable"
       :items="dataTable"
-      :show-select="isMobile"
+      :show-select="showCheckbox"
       :hide-default-header="isMobile"
       :height="heightTable"
-      v-bind="$attrs"
-      fixed-header
       density="compact"
       return-object
-      item-height="56"
       hover>
       <!-- Slots -->
       <template #top v-if="$slots.top">
@@ -120,30 +118,28 @@
         <slot name="bottom" />
       </template>
 
+      <!-- @contextmenu="rightClickHandler($event, item)"
+      @click="rowClickHandler($event, item)"
+      @dblclick="rowDoubleClickHandler($event, item)"
+      @touchstart="touchStartHandler($event)"
+      @touchend="touchEndHandler($event, item)"
+      @mouseenter="mouseEnterHandler(index)"
+      @mouseleave="mouseLeaveHandler"
+      @mousedown="startSelection($event, item)"
+      @mousemove="updateSelection($event, item)"
+      @mouseup="stopSelection" -->
       <!-- Table rows -->
-      <template v-slot:item="{ item, index }">
-        <tr
-          @contextmenu="rightClickHandler($event, item)"
-          @click="rowClickHandler($event, item)"
-          @dblclick="rowDoubleClickHandler($event, item)"
-          @touchstart="touchStartHandler($event)"
-          @touchend="touchEndHandler($event, item)"
-          @mouseenter="mouseEnterHandler(index)"
-          @mouseleave="mouseLeaveHandler"
-          @mousedown="startSelection($event, item)"
-          @mousemove="updateSelection($event, item)"
-          @mouseup="stopSelection"
-          :class="{
+      <!-- :class="{
             'c-data-table-virtual__hovered': hoveredRowIndex === index,
             'c-data-table-virtual__selected': isItemSelected(item),
             'c-data-table-virtual__selected-one': isItemSelectedOne(item),
-          }">
+          }" -->
+      <template v-slot:item="{ item, index }">
+        <tr>
           <!-- Checkbox column for mobile -->
-          <td class="text-center c-data-table-virtual__col-checkbox" style="width: 50px" v-if="isMobile">
-            <v-checkbox
-              :model-value="isItemSelected(item)"
-              hide-details
-              @click.stop="handleCheckboxClick($event, item)" />
+          <td class="text-center c-data-table-virtual__col-checkbox" style="width: 50px" v-if="showCheckbox">
+            <!-- :model-value="isItemSelected(item)" -->
+            <v-checkbox hide-details @click.stop="handleCheckboxClick($event, item)" />
           </td>
 
           <!-- Data columns -->

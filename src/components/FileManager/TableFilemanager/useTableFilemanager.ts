@@ -1,9 +1,10 @@
-import { fmActionRestoreTrash } from '@/components/v1/FileManager/partial/ConfigActionFileManager';
+// import { fmActionRestoreTrash } from '@/components/v1/FileManager/partial/ConfigActionFileManager';
 import { IFileManager } from '@/interfaces/IFileManager';
-import { FileManagerActionStore } from '@/stores/user/file-manager-action-store';
-import { FileManagerStore } from '@/stores/user/file-manager-store';
-import { myRoute } from '@/utils/my-route';
-import { breakPoint } from '@/utils/my-variables';
+import { FilemanagerActionStore } from '@/stores/FilemanagerActionStore';
+import { FileManagerStore } from '@/stores/FileManagerStore';
+// import { myRoute } from '@/utils/my-route';
+import { debounce } from '@/utils/MyFunction';
+import { breakPoint } from '@/utils/MyVariables';
 import { useWindowSize } from '@vueuse/core';
 
 interface IEmitFunctions {
@@ -14,7 +15,7 @@ interface IEmitFunctions {
 export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emits: IEmitFunctions) => {
   const route = useRoute();
   const fileManagerStore = FileManagerStore();
-  const fileManagerActionStore = FileManagerActionStore();
+  const fileManagerActionStore = FilemanagerActionStore();
   const { width } = useWindowSize();
 
   // Refs
@@ -36,19 +37,21 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   const DEBOUNCE_DELAY = 100; // Debounce delay for scroll handling
 
   // Computed
-  const singleModeSelect = computed(() => route.path === myRoute.sharePublic);
+  // const singleModeSelect = computed(() => route.path === myRoute.sharePublic);
   const isMobile = computed(() => width.value <= breakPoint.brSpLandscape);
-  const isHomePage = computed(() => myRoute.home === route.path);
+  // const isHomePage = computed(() => myRoute.home === route.path);
   const listItemDelete = computed(() => fileManagerStore.listItemDelete);
   const selectedItems = computed({
     get: () => fileManagerStore.selectedItems,
     set: (value: IFileManager[]) => fileManagerStore.actionSetSelectedItems(value),
   });
 
-  const objectSelectedOne = computed({
-    get: () => fileManagerStore.objectSelectedOne,
-    set: (value: IFileManager) => fileManagerStore.actionSetObjectSelectedOne(value),
-  });
+  // const objectSelectedOne = computed({
+  //   get: () => fileManagerStore.objectSelectedOne,
+  //   set: (value: IFileManager) => fileManagerStore.actionSetObjectSelectedOne(value),
+  // });
+
+  const objectSelectedOne = ref<IFileManager>();
   const heightTable = computed(() => {
     if (wrapperRef.value) {
       return wrapperRef.value.offsetHeight || '74vh';
@@ -112,23 +115,23 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     fileManagerActionStore.closeContextMenu();
 
     // Update selected items
-    if (isHomePage.value) {
-      // Home page - Single selection
+    // if (isHomePage.value) {
+    //   // Home page - Single selection
+    //   selectedItems.value = [file];
+    //   lastSelectedItem.value = file;
+    // } else {
+    // }
+    // Handle different selection modes
+    if ((event as MouseEvent).shiftKey && lastSelectedItem.value) {
+      // Shift + Click: Range selection
+      handleShiftClick(file, lastSelectedItem.value);
+    } else if ((event as MouseEvent).ctrlKey || (event as MouseEvent).metaKey) {
+      // Ctrl/Cmd + Click: Toggle selection
+      handleCtrlClick(file);
+    } else {
+      // Normal click: Single selection
       selectedItems.value = [file];
       lastSelectedItem.value = file;
-    } else {
-      // Handle different selection modes
-      if ((event as MouseEvent).shiftKey && lastSelectedItem.value) {
-        // Shift + Click: Range selection
-        handleShiftClick(file, lastSelectedItem.value);
-      } else if ((event as MouseEvent).ctrlKey || (event as MouseEvent).metaKey) {
-        // Ctrl/Cmd + Click: Toggle selection
-        handleCtrlClick(file);
-      } else {
-        // Normal click: Single selection
-        selectedItems.value = [file];
-        lastSelectedItem.value = file;
-      }
     }
 
     // Update store and emit event
@@ -181,7 +184,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   };
 
   // Xử lý sự kiện scroll table
-  const handleScroll = (event: Event) => {
+  const handleScroll = debounce((event: Event) => {
     const target = event.target as HTMLElement;
     const { scrollTop, scrollHeight, clientHeight } = target;
     const html = document.querySelector('html');
@@ -209,7 +212,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     }
 
     previousScrollTop.value = scrollTop;
-  };
+  }, 100);
 
   // Xử lý sự kiện click vào checkbox
   const handleCheckboxClick = (event: Event, file: IFileManager) => {
@@ -237,17 +240,18 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     } else if (event.key === 'Delete' && selectedItems.value.length > 0) {
       // Delete => Xóa file
       fileManagerActionStore.toggleModalMoveTrashFile();
-    } else if (event.ctrlKey && event.key.toLowerCase() === 'z') {
-      // ctrl + z => Khôi phục file
-      if (listItemDelete.value.length > 0) {
-        await fmActionRestoreTrash(listItemDelete.value);
-      }
     } else if ((event.ctrlKey || event.metaKey) && event.altKey && event.key.toLowerCase() === 'e') {
       // ctrl + alt + e => Mở modal rename file
       if (objectSelectedOne.value && selectedItems.value.length === 1) {
         fileManagerActionStore.toggleModalRenameFile();
       }
     }
+    // else if (event.ctrlKey && event.key.toLowerCase() === 'z') {
+    //   // ctrl + z => Khôi phục file
+    //   if (listItemDelete.value.length > 0) {
+    //     await fmActionRestoreTrash(listItemDelete.value);
+    //   }
+    // }
     return selectedItems;
   };
 
@@ -338,9 +342,9 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     objectSelectedOne,
     listItemDelete,
     isMobile,
-    isHomePage,
+    // isHomePage,
     heightTable,
-    singleModeSelect,
+    // singleModeSelect,
 
     // Function
     selectAllItems,

@@ -112,4 +112,21 @@ export default defineConfig({
   esbuild: {
     pure: VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : [],
   },
+
+  build: {
+    lib: {
+      entry: 'src/index.ts',
+      name: 'Filemanager',
+      formats: ['es', 'umd'],
+      fileName: (format) => `filemanager.${format}.js`,
+    },
+    rollupOptions: {
+      external: ['vue'],
+      output: {
+        globals: {
+          vue: 'Vue',
+        },
+      },
+    },
+  },
 });

@@ -1,8 +1,16 @@
 <script setup lang="ts">
   import { dataFilemanager } from '@/data/DataFilemanager';
+
+  const selectedItems = ref<any[]>([]);
 </script>
 
 <template>
-  <h3>ducnd</h3>
-  <FileManager :data-filemanager="dataFilemanager" currentPath="" />
+  <FileManager
+    currentPath=""
+    v-model="selectedItems"
+    return-object
+    fixed-header
+    item-height="56"
+    :dataFilemanger="dataFilemanager"
+    :showCheckbox="true" />
 </template>
