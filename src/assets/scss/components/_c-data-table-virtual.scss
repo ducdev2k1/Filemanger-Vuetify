@@ -1,9 +1,11 @@
 .c-data-table-virtual {
   background: var(--color-app-content);
-  border-radius: var(--border-radius-2xl) !important;
   height: calc(100% - 120px);
   &_wrapper {
     display: inline;
+  }
+  .v-table__wrapper {
+    border-radius: 0;
   }
   &__selected {
     background: var(--color-hover-tr-table-active) !important;
