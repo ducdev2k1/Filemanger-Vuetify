@@ -54,9 +54,9 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   const objectSelectedOne = ref<IFileManager>();
   const heightTable = computed(() => {
     if (wrapperRef.value) {
-      return wrapperRef.value.offsetHeight || '74vh';
+      return wrapperRef.value.offsetHeight || '100vh';
     }
-    return '57vh';
+    return '100%';
   });
 
   const selectAllItems = () => {

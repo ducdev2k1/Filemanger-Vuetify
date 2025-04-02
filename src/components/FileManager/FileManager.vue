@@ -26,6 +26,7 @@
     itemHeight?: number | string;
     height?: number | string;
     customThumbnailIcon?: (item: IFileManager) => string;
+    updateSelectedItems?: (data: IFileManager[]) => void();
   }
   interface IFetchParams {
     refresh?: boolean;
@@ -78,7 +79,7 @@
 </script>
 
 <template>
-  <div class="fm_base" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
+  <div class="fm_base h-full" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
     <!--- B: Custom default toolbar --->
     <!-- <div class="relative">
     <div class="c-file-manager_toolbar">
@@ -137,27 +138,6 @@
       <template #item.lastModified="{ value }" v-if="!$slots['item.lastModified']">
         <ColumnDateModified :data-row="value" :format="dateFormat" />
       </template>
-
-      <!-- 
-    <template #item.owner="{ value }">
-      <ColumnOwner :data-owner="value" />
-    </template>
-    <template #item.lastModified="{ value }">
-      <ColumnDateModified :data-row="value" />
-    </template>
-   
-    <template #item.time_deleted="{ value }">
-      <ColumnTimeDeleted :data-row="value" />
-    </template>
-    <template #item.permission="{ item }">
-      <ColumnPermissionFile :data-row="item" />
-    </template>
-    <template #item.path="{ item }">
-      <ColumnLocation :data-row="item" />
-    </template>
-    <template #item.groupActions="{ item }">
-      <ColumnGroupActions :data-file="item" />
-    </template> -->
     </TableFilemanager>
 
     <template v-else-if="viewFM === EnumViewModeFm.thumbnails">

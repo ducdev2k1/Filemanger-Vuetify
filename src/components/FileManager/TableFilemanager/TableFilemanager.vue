@@ -117,16 +117,6 @@
         <slot name="bottom" />
       </template>
 
-      <!-- @contextmenu="rightClickHandler($event, item)"
-      @click="rowClickHandler($event, item)"
-      @dblclick="rowDoubleClickHandler($event, item)"
-      @touchstart="touchStartHandler($event)"
-      @touchend="touchEndHandler($event, item)"
-      @mouseenter="mouseEnterHandler(index)"
-      @mouseleave="mouseLeaveHandler"
-      @mousedown="startSelection($event, item)"
-      @mousemove="updateSelection($event, item)"
-      @mouseup="stopSelection" -->
       <!-- Table rows -->
       <!-- :class="{
             'c-data-table-virtual__hovered': hoveredRowIndex === index,
@@ -134,7 +124,17 @@
             'c-data-table-virtual__selected-one': isItemSelectedOne(item),
           }" -->
       <template v-slot:item="{ item, index }">
-        <tr>
+        <tr
+          @contextmenu="rightClickHandler($event, item)"
+          @click="rowClickHandler($event, item)"
+          @dblclick="rowDoubleClickHandler($event, item)"
+          @touchstart="touchStartHandler($event)"
+          @touchend="touchEndHandler($event, item)"
+          @mouseenter="mouseEnterHandler(index)"
+          @mouseleave="mouseLeaveHandler"
+          @mousedown="startSelection($event, item)"
+          @mousemove="updateSelection($event, item)"
+          @mouseup="stopSelection">
           <!-- Checkbox column for mobile -->
           <td class="text-center c-data-table-virtual__col-checkbox" style="width: 50px" v-if="showCheckbox">
             <!-- :model-value="isItemSelected(item)" -->

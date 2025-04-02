@@ -5,6 +5,14 @@
   const getThumbnailIcon = (item: any) => {
     console.log('item :>> ', item);
   };
+
+  const updateSelection = (data: any[]) => {
+    selectedItems.value = data;
+    console.log('selectedItems :>> ', selectedItems.value);
+  };
+  const handleScroll = () => {
+    console.log('handleScroll :>> ');
+  };
 </script>
 
 <template>
@@ -17,8 +25,10 @@
       fixed-header
       height="100vh"
       item-height="56"
+      :update-selectedItems="updateSelection"
       :custom-thumbnail-icon="getThumbnailIcon"
       :dataFilemanger="dataFilemanager"
+      @scroll="handleScroll"
       :showCheckbox="false" />
   </div>
 </template>
