@@ -1,8 +1,5 @@
-@use '../mixin/index' as mixin;
-
 .c-grid {
   height: calc(100% - 120px);
-  // overflow-y: auto;
   * {
     color: var(--color-text);
   }
@@ -68,15 +65,6 @@
     padding: 0.5rem;
     border: 1px solid transparent;
     border-radius: var(--border-radius-2xl);
-    // &.active {
-    //   border-color: var(--color-primary);
-    //   + .c-grid_button {
-    //     opacity: 1;
-    //     * {
-    //       color: var(--color-primary);
-    //     }
-    //   }
-    // }
 
     .v-img__img {
       @apply p-1;
@@ -120,7 +108,7 @@
     }
   }
 
-  @include mixin.brSpLandscape {
+  @include brSpLandscape {
     padding: 0 10px;
     height: calc(100% - 48px);
     &_wrap {

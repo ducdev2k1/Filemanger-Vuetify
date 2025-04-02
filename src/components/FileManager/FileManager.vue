@@ -12,6 +12,7 @@
   });
 
   interface IProps {
+    theme?: string;
     titlePage?: string;
     customColumns?: IColumnFileMangerV2[];
     toolbarShowActionRight?: boolean;
@@ -19,7 +20,11 @@
     currentPath: string;
     loading?: boolean;
     dateFormat?: string;
+    // props data table vuetify
     showCheckbox?: boolean;
+    fixedHeader?: boolean;
+    itemHeight?: number | string;
+    height?: number | string;
     customThumbnailIcon?: (item: IFileManager) => string;
   }
   interface IFetchParams {
@@ -51,6 +56,10 @@
   const showContextMenu = computed(() => fileManagerActionStore.showContextMenu || false);
   const dateFormat = computed(() => props.dateFormat || 'DD/MM/YYYY');
   const showCheckbox = computed(() => props.showCheckbox || false);
+  const fixedHeader = computed(() => props.fixedHeader || false);
+  const itemHeight = computed(() => props.itemHeight || 56);
+  const height = computed(() => props.height || '100%');
+  const theme = computed(() => props.theme || 'light');
 
   const contextMenuOptions = [
     {
@@ -107,7 +116,10 @@
     v-if="viewFM === EnumViewModeFm.details"
     :header-table="customColumns"
     :data-table="dataFilemanger"
+    :fixed-header="fixedHeader"
     :loading="loading"
+    :item-height="itemHeight"
+    :height="height"
     :showCheckbox="showCheckbox"
     @double-click-row="emits('doubleClickRow')"
     @loadMoreItem="emits('scroll')"
@@ -121,6 +133,10 @@
     <template #item.size="{ value }" v-if="!$slots['item.size']">
       <span class="c-file-manager_size">{{ value > 0 ? convertBytes(value) : '--' }}</span>
     </template>
+    <template #item.lastModified="{ value }" v-if="!$slots['item.lastModified']">
+      <ColumnDateModified :data-row="value" :format="dateFormat" />
+    </template>
+
     <!-- 
     <template #item.owner="{ value }">
       <ColumnOwner :data-owner="value" />
