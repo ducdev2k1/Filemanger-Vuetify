@@ -29,7 +29,7 @@ export function getThumbnailIcon(item: IFileManager) {
   const type = item.type;
   const mimeTypeValue = actionGetMimeType(item.type);
   // const publicPath = env.publicPath;
-  const iconBasePath = `/assets/icons/office`;
+  const iconBasePath = `./assets/icons`;
 
   // Hàm phụ trợ để trả về đường dẫn icon
   const getIconPath = (iconName: string) => `${iconBasePath}/${iconName}`;

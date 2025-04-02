@@ -2,9 +2,9 @@
   import { getThumbnailIcon } from '@/components/FileManager/partial/HelperFunctionFileManager';
   import { IFileManager } from '@/interfaces/IFileManager';
   import { t } from '@/plugins/i18n';
-  import { calculateRemainingTime, convertBytes, formatDate, formatGradient } from '@/utils/MyFunction';
+  // import { calculateRemainingTime, convertBytes, formatDate, formatGradient } from '@/utils/MyFunction';
   // import { myRoute } from '@/utils/my-route';
-  import { breakPoint, dateFormat, env } from '@/utils/MyVariables';
+  import { breakPoint, dateFormat } from '@/utils/MyVariables';
   import { useWindowSize } from '@vueuse/core';
 
   interface IProps {
@@ -15,14 +15,13 @@
   const dataFile = computed(() => props.dataRow);
   const { width } = useWindowSize();
   const isDesktopView = computed(() => width.value > breakPoint.brSpLandscape);
-  const publicPath = env.publicPath;
   const route = useRoute();
   // const isTrash = computed(() => route.path === myRoute.trash);
   // const isHome = computed(() => route.path === myRoute.home);
 
   const iconThumnail = computed(() => {
     if (dataFile.value.isDirectory) {
-      return `${publicPath}/assets/icons/office/folder.svg`;
+      return `./assets/icons/folder.svg`;
     }
     return getThumbnailIcon(dataFile.value);
   });
@@ -40,9 +39,9 @@
         max-width="32"
         max-height="32"
         loading="lazy" />
-      <IconTag :color="formatGradient(dataRow.tags)" v-if="dataFile.tags.length > 0 && isDesktopView" />
-      <div class="content line-clamp-2">
-        <h3 class="line-clamp-1">{{ dataFile.name }}</h3>
+      <!-- <IconTag :color="formatGradient(dataRow.tags)" v-if="dataFile.tags.length > 0 && isDesktopView" /> -->
+      <span class="line-clamp-1">{{ dataFile.name }}</span>
+      <!-- <div class="content line-clamp-2">
         <p v-if="!isDesktopView && dataFile.lastModified && !isTrash && !isHome">
           <span>{{ formatDate(dataFile.lastModified) }}</span>
           <template v-if="dataFile.size > 0">
@@ -64,7 +63,7 @@
             {{ `${t('locale.you')} ${t('locale.have')} ${t(`locale.` + dataFile.action).toLowerCase()}` }}
           </span>
         </p>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

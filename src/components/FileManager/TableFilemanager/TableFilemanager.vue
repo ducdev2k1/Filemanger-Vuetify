@@ -70,14 +70,14 @@
   onMounted(() => {
     if (tableRef.value && viewFM.value === EnumViewModeFm.details) {
       // Add event listeners
-      addEventKeyDown(keydownHandler);
+      // addEventKeyDown(keydownHandler);
 
       // Add scroll handler after DOM is ready
       setTimeout(() => {
         const tableContainer = document.querySelector('.v-table__wrapper');
         if (tableContainer) {
           requestAnimationFrame(() => {
-            tableContainer.addEventListener('scroll', handleScroll);
+            // tableContainer.addEventListener('scroll', handleScroll);
           });
         }
       }, 500);
@@ -100,7 +100,6 @@
       ref="tableRef"
       id="data-table-virtual"
       class="c-data-table-virtual noselect relative"
-      v-model="selectedItems"
       :select-strategy="singleModeSelect ? 'single' : 'page'"
       :headers="headerTable"
       :items="dataTable"

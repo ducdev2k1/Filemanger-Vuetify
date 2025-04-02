@@ -20,6 +20,7 @@
     loading?: boolean;
     dateFormat?: string;
     showCheckbox?: boolean;
+    customThumbnailIcon?: (item: IFileManager) => string;
   }
   interface IFetchParams {
     refresh?: boolean;
@@ -28,7 +29,7 @@
 
   const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow']);
 
-  const selectedItems = defineModel('selectedItems', { default: [] });
+  // const selectedItems = defineModel('selectedItems', { default: [] });
 
   const props = withDefaults(defineProps<IProps>(), {
     toolbarShowActionRight: true,
@@ -103,7 +104,6 @@
   <!---B: FILE MANAGER ---->
   <TableFilemanager
     v-bind="$attrs"
-    v-model="selectedItems"
     v-if="viewFM === EnumViewModeFm.details"
     :header-table="customColumns"
     :data-table="dataFilemanger"
@@ -115,18 +115,20 @@
     <template v-if="customColumns.length > 0">
       <slot v-for="item in customColumns" :key="item.key" :name="`item.${item.key}`" v-bind="{ item, value }" />
     </template>
-    <!-- <template #item.name="{ item }">
+    <template #item.name="{ item }" v-if="!$slots['item.name']">
       <ColumnName :data-row="item" />
     </template>
+    <template #item.size="{ value }" v-if="!$slots['item.size']">
+      <span class="c-file-manager_size">{{ value > 0 ? convertBytes(value) : '--' }}</span>
+    </template>
+    <!-- 
     <template #item.owner="{ value }">
       <ColumnOwner :data-owner="value" />
     </template>
     <template #item.lastModified="{ value }">
       <ColumnDateModified :data-row="value" />
     </template>
-    <template #item.size="{ value }">
-      <span class="c-file-manager_size">{{ value > 0 ? convertBytes(value) : '--' }}</span>
-    </template>
+   
     <template #item.time_deleted="{ value }">
       <ColumnTimeDeleted :data-row="value" />
     </template>
