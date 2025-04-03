@@ -14,6 +14,10 @@
   const handleScroll = () => {
     console.log('handleScroll :>> ');
   };
+
+  const clickOptionContextMenu = (option: any) => {
+    console.log('data :>> ', option);
+  };
 </script>
 
 <template>
@@ -31,6 +35,7 @@
       :custom-thumbnail-icon="getThumbnailIcon"
       :dataFilemanger="dataFilemanager"
       @scroll="handleScroll"
-      :showCheckbox="false" />
+      @click-option-context-menu="(option: any) => clickOptionContextMenu(option)"
+      :showCheckbox="false"></FileManager>
   </div>
 </template>

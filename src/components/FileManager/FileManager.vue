@@ -25,24 +25,25 @@
     fixedHeader?: boolean;
     itemHeight?: number | string;
     height?: number | string;
-    customThumbnailIcon?: (item: IFileManager) => string;
+    customThumbnailIcon?: (item: IFileManager) => void;
     updateSelectedItems?: (data: IFileManager[]) => void;
     singleModeSelect?: boolean;
     hideDefaultHeader?: boolean;
   }
 
-  interface IFetchParams {
-    refresh?: boolean;
-    isLoadMore?: boolean;
-  }
-
   const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow', 'clickContextMenu']);
-
-  // const selectedItems = defineModel('selectedItems', { default: [] });
 
   const props = withDefaults(defineProps<IProps>(), {
     toolbarShowActionRight: true,
     loading: false,
+    singleModeSelect: false,
+    hideDefaultHeader: false,
+    height: '100%',
+    theme: 'light',
+    itemHeight: 56,
+    fixedHeader: false,
+    showCheckbox: false,
+    dateFormat: 'DD/MM/YYYY',
   });
 
   // Stores
@@ -54,18 +55,8 @@
   });
 
   // Computed
-  const loading = computed(() => props.loading);
-  const dataFilemanger = computed(() => props.dataFilemanger);
   const customColumns = computed(() => props.customColumns || columnsDefault);
   const showContextMenu = computed(() => fileManagerActionStore.showContextMenu || false);
-  const dateFormat = computed(() => props.dateFormat || 'DD/MM/YYYY');
-  const showCheckbox = computed(() => props.showCheckbox || false);
-  const fixedHeader = computed(() => props.fixedHeader || false);
-  const itemHeight = computed(() => props.itemHeight || 56);
-  const height = computed(() => props.height || '100%');
-  const theme = computed(() => props.theme || 'light');
-  const hideDefaultHeader = computed(() => props.hideDefaultHeader || false);
-  const singleModeSelect = computed(() => props.singleModeSelect || false);
 
   const contextMenuOptions = [
     {
@@ -165,7 +156,9 @@
     <!---E: FILE MANAGER ---->
 
     <!---B: ContextMenu MOBILE--->
-    <ContextMenu v-if="showContextMenu" :action-context-menu-items="contextMenuOptions" />
+    <ContextMenu v-if="showContextMenu" :action-context-menu-items="contextMenuOptions">
+      <slot v-if="$slots['context-menu']" name="context-menu" />
+    </ContextMenu>
     <!---E: ContextMenu MOBILE--->
   </div>
 </template>

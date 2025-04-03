@@ -42,9 +42,9 @@
   const singleModeSelect = computed(() => props.singleModeSelect || false);
 
   const {
-    // selectedItems,
-    // isMobile,
-    // isHomePage,
+    selectedItems,
+    isMobile,
+    isHomePage,
     wrapperRef,
     heightTable,
     hoveredRowIndex,
@@ -99,7 +99,6 @@
       ref="tableRef"
       id="data-table-virtual"
       class="c-data-table-virtual noselect relative"
-      
       :headers="headerTable"
       :items="dataTable"
       :show-select="showCheckbox"
