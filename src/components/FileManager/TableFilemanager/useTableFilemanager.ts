@@ -170,7 +170,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   };
 
   const handleCtrlClick = (file: IFileManager) => {
-    const existingIndex = selectedItems.value.findIndex((item) => item.key === file.key);
+    const existingIndex = selectedItems.value.findIndex((item: IFileManager) => item.key === file.key);
 
     if (existingIndex !== -1) {
       // Remove item if already selected
@@ -217,11 +217,11 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   const handleCheckboxClick = (event: Event, file: IFileManager) => {
     event.stopPropagation();
 
-    const isSelected = selectedItems.value.some((selectedItem) => selectedItem.key === file.key);
+    const isSelected = selectedItems.value.some((selectedItem: IFileManager) => selectedItem.key === file.key);
 
     if (isSelected) {
       // Remove from selection
-      selectedItems.value = selectedItems.value.filter((selectedItem) => selectedItem.key !== file.key);
+      selectedItems.value = selectedItems.value.filter((selectedItem: IFileManager) => selectedItem.key !== file.key);
     } else {
       // Add to selection
       selectedItems.value = [...selectedItems.value, file];

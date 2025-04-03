@@ -36,7 +36,7 @@
     isLoadMore?: boolean;
   }
 
-  const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow']);
+  const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow', 'clickContextMenu']);
 
   // const selectedItems = defineModel('selectedItems', { default: [] });
 
@@ -165,7 +165,7 @@
     <!---E: FILE MANAGER ---->
 
     <!---B: ContextMenu MOBILE--->
-    <!-- <ContextMenu v-if="showContextMenu" :action-context-menu-items="contextMenuOptions" /> -->
+    <ContextMenu v-if="showContextMenu" :action-context-menu-items="contextMenuOptions" />
     <!---E: ContextMenu MOBILE--->
   </div>
 </template>

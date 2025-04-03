@@ -4,8 +4,8 @@
   // import { IToolbarActions } from '@/interfaces';
   import { ITag } from '@/interfaces/ITag';
   import { t } from '@/plugins/i18n';
-  import { FileManagerActionStore } from '@/stores/FilemanagerActionStore';
-  import { FileManagerStore } from '@/stores/FilemanagerStore';
+  import { FilemanagerActionStore } from '@/stores/FilemanagerActionStore';
+  import { FilemanagerStore } from '@/stores/FilemanagerStore';
   // import { EnumActionFileManager } from '@/utils/MyEnum';
   import { breakPoint } from '@/utils/MyVariables';
   import { useWindowSize } from '@vueuse/core';
@@ -22,8 +22,8 @@
   });
 
   const { width } = useWindowSize();
-  const fileManagerStore = FileManagerStore();
-  const fileManagerActionStore = FileManagerActionStore();
+  const fileManagerStore = FilemanagerStore();
+  const fileManagerActionStore = FilemanagerActionStore();
   const showContextMenu = computed(() => fileManagerActionStore.showContextMenu || false);
   const positionContextMenu = computed(() => fileManagerActionStore.positionContextMenu);
   const actionContextMenuItems = computed(() => props.actionContextMenuItems);
@@ -112,7 +112,7 @@
                       class="c-context-menu_item-icon"
                       :icon="item.name === EnumActionFileManager.remove_tag_custom ? 'tag-off' : 'tag'"
                       :color="(subItem as ITag).rgb" /> -->
-                    <v-icon  class="c-context-menu_item-icon">{{ subItem.icon }}</v-icon>
+                    <v-icon class="c-context-menu_item-icon">{{ subItem.icon }}</v-icon>
                   </template>
                 </v-list-item>
               </v-list-group>
