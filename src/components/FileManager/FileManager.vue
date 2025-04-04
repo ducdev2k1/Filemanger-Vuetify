@@ -67,7 +67,7 @@
   const customColumns = computed(() => props.customColumns || columnsDefault);
   const showContextMenu = computed(() => fileManagerActionStore.showContextMenu || false);
 
-  const contextMenuOptions = [
+  const contextMenuOptions = reactive<IContextMenu[]>([
     {
       key: 'download',
       title: 'Tải xuống',
@@ -81,12 +81,12 @@
       icon: 'mdi-delete',
       visible: true,
     },
-  ] as IContextMenu[];
+  ]);
 
   // Cập nhật giá trị cho  selectedItems
   watch(
     () => fileManagerStore.selectedItems.length,
-    (newVal) => {
+    () => {
       props.updateSelected?.(fileManagerStore.selectedItems || ([] as IFileManager[]));
     },
   );
@@ -94,7 +94,7 @@
   // Cập nhật giá trị cho  selectedOneItem
   watch(
     () => fileManagerStore.selectedItems.length,
-    (newVal) => {
+    () => {
       props.updateSelectedOne?.(fileManagerStore.objectSelectedOne || ({} as IFileManager));
     },
   );
@@ -185,7 +185,7 @@
     <!-- <ContextMenu >
       <slot v-if="$slots['context-menu']" name="context-menu" />
     </ContextMenu> -->
-    <FmContextMenu v-if="showContextMenu" :items="contextMenuOptions" :onClickItem="props.contextMenuClick" />
+    <FmContextMenu v-if="showContextMenu" :items="contextMenuOptions" :on-click-item="props.contextMenuClick" />
     <!---E: ContextMenu MOBILE--->
   </div>
 </template>

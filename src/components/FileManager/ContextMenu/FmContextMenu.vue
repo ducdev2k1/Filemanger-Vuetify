@@ -8,7 +8,7 @@
 
   interface IProps {
     items: IContextMenu[];
-    onClickItem: (menuItem: IContextMenu) => void;
+    onClickItem?: (menuItem: IContextMenu) => void;
   }
 
   const props = defineProps<IProps>();
@@ -37,9 +37,11 @@
     return 0;
   });
 
-  const handleClickItem = async (menuItem: IContextMenu) => {
+  const handleClickItem = (menuItem: IContextMenu) => {
     fileManagerActionStore.toggleContextMenu();
-    props.onClickItem(menuItem);
+    if (props.onClickItem) {
+      props.onClickItem(menuItem);
+    }
   };
 </script>
 
