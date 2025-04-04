@@ -16,7 +16,6 @@ declare module 'vue' {
     ColumnTimeDeleted: typeof import('./components/FileManager/CustomCellTemplate/ColumnTimeDeleted.vue')['default']
     ContextMenu: typeof import('./components/FileManager/ContextMenu/ContextMenu.vue')['default']
     ContextMenuItem: typeof import('./components/FileManager/ContextMenu/ContextMenuItem.vue')['default']
-    copy: typeof import('./components/FileManager/ContextMenu/FmContextMenuItem copy.vue')['default']
     FileManager: typeof import('./components/FileManager/FileManager.vue')['default']
     FmContextMenu: typeof import('./components/FileManager/ContextMenu/FmContextMenu.vue')['default']
     FmContextMenuItem: typeof import('./components/FileManager/ContextMenu/FmContextMenuItem.vue')['default']

@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { dataFilemanager } from '@/data/DataFilemanager';
   import { IContextMenu } from './interfaces/IContextMenu';
-  import { IFileManager } from './interfaces/IFileManager';
 
   const selectedItems = ref<any[]>([]);
   const selectedOneItem = ref<any>();
@@ -9,17 +8,8 @@
     console.log('item :>> ', item);
   };
 
-  const updateSelection = (data: IFileManager[]) => {
-    selectedItems.value = data;
-    console.log('selectedItems :>> ', selectedItems.value);
-  };
-  const updateSelectedOne = (data: IFileManager) => {
-    selectedOneItem.value = data;
-    console.log('selectedOne :>> ', selectedOneItem.value);
-  };
-
-  const handleScroll = (event: MouseEvent) => {
-    console.log('handleScroll :>> ', event);
+  const handleScroll = () => {
+    console.log('handleScroll :>> ');
   };
 
   const clickOptionContextMenu = (option: IContextMenu) => {
@@ -37,13 +27,13 @@
       fixed-header
       height="100vh"
       item-height="56"
+      :data-filemanger="dataFilemanager"
       :theme="'dark'"
       :show-checkbox="false"
-      :update-selected="updateSelection"
-      :update-selected-one="updateSelectedOne"
+      :update-selected="(data) => (selectedItems = data)"
+      :update-selected-one="(data) => (selectedOneItem = data)"
       :custom-thumbnail-icon="getThumbnailIcon"
-      :dataFilemanger="dataFilemanager"
-      :context-menu-click="clickOptionContextMenu(option)"
+      :context-menu-click="clickOptionContextMenu"
       @scroll="handleScroll" />
   </div>
 </template>
