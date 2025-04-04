@@ -7,6 +7,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BaseBtn: typeof import('./components/Button/BaseBtn.vue')['default']
+    BaseBtnIcon: typeof import('./components/Button/BaseBtnIcon.vue')['default']
+    BtnSwicthView: typeof import('./components/Button/BtnSwicthView.vue')['default']
     ColumnDateModified: typeof import('./components/FileManager/CustomCellTemplate/ColumnDateModified.vue')['default']
     ColumnGroupActions: typeof import('./components/FileManager/CustomCellTemplate/ColumnGroupActions.vue')['default']
     ColumnLocation: typeof import('./components/FileManager/CustomCellTemplate/ColumnLocation.vue')['default']
@@ -20,10 +23,14 @@ declare module 'vue' {
     FmContextMenu: typeof import('./components/FileManager/ContextMenu/FmContextMenu.vue')['default']
     FmContextMenuItem: typeof import('./components/FileManager/ContextMenu/FmContextMenuItem.vue')['default']
     FmContextMenuItemv2: typeof import('./components/FileManager/ContextMenu/FmContextMenuItemv2.vue')['default']
+    FmCreateFolderFile: typeof import('./components/FileManager/Popup/FmCreateFolderFile.vue')['default']
     FMCreateFolderFile: typeof import('./components/FileManager/Popup/FMCreateFolderFile.vue')['default']
+    FmDeleteFolderFile: typeof import('./components/FileManager/Popup/FmDeleteFolderFile.vue')['default']
     FMDeleteFolderFile: typeof import('./components/FileManager/Popup/FMDeleteFolderFile.vue')['default']
     FMEmpty: typeof import('./components/FileManager/partial/FMEmpty.vue')['default']
+    FmMoveTrashFolderFile: typeof import('./components/FileManager/Popup/FmMoveTrashFolderFile.vue')['default']
     FMMoveTrashFolderFile: typeof import('./components/FileManager/Popup/FMMoveTrashFolderFile.vue')['default']
+    FmRenameFolderFile: typeof import('./components/FileManager/Popup/FmRenameFolderFile.vue')['default']
     FMRenameFolderFile: typeof import('./components/FileManager/Popup/FMRenameFolderFile.vue')['default']
     GridItem: typeof import('./components/FileManager/GridItem/GridItem.vue')['default']
     IconTag: typeof import('./components/Icons/IconTag.vue')['default']

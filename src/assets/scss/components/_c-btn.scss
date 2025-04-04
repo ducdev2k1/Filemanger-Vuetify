@@ -1,0 +1,25 @@
+.c-btn {
+  border-radius: 8px;
+  padding: 6px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  &:hover {
+    background-color: var(--interaction-default-hover);
+  }
+  .v-btn__prepend {
+    margin-right: 0;
+  }
+}
+
+.c-btn-icon {
+  display: block !important;
+  flex: none;
+  .v-btn--icon {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px;
+    &:hover {
+      background-color: var(--interaction-default-hover) !important;
+    }
+  }
+}

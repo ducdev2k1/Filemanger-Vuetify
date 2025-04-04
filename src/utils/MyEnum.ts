@@ -30,3 +30,14 @@ export enum EnumLocalStorageKey {
   multiLang = 'multi-lang',
   driverViewMode = 'driver-view-mode',
 }
+
+export enum EnumLocation {
+  top = 'top',
+  right = 'right',
+  bottom = 'bottom',
+  left = 'left',
+}
+
+export enum EnumLocalStorageKey {
+  viewFileMamager = 'view-file-manager',
+}

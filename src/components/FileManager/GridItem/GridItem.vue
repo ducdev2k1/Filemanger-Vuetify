@@ -1,10 +1,10 @@
 <script setup lang="ts">
   // import { fmActionDownloadFile } from '@/components/ConfigActionFileManager';
   // import { useGridItem } from '@/components/FileManager/GridItem/useGridItem';
-  // import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
+  import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
   // import { helperActionRecommendDetailFile } from '@/components/v1/RecommendFileAndFolder/partial/HelperActionRecommendFile';
   import { IFileManager } from '@/interfaces/IFileManager';
-  // import { t } from '@/plugins/i18n';
+  import { t } from '@/plugins/i18n';
   // import { EnumEmpty } from '@/utils/MyEnum';
   // import { addEventKeyDown, formatDate } from '@/utils/MyFunction';
   // import { myRoute } from '@/utils/my-route';
