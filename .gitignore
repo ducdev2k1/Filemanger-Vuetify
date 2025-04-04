@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# auto import
+src/components.d.ts
+src/auto-imports.d.ts
+src/typed-router.d.ts
+package-lock.json
