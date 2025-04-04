@@ -5,3 +5,7 @@ export interface IColumnFileMangerV2 {
   width: number | string;
   visible: boolean;
 }
+
+export interface ISingleModeSelect {
+  
+}

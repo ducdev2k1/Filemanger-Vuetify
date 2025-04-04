@@ -1,9 +1,9 @@
 import { IFileManager } from '@/interfaces/IFileManager';
 import { defineStore } from 'pinia';
 
-export const FileManagerStore = defineStore('fileManagerStore', () => {
+export const FilemanagerStore = defineStore('FilemanagerStore', () => {
   const selectedItems = ref([] as IFileManager[]); // object su dung hau het toan bo tinh nang fm
-  // const objectSelectedOne = ref(emptySelectedOne() as IFileManager); // object nay chi lien quan den context menu, open file
+  const objectSelectedOne = ref({} as IFileManager); // object nay chi lien quan den context menu, open file
   const listItemDelete = ref([] as IFileManager[]); // object nay chi dung cho ctrl + z
   const listImageInFolder = ref([] as string[]); // object nay dung cho preview image
 
@@ -31,9 +31,9 @@ export const FileManagerStore = defineStore('fileManagerStore', () => {
     selectedItems.value = data;
   }
 
-  // function actionSetObjectSelectedOne(data: IFileManager) {
-  //   objectSelectedOne.value = data;
-  // }
+  function actionSetObjectSelectedOne(data: IFileManager) {
+    objectSelectedOne.value = data;
+  }
 
   function actionSetListItemDelete(data: IFileManager[]) {
     listItemDelete.value = data;
@@ -45,13 +45,13 @@ export const FileManagerStore = defineStore('fileManagerStore', () => {
 
   return {
     selectedItems,
-    // objectSelectedOne,
+    objectSelectedOne,
     listItemDelete,
     listImageInFolder,
     // emptySelectedOne,
     // actionSetEmptyObjectSelectedOne,
     actionSetSelectedItems,
-    // actionSetObjectSelectedOne,
+    actionSetObjectSelectedOne,
 
     actionSetListItemDelete,
     actionSetListImageInFolder,

@@ -3,7 +3,6 @@
   import { IFileManager } from '@/interfaces/IFileManager';
   import { FilemanagerActionStore } from '@/stores/FilemanagerActionStore';
   import { EnumEmpty, EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
-  import { addEventKeyDown } from '@/utils/MyFunction';
   import { useStorage } from '@vueuse/core';
 
   defineOptions({
@@ -40,16 +39,16 @@
   const headerTable = computed(() => props.headerTable);
   const dataTable = computed(() => props.dataTable);
   const showCheckbox = computed(() => props.showCheckbox || false);
+  const singleModeSelect = computed(() => props.singleModeSelect || false);
 
   const {
-    // selectedItems,
-    // isMobile,
-    // isHomePage,
+    selectedItems,
+    isMobile,
+    isHomePage,
     wrapperRef,
     heightTable,
-    // singleModeSelect,
-    // hoveredRowIndex,
-    // isItemSelected,
+    hoveredRowIndex,
+    isItemSelected,
     handleCheckboxClick,
     mouseLeaveHandler,
     isItemSelectedOne,
@@ -100,11 +99,9 @@
       ref="tableRef"
       id="data-table-virtual"
       class="c-data-table-virtual noselect relative"
-      :select-strategy="singleModeSelect ? 'single' : 'page'"
       :headers="headerTable"
       :items="dataTable"
       :show-select="showCheckbox"
-      :hide-default-header="isMobile"
       :height="heightTable"
       density="compact"
       return-object
@@ -117,24 +114,25 @@
         <slot name="bottom" />
       </template>
 
-      <!-- @contextmenu="rightClickHandler($event, item)"
-      @click="rowClickHandler($event, item)"
-      @dblclick="rowDoubleClickHandler($event, item)"
-      @touchstart="touchStartHandler($event)"
-      @touchend="touchEndHandler($event, item)"
-      @mouseenter="mouseEnterHandler(index)"
-      @mouseleave="mouseLeaveHandler"
-      @mousedown="startSelection($event, item)"
-      @mousemove="updateSelection($event, item)"
-      @mouseup="stopSelection" -->
       <!-- Table rows -->
-      <!-- :class="{
+
+      <template v-slot:item="{ item, index }">
+        <tr
+          :class="{
             'c-data-table-virtual__hovered': hoveredRowIndex === index,
             'c-data-table-virtual__selected': isItemSelected(item),
             'c-data-table-virtual__selected-one': isItemSelectedOne(item),
-          }" -->
-      <template v-slot:item="{ item, index }">
-        <tr>
+          }"
+          @contextmenu="rightClickHandler($event, item)"
+          @click="rowClickHandler($event, item)"
+          @dblclick="rowDoubleClickHandler($event, item)"
+          @touchstart="touchStartHandler($event)"
+          @touchend="touchEndHandler($event, item)"
+          @mouseenter="mouseEnterHandler(index)"
+          @mouseleave="mouseLeaveHandler"
+          @mousedown="startSelection($event, item)"
+          @mousemove="updateSelection($event, item)"
+          @mouseup="stopSelection">
           <!-- Checkbox column for mobile -->
           <td class="text-center c-data-table-virtual__col-checkbox" style="width: 50px" v-if="showCheckbox">
             <!-- :model-value="isItemSelected(item)" -->

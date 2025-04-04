@@ -2,8 +2,7 @@
 //-------------------------------------------
 // font family
 //-------------------------------------------
-$font-family: var(--font-open-sans);
-$font-family-montserrat: var(--font-monts);
+$font-family: var(--font-inter-variant);
 
 //-------------------------------------------
 // Color
@@ -37,45 +36,7 @@ $textPrimary: var(--color-primary);
 $textLink: var(--color-link);
 $textLinkHover: var(--color-primary);
 
-* {
-  box-sizing: border-box;
-  //scrollbar-width: thin;
-  //scrollbar-color: var(--color-scrollbar) transparent;
-}
-
-html {
-  overflow: auto;
-}
-
-html.overflow-hidden {
-  padding-right: 11px;
-}
-
-.v-application {
-  background-color: $bgColor;
-  color: $textColor;
-  //max-width: 1920px;
-  margin-left: auto;
-  margin-right: auto;
-
-  * {
-    font-family: $font-family;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-
-    @media (max-width: 1199px) {
-      font-size: 14px;
-      line-height: 18px;
-    }
-  }
-
-  @media (max-width: 767px) {
-    background-color: var(--color-app-content);
-  }
-}
-
-body {
+.c-file-manager {
   color: $textColor;
   font-family: $font-family;
   font-feature-settings: 'halt' 1;
@@ -95,17 +56,14 @@ body {
   user-select: none; /* Non-prefixed version, supported by Chrome, Edge, Opera and Firefox */
 
   * {
+    box-sizing: border-box;
     font-family: $font-family;
     letter-spacing: 0.1px;
   }
 
-  //&::-webkit-scrollbar {
-  //  @apply dark:bg-stone-900;
-  //}
-  //
-  //&::-webkit-scrollbar-thumb {
-  //  @apply bg-stone-400 dark:bg-stone-500 rounded-full;
-  //}
+  @media (max-width: 767px) {
+    background-color: var(--color-app-content);
+  }
 
   i.mdi {
     font-size: 18px;
@@ -230,6 +188,13 @@ input:-webkit-autofill:active {
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, supported by Chrome, Edge, Opera and Firefox */
+}
+
+.text-three-dots {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
 }
 
 @layer components {

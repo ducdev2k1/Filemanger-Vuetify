@@ -25,20 +25,25 @@
     fixedHeader?: boolean;
     itemHeight?: number | string;
     height?: number | string;
-    customThumbnailIcon?: (item: IFileManager) => string;
-  }
-  interface IFetchParams {
-    refresh?: boolean;
-    isLoadMore?: boolean;
+    customThumbnailIcon?: (item: IFileManager) => void;
+    updateSelectedItems?: (data: IFileManager[]) => void;
+    singleModeSelect?: boolean;
+    hideDefaultHeader?: boolean;
   }
 
-  const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow']);
-
-  // const selectedItems = defineModel('selectedItems', { default: [] });
+  const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow', 'clickContextMenu']);
 
   const props = withDefaults(defineProps<IProps>(), {
     toolbarShowActionRight: true,
     loading: false,
+    singleModeSelect: false,
+    hideDefaultHeader: false,
+    height: '100%',
+    theme: 'light',
+    itemHeight: 56,
+    fixedHeader: false,
+    showCheckbox: false,
+    dateFormat: 'DD/MM/YYYY',
   });
 
   // Stores
@@ -50,16 +55,8 @@
   });
 
   // Computed
-  const loading = computed(() => props.loading);
-  const dataFilemanger = computed(() => props.dataFilemanger);
   const customColumns = computed(() => props.customColumns || columnsDefault);
   const showContextMenu = computed(() => fileManagerActionStore.showContextMenu || false);
-  const dateFormat = computed(() => props.dateFormat || 'DD/MM/YYYY');
-  const showCheckbox = computed(() => props.showCheckbox || false);
-  const fixedHeader = computed(() => props.fixedHeader || false);
-  const itemHeight = computed(() => props.itemHeight || 56);
-  const height = computed(() => props.height || '100%');
-  const theme = computed(() => props.theme || 'light');
 
   const contextMenuOptions = [
     {
@@ -78,7 +75,9 @@
 </script>
 
 <template>
-  <div class="fm_base" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
+  <div class="c-file-manager fm_base h-full" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
+    <ToolbarFilemanager />
+
     <!--- B: Custom default toolbar --->
     <!-- <div class="relative">
     <div class="c-file-manager_toolbar">
@@ -109,7 +108,7 @@
   </template> -->
 
     <!--  B: Slot này dùng để chèn UI/UX mở rộng cần thiết -->
-    <!-- <slot v-if="$slots['toolbar-bottom']" name="toolbar-bottom" v-bind="{ data: dataFileManager }"></slot> -->
+    <slot v-if="$slots['toolbar-bottom']" name="toolbar-bottom" v-bind="{ data: dataFilemanger }"></slot>
     <!--  E: Slot này dùng để chèn UI/UX mở rộng cần thiết -->
     <!---B: FILE MANAGER ---->
     <TableFilemanager
@@ -121,12 +120,18 @@
       :loading="loading"
       :item-height="itemHeight"
       :height="height"
+      :select-strategy="singleModeSelect ? 'single' : 'page'"
+      :hide-default-header="hideDefaultHeader"
       :showCheckbox="showCheckbox"
       @double-click-row="emits('doubleClickRow')"
       @loadMoreItem="emits('scroll')"
       @click-row="emits('clickRow')">
       <template v-if="customColumns.length > 0">
-        <slot v-for="item in customColumns" :key="item.key" :name="`item.${item.key}`" v-bind="{ item, value }" />
+        <slot
+          v-for="item in customColumns"
+          :key="item.key"
+          :name="`item.${item.key}`"
+          v-bind="{ item, value: item.key }" />
       </template>
       <template #item.name="{ item }" v-if="!$slots['item.name']">
         <ColumnName :data-row="item" />
@@ -137,35 +142,12 @@
       <template #item.lastModified="{ value }" v-if="!$slots['item.lastModified']">
         <ColumnDateModified :data-row="value" :format="dateFormat" />
       </template>
-
-      <!-- 
-    <template #item.owner="{ value }">
-      <ColumnOwner :data-owner="value" />
-    </template>
-    <template #item.lastModified="{ value }">
-      <ColumnDateModified :data-row="value" />
-    </template>
-   
-    <template #item.time_deleted="{ value }">
-      <ColumnTimeDeleted :data-row="value" />
-    </template>
-    <template #item.permission="{ item }">
-      <ColumnPermissionFile :data-row="item" />
-    </template>
-    <template #item.path="{ item }">
-      <ColumnLocation :data-row="item" />
-    </template>
-    <template #item.groupActions="{ item }">
-      <ColumnGroupActions :data-file="item" />
-    </template> -->
     </TableFilemanager>
 
     <template v-else-if="viewFM === EnumViewModeFm.thumbnails">
       <GridItem
         :loading="loading"
         :list-data="dataFilemanger"
-        @download="emits('download')"
-        @detail="emits('detail')"
         @load="emits('scroll')"
         @double-click="emits('doubleClickRow')" />
     </template>
@@ -174,7 +156,9 @@
     <!---E: FILE MANAGER ---->
 
     <!---B: ContextMenu MOBILE--->
-    <!-- <ContextMenu v-if="showContextMenu" :action-context-menu-items="contextMenuOptions" /> -->
+    <ContextMenu v-if="showContextMenu" :action-context-menu-items="contextMenuOptions">
+      <slot v-if="$slots['context-menu']" name="context-menu" />
+    </ContextMenu>
     <!---E: ContextMenu MOBILE--->
   </div>
 </template>

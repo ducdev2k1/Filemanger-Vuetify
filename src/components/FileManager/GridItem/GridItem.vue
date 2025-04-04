@@ -3,7 +3,7 @@
   // import { useGridItem } from '@/components/FileManager/GridItem/useGridItem';
   // import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
   // import { helperActionRecommendDetailFile } from '@/components/v1/RecommendFileAndFolder/partial/HelperActionRecommendFile';
-  // import { IFileManager } from '@/interfaces/IFileManager';
+  import { IFileManager } from '@/interfaces/IFileManager';
   // import { t } from '@/plugins/i18n';
   // import { EnumEmpty } from '@/utils/MyEnum';
   // import { addEventKeyDown, formatDate } from '@/utils/MyFunction';
@@ -13,7 +13,7 @@
   interface IProps {
     listData: IFileManager[];
     loading: boolean;
-    isLoadingMore: boolean;
+    isLoadingMore?: boolean;
     virtualScrollHeightItem?: number | string;
   }
 

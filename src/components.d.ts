@@ -31,5 +31,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Share: typeof import('./components/FileManager/CustomCellTemplate/Share.vue')['default']
     TableFilemanager: typeof import('./components/FileManager/TableFilemanager/TableFilemanager.vue')['default']
+    ToolbarFilemanager: typeof import('./components/FileManager/ToolbarFilemanager/ToolbarFilemanager.vue')['default']
   }
 }
