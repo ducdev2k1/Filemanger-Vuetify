@@ -53,7 +53,7 @@ jobs:
             -d text="❌ Publish package lên NPM thất bại!%0A
               Tên package: ${{ github.repository }} - Commit: ${{ github.sha }}%0A
               Repository: <a href='https://github.com/${{ github.repository }}'>https://github.com/${{ github.repository }}</a>%0A
-              Workflow Run: <a href='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'>https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}</a>
+              Workflow Run: <a href='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'>https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}</a>"
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
