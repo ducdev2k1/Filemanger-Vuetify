@@ -39,7 +39,7 @@
     contextMenuClick?: (option: IContextMenu) => void;
   }
 
-  const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow', 'clickContextMenu', 'onClickItem']);
+  const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow', 'clickContextMenu', 'onClickItem', 'refresh']);
 
   const props = withDefaults(defineProps<IProps>(), {
     toolbarShowActionRight: true,
@@ -48,7 +48,7 @@
     hideDefaultHeader: false,
     height: '100%',
     theme: 'light',
-    itemHeight: 56,
+    itemHeight: 46,
     fixedHeader: false,
     showCheckbox: false,
     dateFormat: 'DD/MM/YYYY',
@@ -59,7 +59,7 @@
   const fileManagerActionStore = FileManagerActionStore();
 
   // localStorage
-  const viewFM = useStorage(EnumLocalStorageKey.viewFM, EnumViewModeFm.details, localStorage, {
+  const viewFM = useStorage(EnumLocalStorageKey.viewFileMamager, EnumViewModeFm.details, localStorage, {
     listenToStorageChanges: true,
   });
 
@@ -102,7 +102,7 @@
 
 <template>
   <div class="c-file-manager fm_base h-full" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
-    <ToolbarFilemanager />
+    <ToolbarFilemanager @refresh="emits('refresh')" :loading="loading" />
 
     <!--- B: Custom default toolbar --->
     <!-- <div class="relative">

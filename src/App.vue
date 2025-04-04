@@ -1,9 +1,12 @@
 <script setup lang="ts">
-  import { dataFilemanager } from '@/data/DataFilemanager';
+  import { dataFilemanager } from '@/Data/DataFilemanager';
   import { IContextMenu } from './interfaces/IContextMenu';
 
   const selectedItems = ref<any[]>([]);
   const selectedOneItem = ref<any>();
+
+  const loading = ref(false);
+
   const getThumbnailIcon = (item: any) => {
     console.log('item :>> ', item);
   };
@@ -14,6 +17,13 @@
 
   const clickOptionContextMenu = (option: IContextMenu) => {
     console.log('clickOptionContextMenu :>> ', option);
+  };
+
+  const handleRẹefresh = () => {
+    loading.value = true;
+    setTimeout(() => {
+      loading.value = false;
+    }, 2000);
   };
 </script>
 
@@ -26,7 +36,8 @@
       return-object
       fixed-header
       height="100vh"
-      item-height="56"
+      item-height="46"
+      :loading="loading"
       :data-filemanger="dataFilemanager"
       :theme="'dark'"
       :show-checkbox="false"
@@ -34,6 +45,7 @@
       :update-selected-one="(data) => (selectedOneItem = data)"
       :custom-thumbnail-icon="getThumbnailIcon"
       :context-menu-click="clickOptionContextMenu"
-      @scroll="handleScroll" />
+      @scroll="handleScroll"
+      @refresh="handleRẹefresh" />
   </div>
 </template>

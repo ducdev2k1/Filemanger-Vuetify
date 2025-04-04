@@ -57,6 +57,8 @@
     "backend_status": "Status",
     "backend_sync_success": "Sync successfully.",
     "backend_value_incorrect_pattern": "Value incorrect pattern",
-    "data_has_been_loaded": "Data has been loaded"
+    "change_layout": "Change layout",
+    "data_has_been_loaded": "Data has been loaded",
+    "grid": "Grid"
   }
 }

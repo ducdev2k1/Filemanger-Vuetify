@@ -1,0 +1,10 @@
+.c-file-manager_toolbar {
+  border: 1px solid var(--color-border);
+  border-bottom: 0;
+  min-height: 46px;
+  @apply flex items-center justify-between gap-1 px-2;
+  &_left {
+    @apply flex-1 flex items-center gap-1 mr-1;
+    border-right: 1px solid var(--color-border);
+  }
+}

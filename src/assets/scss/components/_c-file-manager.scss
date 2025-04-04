@@ -1,12 +1,12 @@
 .c-file-manager {
   overflow: hidden;
-  background: transparent !important;
+  background: var(--color-app-content);
   border: none !important;
   position: relative;
 
   * {
     color: var(--color-text);
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .c-toolbar-page {
@@ -92,16 +92,6 @@
     &_left {
       flex: 1;
     }
-  }
-
-  &_toolbar {
-    min-height: 48px;
-    height: 48px;
-    background: var(--color-app-content);
-  }
-
-  td {
-    height: 56px;
   }
 }
 

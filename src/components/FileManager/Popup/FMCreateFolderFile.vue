@@ -1,9 +1,7 @@
 <script setup lang="ts">
   import { IFileManager } from '@/interfaces/IFileManager';
   import { t } from '@/plugins/i18n';
-  import { FileManagerStore } from '@/stores/user/file-manager-store';
-  import { UploadFileStore } from '@/stores/user/upload-file-store';
-  import { EnumLayoutType, EnumTypeConfirm } from '@/utils/my-enum';
+  import { FileManagerStore } from '@/stores/FileManagerStore';
 
   const props = defineProps({
     currentPath: {
@@ -16,7 +14,6 @@
   const typeFileCreate = defineModel('typeFileCreate', { default: '' });
   const currentPath = computed(() => props.currentPath || '');
   const fileManagerStore = FileManagerStore();
-  const uploadFileStore = UploadFileStore();
   const newPath = ref('');
   const btnLoading = ref(false);
   const showModalExistedPathCreate = ref(false);

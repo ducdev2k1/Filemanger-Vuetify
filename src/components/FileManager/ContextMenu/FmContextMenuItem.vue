@@ -14,11 +14,11 @@
 </script>
 
 <template>
-  <v-list class="c-menu-down_list shadow-xl">
+  <v-list class="c-context-menu_list shadow-xl">
     <template v-for="(item, index) in actionContextMenuItems" :key="index">
       <v-list-item
         v-if="item.visible"
-        class="c-menu-down_item"
+        class="c-context-menu_item"
         :prepend-icon="item.icon"
         :title="item.title"
         :append-icon="item.subMenus ? MdiWebfont['menu-right-outline'] : ''"
@@ -28,16 +28,16 @@
           <v-icon class="mr-2">{{ MdiWebfont[item.icon] || item.icon }}</v-icon>
         </template>
         <v-menu
-          class="c-menu-down"
+          class="c-context-menu"
           v-if="item.subMenus && item.subMenus.length > 0"
           submenu
           activator="parent"
           open-on-hover
           :open-on-click="true">
-          <v-list class="c-menu-down_list">
+          <v-list class="c-context-menu_list">
             <template v-for="subItem in item.subMenus" :key="subItem.key">
               <v-list-item
-                class="c-menu-down_item"
+                class="c-context-menu_item"
                 :title="subItem.title"
                 @click="onClickItem(subItem)"
                 :disabled="subItem?.disabled">

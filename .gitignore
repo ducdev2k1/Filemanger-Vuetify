@@ -24,11 +24,9 @@ dist-ssr
 *.sw?
 
 # auto import
-src/components.d.ts
 src/auto-imports.d.ts
 src/typed-router.d.ts
-components.d.ts
-
+src/components.d.ts
 
 # packages
 package-lock.json

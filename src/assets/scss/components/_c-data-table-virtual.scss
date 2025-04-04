@@ -1,6 +1,7 @@
 .c-data-table-virtual {
   background: var(--color-app-content);
-  height: calc(100% - 120px);
+  height: calc(100% - 46px) !important;
+  border: 1px solid var(--color-border);
   &_wrapper {
     display: inline;
   }
@@ -11,7 +12,7 @@
   & > .v-table__wrapper > table > tbody > tr > th,
   & > .v-table__wrapper > table > thead > tr > th,
   & > .v-table__wrapper > table > tfoot > tr > th {
-    height: 56px;
+    height: 46px;
     border-bottom: thin solid var(--color-border) !important;
   }
 
@@ -107,7 +108,7 @@
           }
           &:not(:first-child) {
             > td {
-              height: 56px !important;
+              height: 46px !important;
             }
           }
           &:last-child {
