@@ -123,7 +123,7 @@ export default defineConfig({
       entry: 'src/index.ts',
       name: 'Filemanager',
       formats: ['es', 'umd'],
-      fileName: (format) => `filemanager.${format}.js`,
+      fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
       external: ['vue'],
