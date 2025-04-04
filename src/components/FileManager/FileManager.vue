@@ -1,8 +1,10 @@
 <script setup lang="ts">
   import { columnsDefault } from '@/components/FileManager/partial/ConfigFileManager';
   import { IColumnFileMangerV2 } from '@/interfaces';
+  import { IContextMenu } from '@/interfaces/IContextMenu';
   import { IFileManager } from '@/interfaces/IFileManager';
-  import { FilemanagerActionStore } from '@/stores/FilemanagerActionStore';
+  import { FileManagerActionStore } from '@/stores/FileManagerActionStore';
+  import { FileManagerStore } from '@/stores/FileManagerStore';
   import { EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
   import { convertBytes } from '@/utils/MyFunction';
   import { useStorage } from '@vueuse/core';
@@ -25,13 +27,19 @@
     fixedHeader?: boolean;
     itemHeight?: number | string;
     height?: number | string;
-    customThumbnailIcon?: (item: IFileManager) => void;
-    updateSelectedItems?: (data: IFileManager[]) => void;
     singleModeSelect?: boolean;
     hideDefaultHeader?: boolean;
+    contextMenuOptions?: IContextMenu[];
+
+    // void
+    updateSelected?: (data: IFileManager[]) => void;
+    updateSelectedOne?: (data: IFileManager) => void;
+    customThumbnailIcon?: (item: IFileManager) => void;
+    updateSelectedItems?: (data: IFileManager[]) => void;
+    contextMenuClick?: (option: IContextMenu) => void;
   }
 
-  const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow', 'clickContextMenu']);
+  const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow', 'clickContextMenu', 'onClickItem']);
 
   const props = withDefaults(defineProps<IProps>(), {
     toolbarShowActionRight: true,
@@ -47,7 +55,8 @@
   });
 
   // Stores
-  const fileManagerActionStore = FilemanagerActionStore();
+  const fileManagerStore = FileManagerStore();
+  const fileManagerActionStore = FileManagerActionStore();
 
   // localStorage
   const viewFM = useStorage(EnumLocalStorageKey.viewFM, EnumViewModeFm.details, localStorage, {
@@ -60,18 +69,35 @@
 
   const contextMenuOptions = [
     {
-      type: 'action',
-      label: 'Xem chi tiết',
-      icon: 'icon-eye',
-      action: 'detail',
+      key: 'download',
+      title: 'Tải xuống',
+      icon: 'mdi-download',
+      visible: true,
+      disabled: true,
     },
     {
-      type: 'action',
-      label: 'Tải xuống',
-      icon: 'icon-download',
-      action: 'download',
+      key: 'delete',
+      title: 'Xóa',
+      icon: 'mdi-delete',
+      visible: true,
     },
-  ];
+  ] as IContextMenu[];
+
+  // Cập nhật giá trị cho  selectedItems
+  watch(
+    () => fileManagerStore.selectedItems.length,
+    (newVal) => {
+      props.updateSelected?.(fileManagerStore.selectedItems || ([] as IFileManager[]));
+    },
+  );
+
+  // Cập nhật giá trị cho  selectedOneItem
+  watch(
+    () => fileManagerStore.selectedItems.length,
+    (newVal) => {
+      props.updateSelectedOne?.(fileManagerStore.objectSelectedOne || ({} as IFileManager));
+    },
+  );
 </script>
 
 <template>
@@ -124,7 +150,7 @@
       :hide-default-header="hideDefaultHeader"
       :showCheckbox="showCheckbox"
       @double-click-row="emits('doubleClickRow')"
-      @loadMoreItem="emits('scroll')"
+      @load-more="emits('scroll')"
       @click-row="emits('clickRow')">
       <template v-if="customColumns.length > 0">
         <slot
@@ -156,9 +182,10 @@
     <!---E: FILE MANAGER ---->
 
     <!---B: ContextMenu MOBILE--->
-    <ContextMenu v-if="showContextMenu" :action-context-menu-items="contextMenuOptions">
+    <!-- <ContextMenu >
       <slot v-if="$slots['context-menu']" name="context-menu" />
-    </ContextMenu>
+    </ContextMenu> -->
+    <FmContextMenu v-if="showContextMenu" :items="contextMenuOptions" :onClickItem="props.contextMenuClick" />
     <!---E: ContextMenu MOBILE--->
   </div>
 </template>

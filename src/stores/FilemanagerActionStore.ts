@@ -1,11 +1,10 @@
 // import { EnumActionFileManager } from '@/utils/my-enum';
 import { defineStore } from 'pinia';
 
-export const FilemanagerActionStore = defineStore('FilemanagerActionStore', () => {
+export const FileManagerActionStore = defineStore('FileManagerActionStore', () => {
   const showContextMenu = ref(false);
   const showModalShare = ref(false);
   const showModalError = ref(false);
-  // const showTypeShare = ref(EnumActionFileManager.share_user);
   const showModalPreview = ref(false);
   const showModalRenameFile = ref(false);
   const showModalMoveTrashFile = ref(false);
@@ -31,11 +30,6 @@ export const FilemanagerActionStore = defineStore('FilemanagerActionStore', () =
   const closeContextMenu = () => {
     showContextMenu.value = false;
   };
-
-  // const toggleModalShare = (typeShare: EnumActionFileManager) => {
-  //   showTypeShare.value = typeShare;
-  //   showModalShare.value = !showModalShare.value;
-  // };
 
   const toggleModalError = () => {
     showModalError.value = !showModalError.value;
@@ -85,7 +79,6 @@ export const FilemanagerActionStore = defineStore('FilemanagerActionStore', () =
     showContextMenu,
     showModalShare,
     showModalError,
-    // showTypeShare,
     showModalPreview,
     showModalRenameFile,
     showModalMoveTrashFile,
@@ -98,7 +91,6 @@ export const FilemanagerActionStore = defineStore('FilemanagerActionStore', () =
     showModalConfirmCloseBeforeSave,
     resetRequestFileManager,
     toggleContextMenu,
-    // toggleModalShare,
     toggleModalError,
     toggleModalPreview,
     toggleModalRenameFile,

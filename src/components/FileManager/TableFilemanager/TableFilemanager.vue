@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import { useTableFilemanager } from '@/components/FileManager/TableFilemanager/useTableFilemanager';
   import { IFileManager } from '@/interfaces/IFileManager';
-  import { FilemanagerActionStore } from '@/stores/FilemanagerActionStore';
+  import { FileManagerActionStore } from '@/stores/FileManagerActionStore';
   import { EnumEmpty, EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
+  import { addEventKeyDown } from '@/utils/MyFunction';
   import { useStorage } from '@vueuse/core';
 
   defineOptions({
@@ -19,15 +20,15 @@
   const viewFM = useStorage(EnumLocalStorageKey.viewFM, EnumViewModeFm.details, localStorage, {
     listenToStorageChanges: true,
   });
-  const fileManagerActionStore = FilemanagerActionStore();
+  const fileManagerActionStore = FileManagerActionStore();
 
   // Props and emits
   const props = defineProps<ITableFilemanagerProps>();
-  const emits = defineEmits(['loadMoreItem', 'doubleClickRow', 'clickRow']);
+  const emits = defineEmits(['loadMore', 'doubleClickRow', 'clickRow']);
 
   // Tạo đối tượng emits để truyền vào useGridItem
   const emitFunctions = {
-    loadMoreItem: () => emits('loadMoreItem'),
+    loadMoreItem: () => emits('loadMore'),
     doubleClick: (file: IFileManager) => emits('doubleClickRow', file),
     clickRow: (file: IFileManager) => emits('clickRow', file),
   };
@@ -39,12 +40,12 @@
   const headerTable = computed(() => props.headerTable);
   const dataTable = computed(() => props.dataTable);
   const showCheckbox = computed(() => props.showCheckbox || false);
-  const singleModeSelect = computed(() => props.singleModeSelect || false);
+  // const singleModeSelect = computed(() => props.singleModeSelect || false);
 
   const {
-    selectedItems,
-    isMobile,
-    isHomePage,
+    // selectedItems,
+    // isMobile,
+    // isHomePage,
     wrapperRef,
     heightTable,
     hoveredRowIndex,
@@ -69,14 +70,14 @@
   onMounted(() => {
     if (tableRef.value && viewFM.value === EnumViewModeFm.details) {
       // Add event listeners
-      // addEventKeyDown(keydownHandler);
+      addEventKeyDown(keydownHandler);
 
       // Add scroll handler after DOM is ready
       setTimeout(() => {
         const tableContainer = document.querySelector('.v-table__wrapper');
         if (tableContainer) {
           requestAnimationFrame(() => {
-            // tableContainer.addEventListener('scroll', handleScroll);
+            tableContainer.addEventListener('scroll', handleScroll);
           });
         }
       }, 500);
@@ -84,12 +85,12 @@
   });
 
   // Clean up event listeners if needed
-  // onUnmounted(() => {
-  //   const tableContainer = document.querySelector('.v-table__wrapper');
-  //   if (tableContainer) {
-  //     tableContainer.removeEventListener('scroll', handleScroll);
-  //   }
-  // });
+  onUnmounted(() => {
+    const tableContainer = document.querySelector('.v-table__wrapper');
+    if (tableContainer) {
+      tableContainer.removeEventListener('scroll', handleScroll);
+    }
+  });
 </script>
 
 <template>
@@ -104,17 +105,13 @@
       :show-select="showCheckbox"
       :height="heightTable"
       density="compact"
-      return-object
       hover>
-      <!-- Slots -->
       <template #top v-if="$slots.top">
         <slot name="top" />
       </template>
       <template #bottom v-if="$slots.bottom">
         <slot name="bottom" />
       </template>
-
-      <!-- Table rows -->
 
       <template v-slot:item="{ item, index }">
         <tr
@@ -133,13 +130,13 @@
           @mousedown="startSelection($event, item)"
           @mousemove="updateSelection($event, item)"
           @mouseup="stopSelection">
-          <!-- Checkbox column for mobile -->
           <td class="text-center c-data-table-virtual__col-checkbox" style="width: 50px" v-if="showCheckbox">
-            <!-- :model-value="isItemSelected(item)" -->
-            <v-checkbox hide-details @click.stop="handleCheckboxClick($event, item)" />
+            <v-checkbox
+              hide-details
+              @click.stop="handleCheckboxClick($event, item)"
+              :model-value="isItemSelected(item)" />
           </td>
 
-          <!-- Data columns -->
           <template v-for="header in headerTable" :key="header.key">
             <td>
               <slot
@@ -152,7 +149,6 @@
         </tr>
       </template>
 
-      <!-- Empty state -->
       <template #no-data>
         <Empty :type-empty="EnumEmpty.no_data" hide-button />
       </template>

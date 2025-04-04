@@ -1,31 +1,24 @@
 import { IFileManager } from '@/interfaces/IFileManager';
 import { defineStore } from 'pinia';
 
-export const FilemanagerStore = defineStore('FilemanagerStore', () => {
+export const FileManagerStore = defineStore('FileManagerStore', () => {
   const selectedItems = ref([] as IFileManager[]); // object su dung hau het toan bo tinh nang fm
   const objectSelectedOne = ref({} as IFileManager); // object nay chi lien quan den context menu, open file
   const listItemDelete = ref([] as IFileManager[]); // object nay chi dung cho ctrl + z
   const listImageInFolder = ref([] as string[]); // object nay dung cho preview image
 
-  // function emptySelectedOne() {
-  //   return {
-  //     name: '',
-  //     type: '',
-  //     size: 0,
-  //     path: '',
-  //     owner: {
-  //       account: '',
-  //       permissions: EnumShareFilePermission.unknown,
-  //     } as IFileManagerSharedWith,
-  //     share: [] as IFileManagerSharedWith[],
-  //     tags: [] as ITag[],
-  //     permission: EnumShareFilePermission.unknown,
-  //   } as IFileManager;
-  // }
+  function emptySelectedOne() {
+    return {
+      name: '',
+      type: '',
+      size: 0,
+      path: '',
+    } as unknown as IFileManager;
+  }
 
-  // function actionSetEmptyObjectSelectedOne() {
-  //   objectSelectedOne.value = emptySelectedOne();
-  // }
+  function actionSetEmptyObjectSelectedOne() {
+    objectSelectedOne.value = emptySelectedOne();
+  }
 
   function actionSetSelectedItems(data: IFileManager[]) {
     selectedItems.value = data;
@@ -48,8 +41,8 @@ export const FilemanagerStore = defineStore('FilemanagerStore', () => {
     objectSelectedOne,
     listItemDelete,
     listImageInFolder,
-    // emptySelectedOne,
-    // actionSetEmptyObjectSelectedOne,
+    emptySelectedOne,
+    actionSetEmptyObjectSelectedOne,
     actionSetSelectedItems,
     actionSetObjectSelectedOne,
 

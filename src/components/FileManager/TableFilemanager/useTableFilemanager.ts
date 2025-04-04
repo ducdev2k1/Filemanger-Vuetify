@@ -1,8 +1,6 @@
-// import { fmActionRestoreTrash } from '@/components/v1/FileManager/partial/ConfigActionFileManager';
 import { IFileManager } from '@/interfaces/IFileManager';
-import { FilemanagerActionStore } from '@/stores/FilemanagerActionStore';
-import { FilemanagerStore } from '@/stores/FilemanagerStore';
-// import { myRoute } from '@/utils/my-route';
+import { FileManagerActionStore } from '@/stores/FileManagerActionStore';
+import { FileManagerStore } from '@/stores/FileManagerStore';
 import { debounce } from '@/utils/MyFunction';
 import { breakPoint } from '@/utils/MyVariables';
 import { useWindowSize } from '@vueuse/core';
@@ -13,9 +11,8 @@ interface IEmitFunctions {
   clickRow: (file: IFileManager) => void;
 }
 export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emits: IEmitFunctions) => {
-  const route = useRoute();
-  const filemanagerStore = FilemanagerStore();
-  const fileManagerActionStore = FilemanagerActionStore();
+  const fileManagerStore = FileManagerStore();
+  const fileManagerActionStore = FileManagerActionStore();
   const { width } = useWindowSize();
 
   // Refs
@@ -40,15 +37,15 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   // const singleModeSelect = computed(() => route.path === myRoute.sharePublic);
   const isMobile = computed(() => width.value <= breakPoint.brSpLandscape);
   // const isHomePage = computed(() => myRoute.home === route.path);
-  const listItemDelete = computed(() => filemanagerStore.listItemDelete);
+  const listItemDelete = computed(() => fileManagerStore.listItemDelete);
   const selectedItems = computed({
-    get: () => filemanagerStore.selectedItems,
-    set: (value: IFileManager[]) => filemanagerStore.actionSetSelectedItems(value),
+    get: () => fileManagerStore.selectedItems,
+    set: (value: IFileManager[]) => fileManagerStore.actionSetSelectedItems(value),
   });
 
   const objectSelectedOne = computed({
-    get: () => filemanagerStore.objectSelectedOne,
-    set: (value: IFileManager) => filemanagerStore.actionSetObjectSelectedOne(value),
+    get: () => fileManagerStore.objectSelectedOne,
+    set: (value: IFileManager) => fileManagerStore.actionSetObjectSelectedOne(value),
   });
 
   const heightTable = computed(() => {
@@ -149,11 +146,11 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     });
 
     // Update selected item state
-    filemanagerStore.actionSetObjectSelectedOne(file);
+    fileManagerStore.actionSetObjectSelectedOne(file);
 
     // Ensure item is in selection
     if (!isItemSelected(file)) {
-      filemanagerStore.actionSetSelectedItems([file]);
+      fileManagerStore.actionSetSelectedItems([file]);
     }
   };
 
