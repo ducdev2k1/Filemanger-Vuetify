@@ -1,4 +1,3 @@
-// import { EnumActionFileManager } from '@/utils/my-enum';
 import { defineStore } from 'pinia';
 
 export const FileManagerActionStore = defineStore('FileManagerActionStore', () => {
