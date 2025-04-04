@@ -2,10 +2,9 @@
   import { getThumbnailIcon } from '@/components/FileManager/partial/HelperFunctionFileManager';
   import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
   // import { IToolbarActions } from '@/interfaces';
-  import { ITag } from '@/interfaces/ITag';
   import { t } from '@/plugins/i18n';
-  import { FilemanagerActionStore } from '@/stores/FilemanagerActionStore';
-  import { FilemanagerStore } from '@/stores/FilemanagerStore';
+  import { FilemanagerActionStore } from '@/stores/FileManagerActionStore';
+  import { FileManagerStore } from '@/stores/FileManagerStore';
   // import { EnumActionFileManager } from '@/utils/MyEnum';
   import { breakPoint } from '@/utils/MyVariables';
   import { useWindowSize } from '@vueuse/core';
@@ -22,7 +21,7 @@
   });
 
   const { width } = useWindowSize();
-  const fileManagerStore = FilemanagerStore();
+  const fileManagerStore = FileManagerStore();
   const fileManagerActionStore = FilemanagerActionStore();
   const showContextMenu = computed(() => fileManagerActionStore.showContextMenu || false);
   const positionContextMenu = computed(() => fileManagerActionStore.positionContextMenu);
