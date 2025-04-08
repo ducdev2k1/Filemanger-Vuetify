@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { dataFilemanager } from '@/Data/DataFilemanager';
+  import { demoDataFilemanager } from '@/Data/DemoDataFilemanager';
   import { IContextMenu } from './interfaces/IContextMenu';
 
   const selectedItems = ref<any[]>([]);

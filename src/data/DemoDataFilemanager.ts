@@ -1,4 +1,4 @@
-export const dataFilemanager = [
+export const demoDataFilemanager = [
   {
     name: 'ducnd',
     path: 'ducnd/',

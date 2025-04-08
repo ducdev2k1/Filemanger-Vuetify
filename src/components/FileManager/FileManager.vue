@@ -7,6 +7,7 @@
   import { EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
   import { convertBytes } from '@/utils/MyFunction';
   import { useStorage } from '@vueuse/core';
+  import { demoDataFilemanager } from '@/Data/DemoDataFilemanager';
 
   defineOptions({
     inheritAttrs: false,
@@ -69,6 +70,7 @@
 
   // Computed
   const customColumns = computed(() => props.customColumns || columnsDefault);
+  const dataFilemanger =computed(()=> props.dataFilemanger || demoDataFilemanager)
 
   const contextMenuOptions = reactive<IContextMenu[]>([
     {
