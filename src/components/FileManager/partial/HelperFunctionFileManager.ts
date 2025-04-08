@@ -1,6 +1,7 @@
 // Utility Functions
+import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
 import { IFileManager } from '@/interfaces/IFileManager';
-import { actionGetMimeType, getIconPath } from '@/utils/MyFunction';
+import { actionGetMimeType } from '@/utils/MyFunction';
 import { FileExtensions, mimeType } from '@/utils/MyVariables';
 
 export function fileManagerGenerateNewPath(
@@ -28,68 +29,66 @@ export function fileManagerGenerateNewPath(
 export function getThumbnailIcon(item: IFileManager) {
   const type = item.type;
   const mimeTypeValue = actionGetMimeType(item.type);
-  // const publicPath = env.publicPath;
-  // const iconBasePath = `./assets/icons`;
 
   // Hàm phụ trợ để trả về đường dẫn icon
-  // const getIconPath = (iconName: string) => `${iconBasePath}/${iconName}`;
+  const getIconPath = (iconName: string) => MdiWebfont[iconName] || MdiWebfont['file-outline'];
 
   // Trường hợp thư mục hoặc type không xác định
   if (item.isDirectory) {
-    return getIconPath('folder.svg');
+    return getIconPath('folder-outline');
   }
 
   // Bản đồ icon mở rộng
   const iconMap: Record<string, string> = {
     svg: 'svg.svg',
-    doc: 'docx.svg',
-    docx: 'docx.svg',
-    slx: 'excel.svg',
-    xlsx: 'xlsx.svg',
-    csv: 'csv.svg',
-    xml: 'xml.svg',
-    html: 'html.svg',
-    one: 'one.svg',
-    sql: 'sql.svg',
+    doc: 'file-document-outline',
+    docx: 'file-document-outline',
+    slx: 'file-excel-outline',
+    xlsx: 'file-excel-outline',
+    csv: 'file-excel-outline',
+    xml: 'file-xml-box',
+    html: 'language-html5',
+    one: 'microsoft-onenote',
+    sql: 'database-outline',
     log: 'log.svg',
     iso: 'iso.svg',
-    apk: 'apk.svg',
+    apk: 'android',
     dmg: 'dmg.svg',
     exe: 'exe.svg',
-    pdf: 'pdf.svg',
-    pptx: 'pptx.svg',
+    pdf: 'file-pdf-box',
+    pptx: 'file-powerpoint-outline',
     accdb: 'accdb.svg',
-    cmd: 'cmd.svg',
-    jar: 'jar.svg',
-    json: 'json.svg',
+    cmd: 'console',
+    jar: 'folder-zip-outline',
+    json: 'code-json',
     ovpn: 'ovpn.svg',
     psd: 'psd.svg',
     // Thêm các nhóm mở rộng vào iconMap
     ...FileExtensions.IMAGE.reduce(
       (acc, ext) => ({
         ...acc,
-        [ext]: 'photo.svg',
+        [ext]: 'file-image-outline',
       }),
       {},
     ),
     ...FileExtensions.ZIP.reduce(
       (acc, ext) => ({
         ...acc,
-        [ext]: 'zip.svg',
+        [ext]: 'folder-zip-outline',
       }),
       {},
     ),
     ...FileExtensions.AUDIO.reduce(
       (acc, ext) => ({
         ...acc,
-        [ext]: 'audio.svg',
+        [ext]: 'file-music-outline',
       }),
       {},
     ),
     ...FileExtensions.CODE.reduce(
       (acc, ext) => ({
         ...acc,
-        [ext]: 'code.svg',
+        [ext]: 'file-code-outline',
       }),
       {},
     ),
@@ -103,7 +102,7 @@ export function getThumbnailIcon(item: IFileManager) {
     ...FileExtensions.TXT.reduce(
       (acc, ext) => ({
         ...acc,
-        [ext]: 'txt.svg',
+        [ext]: MdiWebfont['file-document-outline'],
       }),
       {},
     ),
@@ -125,11 +124,16 @@ export function getThumbnailIcon(item: IFileManager) {
 
   // Kiểm tra mime type cho video trước, sau đó kiểm tra iconMap
   if (mimeType.VIDEO.includes(mimeTypeValue) || FileExtensions.VIDEO.includes(type)) {
-    return getIconPath('video.svg');
+    return getIconPath('file-video-outline');
+  }
+
+  // Nếu type có trong iconMap, trả về icon tương ứng
+  if (iconMap[type]) {
+    return getIconPath(iconMap[type]);
   }
 
   // Mặc định cho file không xác định
-  return getIconPath('genericfile.svg');
+  return getIconPath('file-outline');
 }
 
 export const getNearestFolder = (path: string): string => {

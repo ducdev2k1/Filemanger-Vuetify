@@ -7,6 +7,7 @@
   import { breakPoint, dateFormat } from '@/utils/MyVariables';
   import { useWindowSize } from '@vueuse/core';
   import { getIconPath } from '@/utils/MyFunction';
+  import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
 
   interface IProps {
     dataRow: IFileManager;
@@ -16,21 +17,33 @@
   const dataFile = computed(() => props.dataRow);
   const { width } = useWindowSize();
   const isDesktopView = computed(() => width.value > breakPoint.brSpLandscape);
-  // const isTrash = computed(() => route.path === myRoute.trash);
-  // const isHome = computed(() => route.path === myRoute.home);
 
   const iconThumnail = computed(() => {
     if (dataFile.value.isDirectory) {
-      return getIconPath('folder.svg');
+      return MdiWebfont['folder-outline'];
     }
     return getThumbnailIcon(dataFile.value);
+  });
+
+  const isImage = computed(() => {
+    const value = iconThumnail.value.toLowerCase();
+    return (
+      value.endsWith('.png') ||
+      value.endsWith('.jpg') ||
+      value.endsWith('.jpeg') ||
+      value.endsWith('.gif') ||
+      value.endsWith('.svg') ||
+      value.endsWith('.webp')
+    );
   });
 </script>
 
 <template>
   <div class="c-file-manager_name-file">
     <div class="c-file-manager_name-file_left">
+      <v-icon v-if="!isImage" style="font-size: 32px">{{ iconThumnail }}</v-icon>
       <v-img
+        v-else
         class="object-contain"
         :src="iconThumnail"
         :alt="dataFile.type"
