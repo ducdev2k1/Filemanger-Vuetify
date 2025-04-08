@@ -135,5 +135,6 @@ export default defineConfig({
         },
       },
     },
+    cssCodeSplit: true, // tách riêng CSS
   },
 });

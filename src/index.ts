@@ -1,4 +1,8 @@
 import { App } from 'vue';
+
+// import styles
+import './assets/scss/filemanager.scss';
+
 // import components
 import BtnSwicthView from './components/Button/BtnSwicthView.vue';
 import FileManager from './components/FileManager/FileManager.vue';
