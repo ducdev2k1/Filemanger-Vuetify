@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { demoDataFilemanager } from '@/data/DataFilemanager';
   import { IContextMenu } from './interfaces/IContextMenu';
 
   const selectedItems = ref<any[]>([]);
@@ -68,7 +67,6 @@
       height="100vh"
       item-height="46"
       :loading="loading"
-      :data-filemanger="demoDataFilemanager"
       :theme="'dark'"
       :show-checkbox="false"
       :update-selected="(data) => (selectedItems = data)"
