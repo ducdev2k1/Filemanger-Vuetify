@@ -57,7 +57,6 @@
   // const singleModeSelect = computed(() => props.singleModeSelect || false);
 
   const {
-    selectedItems,
     wrapperRef,
     heightTable,
     hoveredRowIndex,
