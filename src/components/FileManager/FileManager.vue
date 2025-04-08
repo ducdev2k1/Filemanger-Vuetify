@@ -1,13 +1,12 @@
 <script setup lang="ts">
   import { columnsDefault } from '@/components/FileManager/partial/ConfigFileManager';
+  import { demoDataFilemanager } from '@/Data/DataFilemanager';
   import { IColumnFileMangerV2 } from '@/interfaces';
   import { IContextMenu } from '@/interfaces/IContextMenu';
   import { IFileManager } from '@/interfaces/IFileManager';
-  import { FileManagerStore } from '@/stores/FileManagerStore';
   import { EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
   import { convertBytes } from '@/utils/MyFunction';
   import { useStorage } from '@vueuse/core';
-  import { demoDataFilemanager } from '@/Data/DemoDataFilemanager';
 
   defineOptions({
     inheritAttrs: false,
@@ -32,8 +31,8 @@
     contextMenuOptions?: IContextMenu[];
 
     // void
-    updateSelected?: (data: IFileManager[]) => void;
-    updateSelectedOne?: (data: IFileManager) => void;
+    updateSelected: (data: IFileManager[]) => void;
+    updateSelectedOne: (data: IFileManager) => void;
     customThumbnailIcon?: (item: IFileManager) => void;
     updateSelectedItems?: (data: IFileManager[]) => void;
     contextMenuClick?: (option: IContextMenu) => void;
@@ -70,7 +69,7 @@
 
   // Computed
   const customColumns = computed(() => props.customColumns || columnsDefault);
-  const dataFilemanger =computed(()=> props.dataFilemanger || demoDataFilemanager)
+  const dataFilemanger = computed(() => props.dataFilemanger || demoDataFilemanager);
 
   const contextMenuOptions = reactive<IContextMenu[]>([
     {
@@ -151,8 +150,8 @@
       :hide-default-header="hideDefaultHeader"
       :show-checkbox="showCheckbox"
       @toglle-context-menu="(e, bool) => handleShowContextMenu(e, bool)"
-      @double-click-row="(data) => doubleClickRow(data)"
-      @click-row="(data) => onClickRow(data)"
+      @double-click-row="(data) => doubleClickRow && doubleClickRow(data)"
+      @click-row="(data) => onClickRow && onClickRow(data)"
       @load-more="emits('scroll')">
       <template v-if="customColumns.length > 0">
         <slot
@@ -175,7 +174,7 @@
         <slot name="no-data" />
       </template>
     </TableFilemanager>
-    <!-- 
+    <!--
     <template v-else-if="viewFM === EnumViewModeFm.thumbnails">
       <GridItem
         :loading="loading"
