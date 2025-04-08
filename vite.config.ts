@@ -5,6 +5,7 @@ import Components from 'unplugin-vue-components/vite';
 import VueRouter from 'unplugin-vue-router/vite';
 import { defineConfig } from 'vite';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
+import dts from "vite-plugin-dts";
 
 // Utilities
 import { fileURLToPath, URL } from 'node:url';
@@ -55,6 +56,7 @@ export default defineConfig({
     Vue({
       template: { transformAssetUrls },
     }),
+    dts({ insertTypesEntry: true }),
     vuetify({
       autoImport: true,
     }),
@@ -121,9 +123,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: 'src/index.ts',
-      name: 'Filemanager',
+      name: 'FileManager',
       formats: ['es', 'umd'],
-      fileName: (format) => `index.${format}.js`,
+      fileName: (format) => `file-manager.${format}.js`,
     },
     rollupOptions: {
       external: ['vue'],

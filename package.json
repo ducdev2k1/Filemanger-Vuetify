@@ -1,9 +1,9 @@
 {
   "name": "@ducdev2k1/filemanager-vuetify",
   "description": "A powerful file manager application built with Vue 3 and Vuetify. It includes features such as file and folder management, drag-and-drop file uploads, previews for images and documents, batch operations, and seamless integration with APIs or cloud storage.",
-  "version": "0.0.08",
-  "main": "./dist/index.umd.js",
-  "module": "./dist/index.es.js",
+  "version": "0.0.09",
+  "main": "./dist/file-manager.umd.js",
+  "module": "./dist/file-manager.es.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite",
@@ -24,6 +24,7 @@
     "mime": "^4.0.6",
     "moment": "^2.30.1",
     "sass": "^1.79.6",
+    "vite-plugin-dts": "^4.5.3",
     "vue": "^3.2.45",
     "vue-i18n": "^10.0.5",
     "vue3-toastify": "^0.2.8",
@@ -35,7 +36,6 @@
     "@vitejs/plugin-vue": "^4.0.0",
     "autoprefixer": "^10.4.21",
     "cross-env": "^7.0.3",
-    "pinia": "^2.3.0",
     "postcss": "^8.5.3",
     "postcss-scss": "^4.0.9",
     "prettier": "^3.4.2",

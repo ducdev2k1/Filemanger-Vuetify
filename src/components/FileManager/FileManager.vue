@@ -168,15 +168,19 @@
       <template #item.lastModified="{ value }" v-if="!$slots['item.lastModified']">
         <ColumnDateModified :data-row="value" :format="dateFormat" />
       </template>
-    </TableFilemanager>
 
+      <template #no-data.table v-if="$slots['no-data']">
+        <slot name="no-data" />
+      </template>
+    </TableFilemanager>
+    <!-- 
     <template v-else-if="viewFM === EnumViewModeFm.thumbnails">
       <GridItem
         :loading="loading"
         :list-data="dataFilemanger"
         @load="emits('scroll')"
         @double-click="emits('doubleClickRow')" />
-    </template>
+    </template> -->
     <!-- :is-loading-more="isLoadingMore" -->
 
     <!---E: FILE MANAGER ---->

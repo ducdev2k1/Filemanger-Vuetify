@@ -149,8 +149,9 @@
         </tr>
       </template>
 
-      <template #no-data>
-        <Empty :type-empty="EnumEmpty.no_data" hide-button />
+      <template #no-data v-if="$slots['no-data.table']">
+        <!-- <Empty :type-empty="EnumEmpty.no_data" hide-button /> -->
+        <slot name="no-data.table" />
       </template>
 
       <!-- Loading indicator -->

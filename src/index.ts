@@ -1,12 +1,15 @@
 import { App } from 'vue';
+// import components
 import BtnSwicthView from './components/Button/BtnSwicthView.vue';
-import Filemanager from './components/FileManager/FileManager.vue';
+import FileManager from './components/FileManager/FileManager.vue';
+
+// import store
 
 export default {
   install(app: App) {
-    app.component('Filemanager', Filemanager);
+    app.component('FileManager', FileManager);
     app.component('BtnSwicthView', BtnSwicthView);
   },
 };
 
-export { Filemanager };
+export { BtnSwicthView, FileManager };
