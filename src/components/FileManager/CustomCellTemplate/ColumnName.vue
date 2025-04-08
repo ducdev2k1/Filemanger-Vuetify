@@ -6,6 +6,7 @@
   // import { myRoute } from '@/utils/my-route';
   import { breakPoint, dateFormat } from '@/utils/MyVariables';
   import { useWindowSize } from '@vueuse/core';
+  import { getIconPath } from '@/utils/MyFunction';
 
   interface IProps {
     dataRow: IFileManager;
@@ -20,7 +21,7 @@
 
   const iconThumnail = computed(() => {
     if (dataFile.value.isDirectory) {
-      return `./assets/icons/folder.svg`;
+      return getIconPath('folder.svg');
     }
     return getThumbnailIcon(dataFile.value);
   });

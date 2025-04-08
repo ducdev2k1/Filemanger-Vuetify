@@ -1,6 +1,6 @@
 // Utility Functions
 import { IFileManager } from '@/interfaces/IFileManager';
-import { actionGetMimeType } from '@/utils/MyFunction';
+import { actionGetMimeType, getIconPath } from '@/utils/MyFunction';
 import { FileExtensions, mimeType } from '@/utils/MyVariables';
 
 export function fileManagerGenerateNewPath(
@@ -29,10 +29,10 @@ export function getThumbnailIcon(item: IFileManager) {
   const type = item.type;
   const mimeTypeValue = actionGetMimeType(item.type);
   // const publicPath = env.publicPath;
-  const iconBasePath = `./assets/icons`;
+  // const iconBasePath = `./assets/icons`;
 
   // Hàm phụ trợ để trả về đường dẫn icon
-  const getIconPath = (iconName: string) => `${iconBasePath}/${iconName}`;
+  // const getIconPath = (iconName: string) => `${iconBasePath}/${iconName}`;
 
   // Trường hợp thư mục hoặc type không xác định
   if (item.isDirectory) {
@@ -126,11 +126,6 @@ export function getThumbnailIcon(item: IFileManager) {
   // Kiểm tra mime type cho video trước, sau đó kiểm tra iconMap
   if (mimeType.VIDEO.includes(mimeTypeValue) || FileExtensions.VIDEO.includes(type)) {
     return getIconPath('video.svg');
-  }
-
-  // Nếu type có trong iconMap, trả về icon tương ứng
-  if (iconMap[type]) {
-    return getIconPath(iconMap[type]);
   }
 
   // Mặc định cho file không xác định

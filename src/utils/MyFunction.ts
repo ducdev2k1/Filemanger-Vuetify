@@ -138,3 +138,7 @@ export function actionGetMimeType(path: string) {
     return result as string;
   }
 }
+
+export function getIconPath(fileName: string): string {
+  return new URL(`../assets/icons/${fileName}`, import.meta.url).href;
+}
