@@ -1,16 +1,16 @@
-// // Plugins
-// import { registerPlugins } from '@/plugins';
-// // Components
-// import App from './App.vue';
+// Plugins
+import { registerPlugins } from '@/plugins';
+// Components
+import App from './App.vue';
 
-// // Composables
-// import { createApp } from 'vue';
+// Composables
+import { createApp } from 'vue';
 
-// // style
-// import './assets/scss/filemanager.scss';
+// style
+import './assets/scss/filemanager.scss';
 
-// const app = createApp(App);
+const app = createApp(App);
 
-// registerPlugins(app);
+registerPlugins(app);
 
-// app.mount('#app');
+app.mount('#app');
