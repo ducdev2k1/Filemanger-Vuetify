@@ -1,6 +1,8 @@
-.i-filemanager.dark {
+.c-file-manager.fm_dark {
   .c-box-shadow {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 0 2px rgba(0, 0, 0, 0.12);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.14),
+      0 0 2px rgba(0, 0, 0, 0.12);
   }
 
   .v-table.v-table--fixed-header > .v-table__wrapper > table > thead > tr > th {

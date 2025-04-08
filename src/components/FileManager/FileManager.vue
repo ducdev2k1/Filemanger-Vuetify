@@ -97,7 +97,7 @@
 </script>
 
 <template>
-  <div class="c-file-manager fm_base h-full" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
+  <div class="c-file-manager fm_base" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
     <ToolbarFilemanager @refresh="emits('refresh')" :loading="loading" />
 
     <!--- B: Custom default toolbar --->

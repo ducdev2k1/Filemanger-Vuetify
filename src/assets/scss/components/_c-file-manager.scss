@@ -3,6 +3,7 @@
   background: var(--color-app-content);
   border: none !important;
   position: relative;
+  height: 100%;
 
   * {
     color: var(--color-text);
@@ -17,9 +18,14 @@
   }
 
   &_name-file {
-    @apply flex items-center gap-2 justify-between;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: space-between;
     &_left {
-      @apply flex items-center gap-2;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
 
       h3 {
         font-size: 16px;
@@ -44,7 +50,9 @@
   }
 
   &_path {
-    @apply flex  items-center gap-2;
+    gap: 0.5rem;
+    display: flex;
+    align-items: center;
   }
 
   i {
@@ -64,7 +72,9 @@
     }
 
     span {
-      @apply line-clamp-1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -100,7 +110,10 @@
     height: 46px;
   }
   .c-file-manager_thumbnail {
-    @apply flex items-center justify-start gap-1;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 0.25rem;
     > img {
       width: 26px;
     }
@@ -112,7 +125,6 @@
 
 @include brSpLandscape {
   .c-file-manager_thumbnail {
-    @apply flex items-center justify-start gap-1;
     > img {
       width: 56px;
     }

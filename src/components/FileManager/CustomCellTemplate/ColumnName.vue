@@ -40,7 +40,7 @@
         loading="lazy" />
       <!-- <IconTag :color="formatGradient(dataRow.tags)" v-if="dataFile.tags.length > 0 && isDesktopView" /> -->
       <div class="content line-clamp-2">
-        <span class="line-clamp-1">{{ dataFile.name }}</span>
+        <span class="text-three-dots">{{ dataFile.name }}</span>
       </div>
       <!-- <div class="content line-clamp-2">
         <p v-if="!isDesktopView && dataFile.lastModified && !isTrash && !isHome">

@@ -64,15 +64,15 @@
     border-radius: var(--border-radius-2xl);
 
     .v-img__img {
-      @apply p-1;
+      padding: 0.25rem /* 4px */;
     }
 
     @apply dark:bg-drive-dark-900;
     @apply hover:shadow-drive-i-hover;
     .c-grid_box_head {
-      @apply w-full;
+      width: 100%;
       .line-clamp-1 {
-        @apply grow;
+        flex-grow: 1;
       }
     }
   }
