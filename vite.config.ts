@@ -128,7 +128,7 @@ export default defineConfig({
       fileName: (format) => `file-manager.${format}.js`,
     },
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', 'pinia'],
       output: {
         globals: {
           vue: 'Vue',
