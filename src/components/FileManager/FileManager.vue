@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { columnsDefault } from '@/components/FileManager/partial/ConfigFileManager';
-  import { demoDataFilemanager } from '@/data/DataFilemanager';
+  import { demoDataFilemanager } from '@/data/DemoDataFilemanager';
   import { IColumnFileMangerV2 } from '@/interfaces';
   import { IContextMenu } from '@/interfaces/IContextMenu';
   import { IFileManager } from '@/interfaces/IFileManager';
