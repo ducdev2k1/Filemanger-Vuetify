@@ -68,7 +68,7 @@
       height="100vh"
       item-height="46"
       :loading="loading"
-      :data-filemanger="dataFilemanager"
+      :data-filemanger="demoDataFilemanager"
       :theme="'dark'"
       :show-checkbox="false"
       :update-selected="(data) => (selectedItems = data)"
