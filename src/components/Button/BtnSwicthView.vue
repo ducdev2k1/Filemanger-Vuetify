@@ -4,6 +4,10 @@
   import { EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
   import { useStorage } from '@vueuse/core';
 
+  defineOptions({
+    inheritAttrs: false,
+  });
+
   const currentView = useStorage(EnumLocalStorageKey.viewFileMamager, EnumViewModeFm.details);
 
   const toggleView = () => {

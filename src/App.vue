@@ -19,12 +19,42 @@
     console.log('clickOptionContextMenu :>> ', option);
   };
 
-  const handleRẹefresh = () => {
+  const handleRefresh = () => {
     loading.value = true;
     setTimeout(() => {
       loading.value = false;
     }, 2000);
   };
+
+  const handleClickRow = (item: any) => {
+    // console.log('handleClickRow :>> ', item);
+  };
+
+  const handleDoubleClickRow = (item: any) => {
+    console.log('handleDoubleClickRow :>> ', item);
+  };
+
+  const handleClickContextMenu = (option: IContextMenu) => {
+    console.log('handleClickContextMenu :>> ', option);
+  };
+  const handleClickItem = (item: any) => {
+    console.log('handleClickItem :>> ', item);
+  };
+
+  // debug selectedItems and selectedOneItem
+  watch(
+    () => selectedItems.value,
+    (newVal) => {
+      console.log(' debug selectedItems :>> ', newVal);
+    },
+  );
+
+  watch(
+    () => selectedOneItem.value,
+    (newVal) => {
+      console.log(' debug selectedOneItem :>> ', newVal);
+    },
+  );
 </script>
 
 <template>
@@ -45,7 +75,9 @@
       :update-selected-one="(data) => (selectedOneItem = data)"
       :custom-thumbnail-icon="getThumbnailIcon"
       :context-menu-click="clickOptionContextMenu"
+      :on-click-row="handleClickRow"
+      :double-click-row="handleDoubleClickRow"
       @scroll="handleScroll"
-      @refresh="handleRẹefresh" />
+      @refresh="handleRefresh" />
   </div>
 </template>

@@ -1,5 +1,4 @@
 import { IFileManager } from '@/interfaces/IFileManager';
-import { FileManagerActionStore } from '@/stores/FileManagerActionStore';
 import { FileManagerStore } from '@/stores/FileManagerStore';
 import { debounce } from '@/utils/MyFunction';
 import { breakPoint } from '@/utils/MyVariables';
@@ -9,10 +8,16 @@ interface IEmitFunctions {
   loadMoreItem: () => void;
   doubleClick: (file: IFileManager) => void;
   clickRow: (file: IFileManager) => void;
+  toglleContextMenu: (e: MouseEvent, bool: boolean) => void;
 }
-export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emits: IEmitFunctions) => {
+
+interface IProps {
+  updateSelected: (data: IFileManager[]) => void;
+  updateSelectedOne: (data: IFileManager) => void;
+}
+
+export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emits: IEmitFunctions, props: IProps) => {
   const fileManagerStore = FileManagerStore();
-  const fileManagerActionStore = FileManagerActionStore();
   const { width } = useWindowSize();
 
   // Refs
@@ -28,6 +33,9 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   const hoveredRowIndex = ref<number | null>(null);
   const wrapperRef = ref<HTMLElement | null>(null);
 
+  const selectedItems = ref([] as IFileManager[]);
+  const objectSelectedOne = ref({} as IFileManager);
+
   // Constants
   const DOUBLE_TAP_DELAY = 300; // Time threshold for double tap (ms)
   const SCROLL_THRESHOLD = 10; // Distance from bottom before loading more
@@ -36,17 +44,16 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   // Computed
   // const singleModeSelect = computed(() => route.path === myRoute.sharePublic);
   const isMobile = computed(() => width.value <= breakPoint.brSpLandscape);
-  // const isHomePage = computed(() => myRoute.home === route.path);
   const listItemDelete = computed(() => fileManagerStore.listItemDelete);
-  const selectedItems = computed({
-    get: () => fileManagerStore.selectedItems,
-    set: (value: IFileManager[]) => fileManagerStore.actionSetSelectedItems(value),
-  });
-
-  const objectSelectedOne = computed({
-    get: () => fileManagerStore.objectSelectedOne,
-    set: (value: IFileManager) => fileManagerStore.actionSetObjectSelectedOne(value),
-  });
+  // const isHomePage = computed(() => myRoute.home === route.path);
+  // const selectedItems = computed({
+  //   get: () => fileManagerStore.selectedItems,
+  //   set: (value: IFileManager[]) => fileManagerStore.actionSetSelectedItems(value),
+  // });
+  // const objectSelectedOne = computed({
+  //   get: () => fileManagerStore.objectSelectedOne,
+  //   set: (value: IFileManager) => fileManagerStore.actionSetObjectSelectedOne(value),
+  // });
 
   const heightTable = computed(() => {
     if (wrapperRef.value) {
@@ -54,6 +61,21 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     }
     return '100%';
   });
+
+  // Hàm cập nhât selectedItems
+  watch(
+    () => selectedItems.value,
+    (newValue) => {
+      props.updateSelected(newValue || ([] as IFileManager[]));
+    },
+  );
+  // Hàm cập nhât objectSelectedOne
+  watch(
+    () => objectSelectedOne.value,
+    (newValue) => {
+      props.updateSelectedOne(newValue || ({} as IFileManager));
+    },
+  );
 
   const selectAllItems = () => {
     selectedItems.value = [...dataTable.value];
@@ -96,7 +118,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   const rowClickHandler = (event: MouseEvent | TouchEvent, file: IFileManager) => {
     // Skip if clicking checkbox in mobile view
     if (isMobile.value && (event.target as HTMLElement).closest('.v-checkbox')) {
-      if (selectedItems.value.includes(file.key)) {
+      if (selectedItems.value.includes(file)) {
         selectedItems.value = selectedItems.value.filter((item: IFileManager) => item.key !== file.key);
       } else {
         selectedItems.value = [...selectedItems.value, file];
@@ -108,7 +130,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     event.stopPropagation();
 
     // Close any open context menu
-    fileManagerActionStore.closeContextMenu();
+    emits.toglleContextMenu(event as MouseEvent, false);
 
     // Update selected items
     // if (isHomePage.value) {
@@ -140,17 +162,14 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     event.stopPropagation();
 
     // Open context menu at click position
-    fileManagerActionStore.openContextMenu({
-      x: event.clientX,
-      y: event.clientY,
-    });
+    emits.toglleContextMenu(event, true);
 
     // Update selected item state
-    fileManagerStore.actionSetObjectSelectedOne(file);
+    objectSelectedOne.value = file;
 
     // Ensure item is in selection
     if (!isItemSelected(file)) {
-      fileManagerStore.actionSetSelectedItems([file]);
+      selectedItems.value = [file];
     }
   };
 
@@ -203,7 +222,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
         // Reset trạng thái loading sau một khoảng thời gian
         setTimeout(() => {
           isLoading.value = false;
-        }, 500);
+        }, 300);
       }
     }
 
@@ -235,11 +254,11 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
       return selectAllItems();
     } else if (event.key === 'Delete' && selectedItems.value.length > 0) {
       // Delete => Xóa file
-      fileManagerActionStore.toggleModalMoveTrashFile();
+      console.log('show modal confirm delete :>> ');
     } else if ((event.ctrlKey || event.metaKey) && event.altKey && event.key.toLowerCase() === 'e') {
       // ctrl + alt + e => Mở modal rename file
       if (objectSelectedOne.value && selectedItems.value.length === 1) {
-        fileManagerActionStore.toggleModalRenameFile();
+        console.log('show modal rename file :>> ');
       }
     }
     // else if (event.ctrlKey && event.key.toLowerCase() === 'z') {
@@ -272,7 +291,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     if (startIndex.value !== null && endIndex.value !== null) {
       const minIndex = Math.min(startIndex.value, endIndex.value);
       const maxIndex = Math.max(startIndex.value, endIndex.value);
-      selectedItems.value = dataTable.value.slice(minIndex, maxIndex + 1);
+      props.updateSelected(dataTable.value.slice(minIndex, maxIndex + 1));
     }
   };
 

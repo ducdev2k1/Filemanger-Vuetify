@@ -4,8 +4,8 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import VueRouter from 'unplugin-vue-router/vite';
 import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
-import dts from "vite-plugin-dts";
 
 // Utilities
 import { fileURLToPath, URL } from 'node:url';

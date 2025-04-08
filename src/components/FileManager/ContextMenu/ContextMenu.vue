@@ -18,6 +18,10 @@
       type: Object as PropType<IContextMenu>,
       default: [],
     },
+    positionContextMenu: {
+      type: Object as PropType<{ x: number; y: number }>,
+      default: () => ({}),
+    },
   });
 
   const { width } = useWindowSize();

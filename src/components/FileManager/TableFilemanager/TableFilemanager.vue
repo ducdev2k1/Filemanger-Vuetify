@@ -14,6 +14,9 @@
     headerTable: any[];
     dataTable: any[];
     showCheckbox?: boolean;
+    // void
+    updateSelected: (data: IFileManager[]) => void;
+    updateSelectedOne: (data: IFileManager) => void;
   }
 
   // Composables and stores
@@ -24,13 +27,24 @@
 
   // Props and emits
   const props = defineProps<ITableFilemanagerProps>();
-  const emits = defineEmits(['loadMore', 'doubleClickRow', 'clickRow']);
+  const emits = defineEmits(['loadMore', 'doubleClickRow', 'clickRow', 'toglleContextMenu']);
+  const selectedOneItem = defineModel('selectedOneItem', {
+    type: Object,
+    default: {} as IFileManager,
+  });
 
-  // Tạo đối tượng emits để truyền vào useGridItem
+  // Tạo đối tượng Emits để truyền vào useGridItem
   const emitFunctions = {
     loadMoreItem: () => emits('loadMore'),
     doubleClick: (file: IFileManager) => emits('doubleClickRow', file),
     clickRow: (file: IFileManager) => emits('clickRow', file),
+    toglleContextMenu: (event: MouseEvent, bool: boolean) => emits('toglleContextMenu', event, bool),
+  };
+
+  // Tạo đối tượng Props để truyền vào useGridItem
+  const propsFunctions = {
+    updateSelected: (file: IFileManager[]) => props.updateSelected(file),
+    updateSelectedOne: (file: IFileManager) => props.updateSelectedOne(file),
   };
 
   // Refs
@@ -43,9 +57,7 @@
   // const singleModeSelect = computed(() => props.singleModeSelect || false);
 
   const {
-    // selectedItems,
-    // isMobile,
-    // isHomePage,
+    selectedItems,
     wrapperRef,
     heightTable,
     hoveredRowIndex,
@@ -64,7 +76,7 @@
     updateSelection,
     stopSelection,
     handleScroll,
-  } = useTableFilemanager(dataTable, emitFunctions);
+  } = useTableFilemanager(dataTable, emitFunctions, propsFunctions);
 
   // Lifecycle hooks
   onMounted(() => {

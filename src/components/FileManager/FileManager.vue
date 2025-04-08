@@ -3,7 +3,6 @@
   import { IColumnFileMangerV2 } from '@/interfaces';
   import { IContextMenu } from '@/interfaces/IContextMenu';
   import { IFileManager } from '@/interfaces/IFileManager';
-  import { FileManagerActionStore } from '@/stores/FileManagerActionStore';
   import { FileManagerStore } from '@/stores/FileManagerStore';
   import { EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
   import { convertBytes } from '@/utils/MyFunction';
@@ -37,9 +36,12 @@
     customThumbnailIcon?: (item: IFileManager) => void;
     updateSelectedItems?: (data: IFileManager[]) => void;
     contextMenuClick?: (option: IContextMenu) => void;
+    onClickRow?: (item: IFileManager) => void;
+    doubleClickRow?: (item: IFileManager) => void;
+    clickContextMenu?: (option: IContextMenu) => void;
   }
 
-  const emits = defineEmits(['scroll', 'doubleClickRow', 'clickRow', 'clickContextMenu', 'onClickItem', 'refresh']);
+  const emits = defineEmits(['scroll', 'clickContextMenu', 'onClickItem', 'refresh']);
 
   const props = withDefaults(defineProps<IProps>(), {
     toolbarShowActionRight: true,
@@ -54,18 +56,19 @@
     dateFormat: 'DD/MM/YYYY',
   });
 
-  // Stores
-  const fileManagerStore = FileManagerStore();
-  const fileManagerActionStore = FileManagerActionStore();
-
   // localStorage
   const viewFM = useStorage(EnumLocalStorageKey.viewFileMamager, EnumViewModeFm.details, localStorage, {
     listenToStorageChanges: true,
   });
 
+  // Refs
+  const showContextMenu = ref(false);
+  const selectedItems = ref<IFileManager[]>([]);
+  const selectedOneItem = ref<IFileManager>({} as IFileManager);
+  const positionContextMenu = ref({ x: 0, y: 0 });
+
   // Computed
   const customColumns = computed(() => props.customColumns || columnsDefault);
-  const showContextMenu = computed(() => fileManagerActionStore.showContextMenu || false);
 
   const contextMenuOptions = reactive<IContextMenu[]>([
     {
@@ -83,21 +86,13 @@
     },
   ]);
 
-  // Cập nhật giá trị cho  selectedItems
-  watch(
-    () => fileManagerStore.selectedItems.length,
-    () => {
-      props.updateSelected?.(fileManagerStore.selectedItems || ([] as IFileManager[]));
-    },
-  );
-
-  // Cập nhật giá trị cho  selectedOneItem
-  watch(
-    () => fileManagerStore.selectedItems.length,
-    () => {
-      props.updateSelectedOne?.(fileManagerStore.objectSelectedOne || ({} as IFileManager));
-    },
-  );
+  // Xử lý hiển thị context menu
+  const handleShowContextMenu = (event: MouseEvent, bool: boolean) => {
+    event.preventDefault();
+    event.stopPropagation();
+    showContextMenu.value = bool;
+    positionContextMenu.value = { x: event.clientX, y: event.clientY };
+  };
 </script>
 
 <template>
@@ -139,7 +134,11 @@
     <!---B: FILE MANAGER ---->
     <TableFilemanager
       v-bind="$attrs"
+      v-model="selectedItems"
+      v-model:selectedOneItem="selectedOneItem"
       v-if="viewFM === EnumViewModeFm.details"
+      :update-selected="(data) => updateSelected(data)"
+      :update-selected-one="(data) => updateSelectedOne(data)"
       :header-table="customColumns"
       :data-table="dataFilemanger"
       :fixed-header="fixedHeader"
@@ -148,10 +147,11 @@
       :height="height"
       :select-strategy="singleModeSelect ? 'single' : 'page'"
       :hide-default-header="hideDefaultHeader"
-      :showCheckbox="showCheckbox"
-      @double-click-row="emits('doubleClickRow')"
-      @load-more="emits('scroll')"
-      @click-row="emits('clickRow')">
+      :show-checkbox="showCheckbox"
+      @toglle-context-menu="(e, bool) => handleShowContextMenu(e, bool)"
+      @double-click-row="(data) => doubleClickRow(data)"
+      @click-row="(data) => onClickRow(data)"
+      @load-more="emits('scroll')">
       <template v-if="customColumns.length > 0">
         <slot
           v-for="item in customColumns"
@@ -189,7 +189,11 @@
     <!-- <ContextMenu >
       <slot v-if="$slots['context-menu']" name="context-menu" />
     </ContextMenu> -->
-    <FmContextMenu v-if="showContextMenu" :items="contextMenuOptions" :on-click-item="props.contextMenuClick" />
+    <FmContextMenu
+      v-if="showContextMenu"
+      :items="contextMenuOptions"
+      :on-click-item="props.contextMenuClick"
+      :positionContextMenu="positionContextMenu" />
     <!---E: ContextMenu MOBILE--->
   </div>
 </template>

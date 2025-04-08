@@ -8,6 +8,7 @@
 
   interface IProps {
     items: IContextMenu[];
+    positionContextMenu: { x: number; y: number };
     onClickItem?: (menuItem: IContextMenu) => void;
   }
 
@@ -21,9 +22,8 @@
   const innerHeight = ref(window.innerHeight);
   const contextMenuDesktop = ref<HTMLElement | null>(null);
   // Computed
-  const showContextMenu = computed(() => fileManagerActionStore.showContextMenu || false);
   const listMenu = computed(() => props.items);
-  const positionContextMenu = computed(() => fileManagerActionStore.positionContextMenu);
+  const positionContextMenu = computed(() => props.positionContextMenu);
   const widthContextMenuDesktop = computed(() => {
     if (contextMenuDesktop.value) {
       return contextMenuDesktop.value.offsetWidth + 50;
@@ -47,7 +47,6 @@
 
 <template>
   <div
-    v-if="showContextMenu"
     v-bind="$attrs"
     class="c-context-menu fixed z-50"
     ref="contextMenuDesktop"
