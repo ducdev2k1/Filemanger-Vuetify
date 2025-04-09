@@ -26,6 +26,12 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      i.mdi {
+        font-size: 32px;
+        &::before {
+          font-size: 32px;
+        }
+      }
 
       h3 {
         font-size: 16px;

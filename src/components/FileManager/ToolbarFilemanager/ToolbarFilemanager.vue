@@ -23,11 +23,11 @@
     <div class="c-file-manager_toolbar_left">
       <slot v-if="$slots['filemanager-toolbar-left']" name="filemanager-toolbar-left" />
       <template v-else>
-        <BaseBtnIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
-        <BaseBtnIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
+        <BtnBaseIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
+        <BtnBaseIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
       </template>
     </div>
-    <BaseBtnIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
+    <BtnBaseIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
     <BtnSwicthView v-if="showSwitchView" />
   </section>
 </template>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
   import { useTableFilemanager } from '@/components/FileManager/TableFilemanager/useTableFilemanager';
+  import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
   import { IFileManager } from '@/interfaces/IFileManager';
+  import { t } from '@/plugins/i18n';
   import { FileManagerActionStore } from '@/stores/FileManagerActionStore';
-  import { EnumEmpty, EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
+  import { EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
   import { addEventKeyDown } from '@/utils/MyFunction';
   import { useStorage } from '@vueuse/core';
 
@@ -28,10 +30,6 @@
   // Props and emits
   const props = defineProps<ITableFilemanagerProps>();
   const emits = defineEmits(['loadMore', 'doubleClickRow', 'clickRow', 'toglleContextMenu']);
-  const selectedOneItem = defineModel('selectedOneItem', {
-    type: Object,
-    default: {} as IFileManager,
-  });
 
   // Tạo đối tượng Emits để truyền vào useGridItem
   const emitFunctions = {
@@ -57,10 +55,12 @@
   // const singleModeSelect = computed(() => props.singleModeSelect || false);
 
   const {
+    selectedItems,
     wrapperRef,
     heightTable,
     hoveredRowIndex,
     isItemSelected,
+    selectAllItems,
     handleCheckboxClick,
     mouseLeaveHandler,
     isItemSelectedOne,
@@ -75,6 +75,7 @@
     updateSelection,
     stopSelection,
     handleScroll,
+    handleClearSelected,
   } = useTableFilemanager(dataTable, emitFunctions, propsFunctions);
 
   // Lifecycle hooks
@@ -122,6 +123,27 @@
       </template>
       <template #bottom v-if="$slots.bottom">
         <slot name="bottom" />
+      </template>
+
+      <template #headers v-if="selectedItems.length > 0">
+        <tr class="c-data-table-virtual__header">
+          <th class="text-center c-data-table-virtual__col-checkbox">
+            <div class="flex items-center">
+              <v-checkbox
+                v-if="showCheckbox"
+                hide-details
+                @click.stop="selectAllItems"
+                :model-value="selectedItems.length === dataTable.length" />
+              <BtnBase
+                :icon="MdiWebfont['close']"
+                @click="handleClearSelected"
+                :title="`${selectedItems.length} ${t('locale.selected')}`" />
+            </div>
+          </th>
+          <!-- <template v-for="index in headerTable.length - 1" :key="item">
+            <th></th>
+          </template> -->
+        </tr>
       </template>
 
       <template v-slot:item="{ item, index }">

@@ -61,7 +61,7 @@ export default defineConfig({
       autoImport: true,
     }),
     VueI18nPlugin({
-      include: [path.resolve(__dirname, './src/langs/**')],
+      include: [path.resolve(__dirname, './src/locales/**')],
     }),
     VueRouter({
       dts: 'src/typed-router.d.ts',

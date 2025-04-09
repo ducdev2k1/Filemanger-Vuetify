@@ -59,6 +59,7 @@
     "backend_value_incorrect_pattern": "Dữ liệu không đúng định dạng",
     "change_layout": "Thay đổi bố cục",
     "data_has_been_loaded": "Dữ liệu được cập nhật",
-    "grid": "Lưới"
+    "grid": "Lưới",
+    "selected": "Đã chọn"
   }
 }

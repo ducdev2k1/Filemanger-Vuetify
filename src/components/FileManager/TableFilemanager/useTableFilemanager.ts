@@ -82,6 +82,11 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     return [...dataTable.value];
   };
 
+  const handleClearSelected = () => {
+    selectedItems.value = [] as IFileManager[];
+    objectSelectedOne.value = {} as IFileManager;
+  };
+
   // Hàm lấy index của file trong listData
   const getFileIndex = (file: IFileManager) => {
     return dataTable.value.findIndex((item) => item.key === file.key);
@@ -335,6 +340,8 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
 
   return {
     // Ref
+    selectedItems,
+    objectSelectedOne,
     previousScrollTop,
     isLoading,
     endIndex,
@@ -353,8 +360,6 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     DEBOUNCE_DELAY,
 
     // Computed
-    selectedItems,
-    objectSelectedOne,
     listItemDelete,
     isMobile,
     // isHomePage,
@@ -381,5 +386,6 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     rowClickHandler,
     mouseEnterHandler,
     mouseLeaveHandler,
+    handleClearSelected,
   };
 };

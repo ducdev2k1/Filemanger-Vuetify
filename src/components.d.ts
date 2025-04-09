@@ -7,8 +7,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    BaseBtn: typeof import('./components/Button/BaseBtn.vue')['default']
-    BaseBtnIcon: typeof import('./components/Button/BaseBtnIcon.vue')['default']
+    BtnBase: typeof import('./components/Button/BtnBase.vue')['default']
+    BtnBaseIcon: typeof import('./components/Button/BtnBaseIcon.vue')['default']
     BtnSwicthView: typeof import('./components/Button/BtnSwicthView.vue')['default']
     ColumnDateModified: typeof import('./components/FileManager/CustomCellTemplate/ColumnDateModified.vue')['default']
     ColumnGroupActions: typeof import('./components/FileManager/CustomCellTemplate/ColumnGroupActions.vue')['default']

@@ -17,7 +17,7 @@
 </script>
 
 <template>
-  <BaseBtnIcon
+  <BtnBaseIcon
     v-bind="$attrs"
     disabled
     :tooltip="t('locale.change_layout')"

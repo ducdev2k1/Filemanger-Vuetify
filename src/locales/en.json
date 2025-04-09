@@ -59,6 +59,7 @@
     "backend_value_incorrect_pattern": "Value incorrect pattern",
     "change_layout": "Change layout",
     "data_has_been_loaded": "Data has been loaded",
-    "grid": "Grid"
+    "grid": "Grid",
+    "selected": "Selected"
   }
 }
