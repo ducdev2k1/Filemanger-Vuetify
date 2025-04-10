@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { columnsDefault } from '@/components/FileManager/partial/ConfigFileManager';
   import { demoDataFilemanager } from '@/data/DemoDataFilemanager';
-  import { IColumnFileMangerV2 } from '@/interfaces';
+  import { IColumnFileManger } from '@/interfaces';
   import { IContextMenu } from '@/interfaces/IContextMenu';
   import { IFileManager } from '@/interfaces/IFileManager';
   import { EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
@@ -15,16 +15,16 @@
   interface IProps {
     theme?: 'dark' | 'light';
     titlePage?: string;
-    customColumns?: IColumnFileMangerV2[];
+    customColumns?: IColumnFileManger[];
     toolbarShowActionRight?: boolean;
-    dataFilemanger: IFileManager[];
+    dataFilemanger?: IFileManager[];
     currentPath: string;
     loading?: boolean;
     dateFormat?: string;
     // props data table vuetify
     showCheckbox?: boolean;
     fixedHeader?: boolean;
-    itemHeight?: number | string;
+    itemHeight?: number;
     height?: number | string;
     singleModeSelect?: boolean;
     hideDefaultHeader?: boolean;

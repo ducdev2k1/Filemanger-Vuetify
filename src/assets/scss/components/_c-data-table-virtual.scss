@@ -4,6 +4,7 @@
   border: 1px solid var(--color-border);
   &_wrapper {
     display: inline;
+    @apply relative;
   }
   .v-table__wrapper {
     border-radius: 0;
@@ -81,6 +82,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  &_header-selected {
+    @apply absolute top-0 left-0 z-50;
+    @apply w-full px-3 min-h-[46px];
+    @apply flex items-center;
+    background: var(--color-app-content);
+    border-top: 1px solid var(--color-border);
   }
 
   .v-table__wrapper {

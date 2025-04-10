@@ -1,4 +1,4 @@
-export interface IColumnFileMangerV2 {
+export interface IColumnFileManger {
   key: string;
   title: string;
   align?: '' | 'center' | 'left' | 'end' | 'right' | 'start';
@@ -6,6 +6,4 @@ export interface IColumnFileMangerV2 {
   visible: boolean;
 }
 
-export interface ISingleModeSelect {
-  
-}
+export interface ISingleModeSelect {}

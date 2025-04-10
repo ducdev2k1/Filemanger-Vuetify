@@ -58,14 +58,12 @@
 
 <template>
   <div class="h-screen">
-    <!-- v-model="selectedItems"
-    v-model:selectedOne="selectedOne" -->
     <FileManager
       currentPath=""
       return-object
       fixed-header
       height="100vh"
-      item-height="46"
+      :item-height="46"
       :loading="loading"
       :theme="'dark'"
       :show-checkbox="false"

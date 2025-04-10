@@ -16,6 +16,7 @@
     headerTable: any[];
     dataTable: any[];
     showCheckbox?: boolean;
+    itemHeight?: number;
     // void
     updateSelected: (data: IFileManager[]) => void;
     updateSelectedOne: (data: IFileManager) => void;
@@ -52,6 +53,7 @@
   const headerTable = computed(() => props.headerTable);
   const dataTable = computed(() => props.dataTable);
   const showCheckbox = computed(() => props.showCheckbox || false);
+  const itemHeight = computed(() => props.itemHeight);
   // const singleModeSelect = computed(() => props.singleModeSelect || false);
 
   const {
@@ -116,6 +118,7 @@
       :items="dataTable"
       :show-select="showCheckbox"
       :height="heightTable"
+      :item-height="itemHeight"
       density="compact"
       hover>
       <template #top v-if="$slots.top">
@@ -125,7 +128,7 @@
         <slot name="bottom" />
       </template>
 
-      <template #headers v-if="selectedItems.length > 0">
+      <!-- <template #headers v-if="selectedItems.length > 0">
         <tr class="c-data-table-virtual__header">
           <th class="text-center c-data-table-virtual__col-checkbox">
             <div class="flex items-center">
@@ -140,11 +143,11 @@
                 :title="`${selectedItems.length} ${t('locale.selected')}`" />
             </div>
           </th>
-          <!-- <template v-for="index in headerTable.length - 1" :key="item">
-            <th></th>
-          </template> -->
+          <template v-for="header in headerTable.slice(1)" :key="header.key">
+            <th :style="{ width: header.width || 'auto' }"></th>
+          </template>
         </tr>
-      </template>
+      </template> -->
 
       <template v-slot:item="{ item, index }">
         <tr
@@ -197,5 +200,28 @@
     <!-- <div class="c-data-table-virtual_loading-mobile" v-if="isMobile && loadingMobile">
       <CircularLoader />
     </div> -->
+
+    <template v-if="selectedItems.length > 0">
+      <div class="c-data-table-virtual_header-selected" :style="{ minHeight: `${itemHeight}px` }">
+        <v-checkbox
+          v-if="showCheckbox"
+          hide-details
+          @click.stop="selectAllItems"
+          :model-value="selectedItems.length === dataTable.length" />
+        <BtnBase
+          :icon="MdiWebfont['close']"
+          @click="handleClearSelected"
+          :title="`${selectedItems.length} ${t('locale.selected')}`" />
+      </div>
+      <!-- <tr class="c-data-table-virtual__header">
+        <th class="text-center c-data-table-virtual__col-checkbox">
+
+        </th>
+
+        <template v-for="header in headerTable.slice(1)" :key="header.key">
+          <th :style="{ width: header.width || 'auto' }"></th>
+        </template>
+      </tr> -->
+    </template>
   </div>
 </template>
