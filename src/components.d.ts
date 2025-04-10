@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Breadcrumbs: typeof import('./components/FileManager/Breadcrumbs/Breadcrumbs.vue')['default']
     BtnBase: typeof import('./components/Button/BtnBase.vue')['default']
     BtnBaseIcon: typeof import('./components/Button/BtnBaseIcon.vue')['default']
     BtnSwicthView: typeof import('./components/Button/BtnSwicthView.vue')['default']

@@ -1,5 +1,4 @@
 import { IFileManager } from '@/interfaces/IFileManager';
-import { FileManagerStore } from '@/stores/FileManagerStore';
 import { debounce } from '@/utils/MyFunction';
 import { breakPoint } from '@/utils/MyVariables';
 import { useWindowSize } from '@vueuse/core';
@@ -17,7 +16,6 @@ interface IProps {
 }
 
 export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emits: IEmitFunctions, props: IProps) => {
-  const fileManagerStore = FileManagerStore();
   const { width } = useWindowSize();
 
   // Refs
@@ -44,7 +42,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   // Computed
   // const singleModeSelect = computed(() => route.path === myRoute.sharePublic);
   const isMobile = computed(() => width.value <= breakPoint.brSpLandscape);
-  const listItemDelete = computed(() => fileManagerStore.listItemDelete);
+  // const listItemDelete = computed(() => fileManagerStore.listItemDelete);
   // const isHomePage = computed(() => myRoute.home === route.path);
   // const selectedItems = computed({
   //   get: () => fileManagerStore.selectedItems,
@@ -93,7 +91,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   };
 
   const isItemSelected = (file: IFileManager): boolean => {
-    return selectedItems.value.some((item: IFileManager) => item.key === file.key);
+    return selectedItems.value.some((selectedItem: IFileManager) => selectedItem.key === file.key);
   };
 
   const isItemSelectedOne = (file: IFileManager): boolean => {
@@ -360,11 +358,8 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     DEBOUNCE_DELAY,
 
     // Computed
-    listItemDelete,
     isMobile,
-    // isHomePage,
     heightTable,
-    // singleModeSelect,
 
     // Function
     selectAllItems,

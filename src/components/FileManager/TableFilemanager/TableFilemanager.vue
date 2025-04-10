@@ -3,7 +3,6 @@
   import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
   import { IFileManager } from '@/interfaces/IFileManager';
   import { t } from '@/plugins/i18n';
-  import { FileManagerActionStore } from '@/stores/FileManagerActionStore';
   import { EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
   import { addEventKeyDown } from '@/utils/MyFunction';
   import { useStorage } from '@vueuse/core';
@@ -26,7 +25,6 @@
   const viewFM = useStorage(EnumLocalStorageKey.viewFM, EnumViewModeFm.details, localStorage, {
     listenToStorageChanges: true,
   });
-  const fileManagerActionStore = FileManagerActionStore();
 
   // Props and emits
   const props = defineProps<ITableFilemanagerProps>();
@@ -108,7 +106,20 @@
 </script>
 
 <template>
-  <div ref="wrapperRef" class="c-data-table-virtual_wrapper" @click="fileManagerActionStore.closeContextMenu()">
+  <div ref="wrapperRef" class="c-data-table-virtual_wrapper">
+    <template v-if="selectedItems.length > 0">
+      <div class="c-data-table-virtual_header-selected" :style="{ minHeight: `${itemHeight}px` }">
+        <v-checkbox
+          v-if="showCheckbox"
+          hide-details
+          @click.stop="selectAllItems"
+          :model-value="selectedItems.length === dataTable.length" />
+        <BtnBase
+          :icon="MdiWebfont['close']"
+          @click="handleClearSelected"
+          :title="`${selectedItems.length} ${t('locale.selected')}`" />
+      </div>
+    </template>
     <v-data-table-virtual
       v-bind="$attrs"
       ref="tableRef"
@@ -127,27 +138,6 @@
       <template #bottom v-if="$slots.bottom">
         <slot name="bottom" />
       </template>
-
-      <!-- <template #headers v-if="selectedItems.length > 0">
-        <tr class="c-data-table-virtual__header">
-          <th class="text-center c-data-table-virtual__col-checkbox">
-            <div class="flex items-center">
-              <v-checkbox
-                v-if="showCheckbox"
-                hide-details
-                @click.stop="selectAllItems"
-                :model-value="selectedItems.length === dataTable.length" />
-              <BtnBase
-                :icon="MdiWebfont['close']"
-                @click="handleClearSelected"
-                :title="`${selectedItems.length} ${t('locale.selected')}`" />
-            </div>
-          </th>
-          <template v-for="header in headerTable.slice(1)" :key="header.key">
-            <th :style="{ width: header.width || 'auto' }"></th>
-          </template>
-        </tr>
-      </template> -->
 
       <template v-slot:item="{ item, index }">
         <tr
@@ -186,42 +176,8 @@
       </template>
 
       <template #no-data v-if="$slots['no-data.table']">
-        <!-- <Empty :type-empty="EnumEmpty.no_data" hide-button /> -->
         <slot name="no-data.table" />
       </template>
-
-      <!-- Loading indicator -->
-      <!-- <template #loading v-if="dataTable.length === 0">
-        <SkeletonLoader :type="`${EnumTypeSkeletonLoader.tableTbody}@2`" />
-      </template> -->
     </v-data-table-virtual>
-
-    <!-- Mobile loading indicator -->
-    <!-- <div class="c-data-table-virtual_loading-mobile" v-if="isMobile && loadingMobile">
-      <CircularLoader />
-    </div> -->
-
-    <template v-if="selectedItems.length > 0">
-      <div class="c-data-table-virtual_header-selected" :style="{ minHeight: `${itemHeight}px` }">
-        <v-checkbox
-          v-if="showCheckbox"
-          hide-details
-          @click.stop="selectAllItems"
-          :model-value="selectedItems.length === dataTable.length" />
-        <BtnBase
-          :icon="MdiWebfont['close']"
-          @click="handleClearSelected"
-          :title="`${selectedItems.length} ${t('locale.selected')}`" />
-      </div>
-      <!-- <tr class="c-data-table-virtual__header">
-        <th class="text-center c-data-table-virtual__col-checkbox">
-
-        </th>
-
-        <template v-for="header in headerTable.slice(1)" :key="header.key">
-          <th :style="{ width: header.width || 'auto' }"></th>
-        </template>
-      </tr> -->
-    </template>
   </div>
 </template>

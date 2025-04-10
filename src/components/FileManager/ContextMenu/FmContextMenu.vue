@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { IContextMenu } from '@/interfaces/IContextMenu';
-  import { FileManagerActionStore } from '@/stores/FileManagerActionStore';
 
   defineOptions({
     inheritAttrs: false,
@@ -15,7 +14,6 @@
   const props = defineProps<IProps>();
 
   // Stores
-  const fileManagerActionStore = FileManagerActionStore();
 
   // Refs
   const innerWidth = ref(window.innerWidth);
@@ -38,7 +36,6 @@
   });
 
   const handleClickItem = (menuItem: IContextMenu) => {
-    fileManagerActionStore.toggleContextMenu();
     if (props.onClickItem) {
       props.onClickItem(menuItem);
     }

@@ -21,12 +21,12 @@
 <template>
   <section class="c-file-manager_toolbar" v-bind="$attrs">
     <div class="c-file-manager_toolbar_left">
-      <slot v-if="$slots['filemanager-toolbar-left']" name="filemanager-toolbar-left" />
-      <template v-else>
-        <BtnBaseIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
-        <BtnBaseIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
-      </template>
+      <slot name="fmToolbarLeft" />
     </div>
+    <v-divider :thickness="1" vertical />
+    <BtnBaseIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
+    <BtnBaseIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
+    <v-divider :thickness="1" vertical />
     <BtnBaseIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
     <BtnSwicthView v-if="showSwitchView" />
   </section>

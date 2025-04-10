@@ -21,6 +21,7 @@
     currentPath: string;
     loading?: boolean;
     dateFormat?: string;
+    breadcrumb?: IFileManager[];
     // props data table vuetify
     showCheckbox?: boolean;
     fixedHeader?: boolean;
@@ -70,6 +71,7 @@
   // Computed
   const customColumns = computed(() => props.customColumns || columnsDefault);
   const dataFilemanger = computed(() => props.dataFilemanger || demoDataFilemanager);
+  const breadcrumb = computed(() => props.breadcrumb ?? []);
 
   const contextMenuOptions = reactive<IContextMenu[]>([
     {
@@ -94,11 +96,22 @@
     showContextMenu.value = bool;
     positionContextMenu.value = { x: event.clientX, y: event.clientY };
   };
+
+  const actionBreadCrumbClick = () => {
+    console.log('click breadcrumbs nè :>> ');
+  };
 </script>
 
 <template>
   <div class="c-file-manager fm_base" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
-    <ToolbarFilemanager @refresh="emits('refresh')" :loading="loading" />
+    <ToolbarFilemanager @refresh="emits('refresh')" :loading="loading">
+      <template #fmToolbarLeft>
+        <slot v-if="$slots['fm-breadcrumbs']" name="fm-breadcrumbs" />
+        <template v-else>
+          <Breadcrumbs :data="breadcrumb" @callBackFolderSelected="actionBreadCrumbClick()" />
+        </template>
+      </template>
+    </ToolbarFilemanager>
 
     <!--- B: Custom default toolbar --->
     <!-- <div class="relative">

@@ -1,8 +1,10 @@
 <script setup lang="ts">
   import { IContextMenu } from './interfaces/IContextMenu';
+  import { IFileManager } from './interfaces/IFileManager';
 
   const selectedItems = ref<any[]>([]);
   const selectedOneItem = ref<any>();
+  const listBreadcrumb = ref<IFileManager[]>([]);
 
   const loading = ref(false);
 
@@ -29,8 +31,13 @@
     // console.log('handleClickRow :>> ', item);
   };
 
-  const handleDoubleClickRow = (item: any) => {
-    console.log('handleDoubleClickRow :>> ', item);
+  const handleDoubleClickRow = (item: IFileManager) => {
+    if (item.isDirectory) {
+      listBreadcrumb.value.push(item);
+      console.log('listBreadcrumb.value :>> ', listBreadcrumb.value);
+    } else {
+      console.log('handleDoubleClickRow :>> ', item);
+    }
   };
 
   const handleClickContextMenu = (option: IContextMenu) => {
@@ -63,6 +70,7 @@
       return-object
       fixed-header
       height="100vh"
+      :breadcrumb="listBreadcrumb"
       :item-height="46"
       :loading="loading"
       :theme="'dark'"
