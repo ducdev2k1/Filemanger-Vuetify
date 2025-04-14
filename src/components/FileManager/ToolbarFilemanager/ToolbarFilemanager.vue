@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
+  import { DemoActionFM } from '@/data/DemoActionFm';
   import { IActionFM } from '@/interfaces';
 
   defineOptions({
@@ -24,6 +25,7 @@
   const onClick = (item: IActionFM) => {
     props.toolbarClick && props.toolbarClick(item);
   };
+  const actionToolbar = computed(() => props.actionToolbar ?? DemoActionFM);
 </script>
 
 <template>
