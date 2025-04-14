@@ -46,7 +46,7 @@
     :disabled="loading || disabled">
     {{ title }}
     <template #prepend>
-      <template v-if="!$slots.prepend">
+      <template v-if="!$slots.prepend && icon">
         <v-icon v-if="!loading" :class="iconClass">{{ icon }}</v-icon>
         <v-progress-circular v-if="loading" indeterminate color="primary" width="2" :class="loadingClass" />
       </template>

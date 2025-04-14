@@ -6,4 +6,11 @@ export interface IColumnFileManger {
   visible: boolean;
 }
 
-export interface ISingleModeSelect {}
+export interface IActionFM {
+  key: string;
+  title: string;
+  visible: boolean;
+  icon?: string;
+  subMenus?: IActionFM[];
+  disabled?: boolean;
+}

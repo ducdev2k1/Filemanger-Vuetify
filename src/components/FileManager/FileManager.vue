@@ -1,8 +1,7 @@
 <script setup lang="ts">
   import { columnsDefault } from '@/components/FileManager/partial/ConfigFileManager';
   import { demoDataFilemanager } from '@/data/DemoDataFilemanager';
-  import { IColumnFileManger } from '@/interfaces';
-  import { IContextMenu } from '@/interfaces/IContextMenu';
+  import { IActionFM, IColumnFileManger } from '@/interfaces';
   import { IFileManager } from '@/interfaces/IFileManager';
   import { EnumLocalStorageKey, EnumViewModeFm } from '@/utils/MyEnum';
   import { convertBytes } from '@/utils/MyFunction';
@@ -22,6 +21,8 @@
     loading?: boolean;
     dateFormat?: string;
     breadcrumb?: IFileManager[];
+    actionToolbar?: IActionFM[];
+
     // props data table vuetify
     showCheckbox?: boolean;
     fixedHeader?: boolean;
@@ -29,20 +30,23 @@
     height?: number | string;
     singleModeSelect?: boolean;
     hideDefaultHeader?: boolean;
-    contextMenuOptions?: IContextMenu[];
+    contextMenuOptions?: IActionFM[];
+    textBread?: string;
 
     // void
-    updateSelected: (data: IFileManager[]) => void;
-    updateSelectedOne: (data: IFileManager) => void;
+    toolbarClick?: (item: IActionFM) => void;
+    updateSelected: (item: IFileManager[]) => void;
+    updateSelectedOne: (item: IFileManager) => void;
     customThumbnailIcon?: (item: IFileManager) => void;
-    updateSelectedItems?: (data: IFileManager[]) => void;
-    contextMenuClick?: (option: IContextMenu) => void;
+    updateSelectedItems?: (item: IFileManager[]) => void;
+    contextMenuClick?: (item: IActionFM) => void;
     onClickRow?: (item: IFileManager) => void;
     doubleClickRow?: (item: IFileManager) => void;
-    clickContextMenu?: (option: IContextMenu) => void;
+    clickContextMenu?: (item: IActionFM) => void;
+    onClickBreadcrumb?: ({ data, refresh }: { data?: IFileManager; refresh?: boolean }) => void;
   }
 
-  const emits = defineEmits(['scroll', 'clickContextMenu', 'onClickItem', 'refresh']);
+  const emits = defineEmits(['scroll', 'refresh']);
 
   const props = withDefaults(defineProps<IProps>(), {
     toolbarShowActionRight: true,
@@ -55,6 +59,7 @@
     fixedHeader: false,
     showCheckbox: false,
     dateFormat: 'DD/MM/YYYY',
+    textBread: 'Demo',
   });
 
   // localStorage
@@ -72,8 +77,9 @@
   const customColumns = computed(() => props.customColumns || columnsDefault);
   const dataFilemanger = computed(() => props.dataFilemanger || demoDataFilemanager);
   const breadcrumb = computed(() => props.breadcrumb ?? []);
+  const textBread = computed(() => props.textBread);
 
-  const contextMenuOptions = reactive<IContextMenu[]>([
+  const contextMenuOptions = reactive<IActionFM[]>([
     {
       key: 'download',
       title: 'Tải xuống',
@@ -97,50 +103,32 @@
     positionContextMenu.value = { x: event.clientX, y: event.clientY };
   };
 
-  const actionBreadCrumbClick = () => {
-    console.log('click breadcrumbs nè :>> ');
+  const actionBreadCrumbClick = ({ data, refresh }: { data?: IFileManager; refresh?: boolean }) => {
+    if (refresh) {
+      props.onClickBreadcrumb && props.onClickBreadcrumb({ refresh: true });
+    } else {
+      props.onClickBreadcrumb && props.onClickBreadcrumb({ data });
+    }
   };
 </script>
 
 <template>
   <div class="c-file-manager fm_base" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
-    <ToolbarFilemanager @refresh="emits('refresh')" :loading="loading">
+    <ToolbarFilemanager
+      @refresh="emits('refresh')"
+      :loading="loading"
+      :action-toolbar="actionToolbar"
+      :toolbar-click="toolbarClick">
       <template #fmToolbarLeft>
         <slot v-if="$slots['fm-breadcrumbs']" name="fm-breadcrumbs" />
         <template v-else>
-          <Breadcrumbs :data="breadcrumb" @callBackFolderSelected="actionBreadCrumbClick()" />
+          <Breadcrumbs
+            :text-default="textBread"
+            :data="breadcrumb"
+            :call-back-folder-selected="actionBreadCrumbClick" />
         </template>
       </template>
     </ToolbarFilemanager>
-
-    <!--- B: Custom default toolbar --->
-    <!-- <div class="relative">
-    <div class="c-file-manager_toolbar">
-      <ToolbarPage
-        :page="titlePage"
-        :class="{ 'opacity-0 invisible': selectedItems.length > 0 && width > breakPoint.brSpLandscape }"
-        :show-action-right="toolbarShowActionRight"
-        @call-back="(data) => actionHandleToolbar(data)">
-        <template #actionLeft>
-          <GroupActionFilter
-            v-if="route.path === myRoute.search"
-            @action-callback-submit="() => actionHandleToolbar({ type: 'filter', value: '' })" />
-        </template>
-      </ToolbarPage>
-    </div>
-    <ActionSelectFile
-      :action-selection="toolbarMenuOptions"
-      :class="[selectedItems.length > 0 ? 'opacity-1 visible' : 'opacity-0 invisible']"
-      @action-callback-clear-selection="() => handleClearSelection()" />
-  </div> -->
-    <!---E: Custom default toolbar --->
-
-    <!-- <template
-    v-if="(route.path === myRoute.myFiles || route.path === myRoute.sharePublic) && width > breakPoint.brSpLandscape">
-    <Breadcrumbs
-      :class="{ thumbnails: viewFM === EnumViewModeFm.thumbnails }"
-      @callBackFolderSelected="actionBreadCrumbClick()" />
-  </template> -->
 
     <!--  B: Slot này dùng để chèn UI/UX mở rộng cần thiết -->
     <slot v-if="$slots['toolbar-bottom']" name="toolbar-bottom" v-bind="{ data: dataFilemanger }"></slot>

@@ -9,12 +9,15 @@
 
   interface IProps {
     data: IFileManager[];
+    textDefault?: string;
+
+    callBackFolderSelected: ({}) => void;
   }
 
-  const emits = defineEmits(['callBackFolderSelected']);
   const props = defineProps<IProps>();
 
   const listBreadcrumb = computed(() => props.data);
+  const textDefault = computed(() => props.textDefault);
   const showDropdown = computed(() => listBreadcrumb.value.length > 4);
 
   const visibleBreadcrumbs = computed(() => {
@@ -34,30 +37,19 @@
   // click go to folder
   const actionBreadCrumbClick = (folder: IFileManager) => {
     console.log('actionBreadCrumbClick :>> ', folder);
-    // xu ly UI
-    // breadcumbStore.actionSelectByBreadcumbs(folder);
-    // callback reload data
-    emits('callBackFolderSelected');
+    props.callBackFolderSelected({ data: folder });
   };
 
-  // Back folder
-  const actionBackFolder = () => {
-    // xu ly UI
-    // breadcumbStore.actionPopBreadcumbs();
-    console.log('actionBackFolder :>> ');
-    // callback reload data
-    emits('callBackFolderSelected');
+  // reload page
+  const actionReloadPage = () => {
+    props.callBackFolderSelected({ refresh: true });
   };
 </script>
 
 <template>
   <v-breadcrumbs class="text-white c-breadcrumbs" v-bind="$attrs">
     <v-breadcrumbs-item>
-      <BtnBase
-        :disabled="listBreadcrumb.length <= 0"
-        class="!rounded-full w-[40px] !h-[40px]"
-        :icon="MdiWebfont['format-vertical-align-top']"
-        @click="actionBackFolder()" />
+      <BtnBase :disabled="listBreadcrumb.length <= 0" :title="textDefault" @click="actionReloadPage" />
     </v-breadcrumbs-item>
     <v-breadcrumbs-divider v-if="visibleBreadcrumbs.length > 0">
       <v-icon>{{ MdiWebfont['chevron-right'] }}</v-icon>
@@ -73,9 +65,8 @@
             v-for="(hiddenItem, i) in hiddenBreadcrumbs"
             :key="i"
             @click="actionBreadCrumbClick(hiddenItem)">
-            <span class="line-clamp-1">{{ hiddenItem.name }}</span>
+            <span class="text-three-dots">{{ hiddenItem.name }}</span>
             <template #prepend>
-              <!-- <img src="/assets/icons/office/folder.svg" :alt="hiddenItem.name" width="26" height="26" /> -->
               <v-icon>{{ MdiWebfont['folder-outline'] }}</v-icon>
             </template>
           </v-list-item>
@@ -87,7 +78,7 @@
           :class="{ active: index === visibleBreadcrumbs.length - 1 }"
           @click="actionBreadCrumbClick(item)">
           <template #title>
-            <span class="line-clamp-1">{{ item.name }}</span>
+            <span class="text-three-dots">{{ item.name }}</span>
           </template>
         </BtnBase>
       </v-breadcrumbs-item>

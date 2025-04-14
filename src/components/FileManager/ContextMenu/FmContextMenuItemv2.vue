@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
-  import { IContextMenu } from '@/interfaces/IContextMenu';
+  import { IContextMenu } from '@/interfaces/IAction';
 
   interface IProps {
     listMenus?: IContextMenu[];

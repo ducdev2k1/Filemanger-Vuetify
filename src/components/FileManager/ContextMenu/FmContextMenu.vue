@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { IContextMenu } from '@/interfaces/IContextMenu';
+  import { IContextMenu } from '@/interfaces/IAction';
 
   defineOptions({
     inheritAttrs: false,

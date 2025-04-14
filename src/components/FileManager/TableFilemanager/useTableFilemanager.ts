@@ -40,18 +40,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   const DEBOUNCE_DELAY = 100; // Debounce delay for scroll handling
 
   // Computed
-  // const singleModeSelect = computed(() => route.path === myRoute.sharePublic);
   const isMobile = computed(() => width.value <= breakPoint.brSpLandscape);
-  // const listItemDelete = computed(() => fileManagerStore.listItemDelete);
-  // const isHomePage = computed(() => myRoute.home === route.path);
-  // const selectedItems = computed({
-  //   get: () => fileManagerStore.selectedItems,
-  //   set: (value: IFileManager[]) => fileManagerStore.actionSetSelectedItems(value),
-  // });
-  // const objectSelectedOne = computed({
-  //   get: () => fileManagerStore.objectSelectedOne,
-  //   set: (value: IFileManager) => fileManagerStore.actionSetObjectSelectedOne(value),
-  // });
 
   const heightTable = computed(() => {
     if (wrapperRef.value) {
@@ -64,6 +53,8 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   watch(
     () => selectedItems.value,
     (newValue) => {
+      // cập nhật lại objectSelectedOne ( luôn là item cuối cùng của selectedItems )
+      objectSelectedOne.value = newValue[newValue.length - 1];
       props.updateSelected(newValue || ([] as IFileManager[]));
     },
   );
@@ -135,13 +126,6 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     // Close any open context menu
     emits.toglleContextMenu(event as MouseEvent, false);
 
-    // Update selected items
-    // if (isHomePage.value) {
-    //   // Home page - Single selection
-    //   selectedItems.value = [file];
-    //   lastSelectedItem.value = file;
-    // } else {
-    // }
     // Handle different selection modes
     if ((event as MouseEvent).shiftKey && lastSelectedItem.value) {
       // Shift + Click: Range selection
@@ -283,6 +267,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     startIndex.value = getFileIndex(file);
     endIndex.value = startIndex.value;
     selectedItems.value = [file];
+    objectSelectedOne.value = file;
   };
 
   // Cập nhật quá trình chọn nhiều items
@@ -294,6 +279,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
     if (startIndex.value !== null && endIndex.value !== null) {
       const minIndex = Math.min(startIndex.value, endIndex.value);
       const maxIndex = Math.max(startIndex.value, endIndex.value);
+      selectedItems.value = dataTable.value.slice(minIndex, maxIndex + 1);
       props.updateSelected(dataTable.value.slice(minIndex, maxIndex + 1));
     }
   };
