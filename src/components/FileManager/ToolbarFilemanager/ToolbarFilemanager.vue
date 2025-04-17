@@ -30,16 +30,19 @@
 
 <template>
   <section class="c-file-manager_toolbar" v-bind="$attrs">
-    <div class="c-file-manager_toolbar_left">
+    <div class="c-file-manager_toolbar_group group_left">
       <slot name="fmToolbarLeft" />
     </div>
-    <v-divider v-if="actionToolbar && actionToolbar.length > 0" :thickness="1" vertical />
-
-    <template v-for="action in actionToolbar" :key="action.key">
-      <BtnBaseIcon :icon="action.icon as string" @click="onClick(action)" :disabled="action.disabled" />
-    </template>
-    <v-divider :thickness="1" vertical />
-    <BtnBaseIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
-    <BtnSwicthView v-if="showSwitchView" />
+    <div class="c-file-manager_toolbar_group group_right">
+      <div class="c-file-manager_toolbar_group_block left">
+        <template v-for="action in actionToolbar" :key="action.key">
+          <BtnBaseIcon :icon="action.icon as string" @click="onClick(action)" :disabled="action.disabled" />
+        </template>
+      </div>
+      <div class="c-file-manager_toolbar_group_block right">
+        <BtnBaseIcon :disabled="loading" :icon="MdiWebfont.reload" @click="emits('refresh')" />
+        <BtnSwicthView v-if="showSwitchView" />
+      </div>
+    </div>
   </section>
 </template>

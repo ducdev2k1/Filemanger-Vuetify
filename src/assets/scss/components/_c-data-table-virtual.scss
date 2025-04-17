@@ -154,6 +154,8 @@
   @include brSpLandscape {
     height: calc(100% - 50px);
     border-radius: 0 !important;
+    border: none;
+
     .v-selection-control__input::before {
       background-color: transparent;
     }

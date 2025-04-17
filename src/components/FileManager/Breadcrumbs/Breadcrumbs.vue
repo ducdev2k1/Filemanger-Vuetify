@@ -2,6 +2,8 @@
   import BtnBase from '@/components/Button/BtnBase.vue';
   import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
   import { IFileManager } from '@/interfaces/IFileManager';
+  import { breakPoint } from '@/utils/MyVariables';
+  import { useWindowSize } from '@vueuse/core';
 
   defineOptions({
     inheritAttrs: false,
@@ -14,11 +16,12 @@
     callBackFolderSelected: ({}) => void;
   }
 
+  const { width } = useWindowSize();
   const props = defineProps<IProps>();
-
   const listBreadcrumb = computed(() => props.data);
   const textDefault = computed(() => props.textDefault);
-  const showDropdown = computed(() => listBreadcrumb.value.length > 4);
+  const numberShowDrop = computed(() => (width.value > breakPoint.brSpLandscape ? 4 : 2));
+  const showDropdown = computed(() => listBreadcrumb.value.length > numberShowDrop.value);
 
   const visibleBreadcrumbs = computed(() => {
     if (!showDropdown.value) return listBreadcrumb.value;
