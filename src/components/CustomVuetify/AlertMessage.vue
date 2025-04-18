@@ -48,7 +48,6 @@
       <v-icon class="w-5 h-5" :class="MdiWebfont[prependIcon]" />
     </template>
     <template #close v-if="btnClose">
-      <Lucide class="cursor-pointer" icon="X" />
       <BtnBaseIcon :icon="MdiWebfont.close" @click="emits('close')" />
     </template>
   </v-alert>
