@@ -7,10 +7,13 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AlertMessage: typeof import('./components/CustomVuetify/AlertMessage.vue')['default']
+    ApiLoader: typeof import('./components/Loader/ApiLoader.vue')['default']
     Breadcrumbs: typeof import('./components/FileManager/Breadcrumbs/Breadcrumbs.vue')['default']
     BtnBase: typeof import('./components/Button/BtnBase.vue')['default']
     BtnBaseIcon: typeof import('./components/Button/BtnBaseIcon.vue')['default']
     BtnSwicthView: typeof import('./components/Button/BtnSwicthView.vue')['default']
+    CircularLoader: typeof import('./components/Loader/CircularLoader.vue')['default']
     ColumnDateModified: typeof import('./components/FileManager/CustomCellTemplate/ColumnDateModified.vue')['default']
     ColumnGroupActions: typeof import('./components/FileManager/CustomCellTemplate/ColumnGroupActions.vue')['default']
     ColumnLocation: typeof import('./components/FileManager/CustomCellTemplate/ColumnLocation.vue')['default']
@@ -18,6 +21,7 @@ declare module 'vue' {
     ColumnOwner: typeof import('./components/FileManager/CustomCellTemplate/ColumnOwner.vue')['default']
     ColumnPermissionFile: typeof import('./components/FileManager/CustomCellTemplate/ColumnPermissionFile.vue')['default']
     ColumnTimeDeleted: typeof import('./components/FileManager/CustomCellTemplate/ColumnTimeDeleted.vue')['default']
+    ContentLoader: typeof import('./components/Loader/ContentLoader.vue')['default']
     ContextMenu: typeof import('./components/FileManager/ContextMenu/ContextMenu.vue')['default']
     ContextMenuItem: typeof import('./components/FileManager/ContextMenu/ContextMenuItem.vue')['default']
     FileManager: typeof import('./components/FileManager/FileManager.vue')['default']
@@ -26,9 +30,15 @@ declare module 'vue' {
     FmContextMenuItemv2: typeof import('./components/FileManager/ContextMenu/FmContextMenuItemv2.vue')['default']
     FMEmpty: typeof import('./components/FileManager/partial/FMEmpty.vue')['default']
     GridItem: typeof import('./components/FileManager/GridItem/GridItem.vue')['default']
+    ITextFieldAddon: typeof import('./components/CustomVuetify/ITextFieldAddon.vue')['default']
+    Modal: typeof import('./components/Modal/Modal.vue')['default']
+    ModalConfirm: typeof import('./components/Modal/ModalConfirm.vue')['default']
+    ModalMoveAndCopyTo: typeof import('./components/Modal/ModalMoveAndCopyTo.vue')['default']
+    ModalRename: typeof import('./components/Modal/ModalRename.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Share: typeof import('./components/FileManager/CustomCellTemplate/Share.vue')['default']
+    SkeletonLoader: typeof import('./components/Loader/SkeletonLoader.vue')['default']
     TableFilemanager: typeof import('./components/FileManager/TableFilemanager/TableFilemanager.vue')['default']
     ToolbarFilemanager: typeof import('./components/FileManager/ToolbarFilemanager/ToolbarFilemanager.vue')['default']
   }

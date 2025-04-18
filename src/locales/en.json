@@ -57,9 +57,25 @@
     "backend_status": "Status",
     "backend_sync_success": "Sync successfully.",
     "backend_value_incorrect_pattern": "Value incorrect pattern",
+    "cancel": "Cancel",
     "change_layout": "Change layout",
+    "close": "Close",
+    "copy_to": "Copy to",
     "data_has_been_loaded": "Data has been loaded",
+    "data_input": "Enter {data}",
+    "data_remaining_file": "{data} remaining files",
+    "delete_object_and_share": "This action will remove all shared links. Are you sure you want to move these items to the trash?",
+    "file": "File",
+    "folder": "Folder",
     "grid": "Grid",
-    "selected": "Selected"
+    "move_to": "Move to",
+    "ok": "Ok",
+    "paste": "Paste",
+    "permanently_delete": "Permanently delete",
+    "permanently_delete_content": "These files will be permanently deleted and you cannot recover them.",
+    "remove": "Remove",
+    "rename": "Rename",
+    "selected": "Selected",
+    "trash": "Trash bin"
   }
 }

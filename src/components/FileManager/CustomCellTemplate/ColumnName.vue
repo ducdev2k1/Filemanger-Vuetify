@@ -1,13 +1,11 @@
 <script setup lang="ts">
   import { getThumbnailIcon } from '@/components/FileManager/partial/HelperFunctionFileManager';
   import { IFileManager } from '@/interfaces/IFileManager';
-  import { t } from '@/plugins/i18n';
   // import { calculateRemainingTime, convertBytes, formatDate, formatGradient } from '@/utils/MyFunction';
   // import { myRoute } from '@/utils/my-route';
-  import { breakPoint, dateFormat } from '@/utils/MyVariables';
-  import { useWindowSize } from '@vueuse/core';
-  import { getIconPath } from '@/utils/MyFunction';
   import { MdiWebfont } from '@/components/Icons/mdi-font-icons';
+  import { breakPoint } from '@/utils/MyVariables';
+  import { useWindowSize } from '@vueuse/core';
 
   interface IProps {
     dataRow: IFileManager;

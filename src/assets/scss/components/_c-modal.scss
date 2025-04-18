@@ -7,6 +7,10 @@
 .c-dialog {
   width: 549px;
   max-width: 100%;
+  * {
+    font-size: 14px;
+    line-height: normal;
+  }
 
   &[top] {
     .v-overlay__content {
@@ -37,6 +41,7 @@
     h3 {
       flex: 1;
       color: var(--color-title);
+      font-size: 18px;
     }
 
     &::after {

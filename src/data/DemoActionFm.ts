@@ -9,9 +9,21 @@ export const DemoActionFM = [
     disabled: false,
   },
   {
+    key: 'rename',
+    visible: true,
+    icon: MdiWebfont.rename,
+    disabled: false,
+  },
+  {
     key: 'coppy',
     visible: true,
     icon: MdiWebfont['content-copy'],
+    disabled: false,
+  },
+  {
+    key: 'move_to',
+    visible: true,
+    icon: MdiWebfont['folder-move'],
     disabled: false,
   },
   {
