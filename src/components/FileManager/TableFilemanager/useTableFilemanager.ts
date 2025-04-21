@@ -86,7 +86,7 @@ export const useTableFilemanager = (dataTable: ComputedRef<IFileManager[]>, emit
   };
 
   const isItemSelectedOne = (file: IFileManager): boolean => {
-    return objectSelectedOne.value.key === file.key;
+    return objectSelectedOne.value?.key === file.key;
   };
 
   const mouseEnterHandler = (index: number) => {

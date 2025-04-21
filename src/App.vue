@@ -13,6 +13,7 @@
   const typeModalMoveAndCopyTo = ref(EnumModalFM.copyTo);
   const showModalConfirmDelete = ref(false);
   const showModalRename = ref(false);
+  const showModalDetail = ref(false);
 
   const getThumbnailIcon = (item: any) => {
     console.log('item :>> ', item);
@@ -32,8 +33,8 @@
       showModalConfirmDelete.value = true;
     } else if (action.key === 'rename') {
       showModalRename.value = true;
-    } else {
-      console.log('onClickActionFm :>> ', action);
+    } else if (action.key === 'detail') {
+      showModalDetail.value = true;
     }
   };
 
@@ -113,7 +114,17 @@
       @scroll="handleScroll"
       @refresh="handleRefresh" />
 
-    <ModalRename v-if="showModalRename" v-model="showModalRename" :selectedOneItem="selectedOneItem" />
+    <ModalRename
+      v-if="showModalRename"
+      v-model="showModalRename"
+      :selectedOneItem="selectedOneItem"
+      @close="showModalRename = false" />
+
+    <ModalDetail
+      v-if="showModalDetail"
+      v-model="showModalDetail"
+      :selectedOneItem="selectedOneItem"
+      @close="showModalDetail = false" />
 
     <ModalMoveAndCopyTo
       v-if="showModalCopyTo"

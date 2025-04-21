@@ -19,7 +19,6 @@
 <template>
   <BtnBaseIcon
     v-bind="$attrs"
-    disabled
     :tooltip="t('locale.change_layout')"
     :icon="currentView === EnumViewModeFm.details ? MdiWebfont['dots-grid'] : MdiWebfont['format-list-bulleted']"
     @click="toggleView" />

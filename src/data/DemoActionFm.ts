@@ -11,7 +11,7 @@ export const DemoActionFM = [
   {
     key: 'rename',
     visible: true,
-    icon: MdiWebfont.rename,
+    icon: MdiWebfont['rename-outline'],
     disabled: false,
   },
   {
@@ -23,13 +23,19 @@ export const DemoActionFM = [
   {
     key: 'move_to',
     visible: true,
-    icon: MdiWebfont['folder-move'],
+    icon: MdiWebfont['folder-move-outline'],
     disabled: false,
   },
   {
     key: 'delete',
     visible: true,
-    icon: MdiWebfont.delete,
+    icon: MdiWebfont['delete-outline'],
+    disabled: false,
+  },
+  {
+    key: 'detail',
+    visible: true,
+    icon: MdiWebfont['information-outline'],
     disabled: false,
   },
 ] as IActionFM[];
