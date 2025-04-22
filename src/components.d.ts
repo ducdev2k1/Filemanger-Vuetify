@@ -8,7 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AlertMessage: typeof import('./components/CustomVuetify/AlertMessage.vue')['default']
-    ApiLoader: typeof import('./components/Loader/ApiLoader.vue')['default']
     Breadcrumbs: typeof import('./components/FileManager/Breadcrumbs/Breadcrumbs.vue')['default']
     BtnBase: typeof import('./components/Button/BtnBase.vue')['default']
     BtnBaseIcon: typeof import('./components/Button/BtnBaseIcon.vue')['default']
@@ -40,7 +39,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Share: typeof import('./components/FileManager/CustomCellTemplate/Share.vue')['default']
-    SkeletonLoader: typeof import('./components/Loader/SkeletonLoader.vue')['default']
     TableFilemanager: typeof import('./components/FileManager/TableFilemanager/TableFilemanager.vue')['default']
     ToolbarFilemanager: typeof import('./components/FileManager/ToolbarFilemanager/ToolbarFilemanager.vue')['default']
   }
