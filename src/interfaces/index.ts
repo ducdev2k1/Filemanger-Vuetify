@@ -14,3 +14,9 @@ export interface IActionFM {
   subMenus?: IActionFM[];
   disabled?: boolean;
 }
+
+export interface ITreeFolder {
+  name: string;
+  path: string;
+  children?: ITreeFolder[];
+}

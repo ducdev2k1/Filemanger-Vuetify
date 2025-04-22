@@ -110,10 +110,26 @@
       props.onClickBreadcrumb && props.onClickBreadcrumb({ data });
     }
   };
+
+  watch(
+    () => props.theme,
+    (newVal) => {
+      const html = document.querySelector('html') as HTMLElement;
+      html.classList.add('fm_base');
+      if (newVal === 'dark') {
+        html.classList.add('fm_dark');
+      } else {
+        html.classList.add('light');
+      }
+    },
+    {
+      immediate: true,
+    },
+  );
 </script>
 
 <template>
-  <div class="c-file-manager fm_base" :class="{ fm_dark: theme === 'dark', fm_light: theme === 'light' }">
+  <div class="c-file-manager">
     <ToolbarFilemanager
       @refresh="emits('refresh')"
       :loading="loading"

@@ -12,6 +12,107 @@
   span {
     text-transform: none;
   }
+
+  &-border {
+    border: 1px solid var(--color-border-btn) !important;
+    color: var(--color-text);
+
+    &:hover {
+      border-color: var(--color-border);
+      background: var(--color-black);
+      color: #fff !important;
+
+      * {
+        color: #fff !important;
+      }
+    }
+
+    &-primary {
+      border-color: var(--color-primary) !important;
+      color: var(--color-primary) !important;
+
+      *,
+      i.mdi::before {
+        color: var(--color-primary) !important;
+      }
+
+      &:hover {
+        border-color: var(--color-primary) !important;
+        background: var(--color-primary) !important;
+        color: #fff !important;
+
+        *,
+        i.mdi::before {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
+  &-success {
+    background-color: var(--color-success) !important;
+
+    *,
+    i.mdi::before {
+      color: var(--color-white) !important;
+    }
+
+    &:hover {
+      border-color: var(--color-success) !important;
+    }
+  }
+
+  &-warning {
+    background-color: var(--color-warning) !important;
+
+    * {
+      color: var(--color-black) !important;
+    }
+
+    &:hover {
+      border-color: var(--color-warning) !important;
+    }
+  }
+
+  &-danger {
+    background-color: var(--color-error) !important;
+
+    *,
+    i.mdi::before {
+      color: var(--color-white) !important;
+    }
+
+    &:hover {
+      border-color: var(--color-error) !important;
+    }
+  }
+
+  &-cancel {
+    background-color: var(--color-cancel) !important;
+
+    * {
+      color: var(--color-black) !important;
+    }
+
+    &:hover {
+      border-color: var(--color-cancel) !important;
+      background-color: #fbf8f8b0 !important;
+    }
+  }
+
+  &-primary {
+    background-color: var(--color-primary) !important;
+
+    *,
+    i.mdi::before {
+      color: var(--color-white) !important;
+    }
+
+    &:hover {
+      border-color: var(--color-primary-hover) !important;
+      background-color: var(--color-primary-hover) !important;
+    }
+  }
 }
 
 .c-btn-icon {

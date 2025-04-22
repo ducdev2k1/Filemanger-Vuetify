@@ -1,12 +1,19 @@
 <script setup lang="ts">
+  import { EnumModalFM, EnumTypeConfirm } from '@/utils/MyEnum';
   import { DemoActionFM } from './data/DemoActionFm';
-  import { IActionFM } from './interfaces';
+  import { demoDateTreeFolder } from './data/DemoDataFilemanager';
+  import { IActionFM, ITreeFolder } from './interfaces';
   import { IFileManager } from './interfaces/IFileManager';
 
-  const selectedItems = ref<any[]>([]);
-  const selectedOneItem = ref<any>();
+  const selectedItems = ref<IFileManager[]>([]);
+  const selectedOneItem = ref({} as IFileManager);
   const listBreadcrumb = ref<IFileManager[]>([]);
   const loading = ref(false);
+  const showModalCopyTo = ref(false);
+  const typeModalMoveAndCopyTo = ref(EnumModalFM.copyTo);
+  const showModalConfirmDelete = ref(false);
+  const showModalRename = ref(false);
+  const showModalDetail = ref(false);
 
   const getThumbnailIcon = (item: any) => {
     console.log('item :>> ', item);
@@ -16,8 +23,19 @@
     console.log('handleScroll :>> ');
   };
 
-  const onClickActionFm = (option: IActionFM) => {
-    console.log('clickOptionContextMenu :>> ', option);
+  const onClickActionFm = (action: IActionFM) => {
+    if (action.key === 'coppy') {
+      showModalCopyTo.value = true;
+    } else if (action.key === 'move_to') {
+      showModalCopyTo.value = true;
+      typeModalMoveAndCopyTo.value = EnumModalFM.moveTo;
+    } else if (action.key === 'delete') {
+      showModalConfirmDelete.value = true;
+    } else if (action.key === 'rename') {
+      showModalRename.value = true;
+    } else if (action.key === 'detail') {
+      showModalDetail.value = true;
+    }
   };
 
   const handleRefresh = () => {
@@ -46,6 +64,13 @@
     } else {
       console.log('handleClickBreadCrumb :>> ', data);
     }
+  };
+
+  const handlePaste = (folder: ITreeFolder) => {
+    console.log('handlePaste :>> ', folder);
+  };
+  const loadChildrenFolder = (folder: ITreeFolder) => {
+    console.log('loadChildrenFolder :>> ', folder);
   };
 
   // debug selectedItems and selectedOneItem
@@ -88,5 +113,34 @@
       :double-click-row="handleDoubleClickRow"
       @scroll="handleScroll"
       @refresh="handleRefresh" />
+
+    <ModalRename
+      v-if="showModalRename"
+      v-model="showModalRename"
+      :selectedOneItem="selectedOneItem"
+      @close="showModalRename = false" />
+
+    <ModalDetail
+      v-if="showModalDetail"
+      v-model="showModalDetail"
+      :selectedOneItem="selectedOneItem"
+      @close="showModalDetail = false" />
+
+    <ModalMoveAndCopyTo
+      v-if="showModalCopyTo"
+      v-model="showModalCopyTo"
+      :selectedItems="selectedItems"
+      :type-modal="typeModalMoveAndCopyTo"
+      :paste="handlePaste"
+      :loadChildrenFolder="loadChildrenFolder"
+      @close="showModalCopyTo = false"
+      :dataTreeFolder="demoDateTreeFolder" />
+
+    <ModalConfirm
+      v-if="showModalConfirmDelete"
+      permanently
+      v-model="showModalConfirmDelete"
+      :selectedItems="selectedItems"
+      :type-modal="EnumTypeConfirm.delete" />
   </div>
 </template>

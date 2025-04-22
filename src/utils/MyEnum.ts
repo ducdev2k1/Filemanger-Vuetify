@@ -41,3 +41,23 @@ export enum EnumLocation {
 export enum EnumLocalStorageKey {
   viewFileMamager = 'view-file-manager',
 }
+
+export enum EnumModalFM {
+  copyTo = 'copy_to',
+  moveTo = 'move_to',
+  trash = 'trash',
+  delete = 'delete',
+}
+
+export enum EnumTypeConfirm {
+  create = 'create',
+  update = 'update',
+  success = 'success',
+  error = 'error',
+  warning = 'warning',
+  info = 'info',
+  confirm = 'confirm',
+  cancel = 'cancel',
+  close = 'close',
+  delete = 'delete',
+}
