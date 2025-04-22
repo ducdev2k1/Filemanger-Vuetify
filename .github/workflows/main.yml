@@ -19,6 +19,11 @@ jobs:
           registry-url: https://registry.npmjs.org/
           cache: 'npm'
 
+      - name: Clean install 
+        run: | 
+          rm -rf node_modules package-lock.json 
+          npm install --ignore-scripts
+
       - name: Install dependencies
         run: npm install
 
